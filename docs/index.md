@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Welcome INLaser World
 
 You can use the [editor on GitHub](https://github.com/High-tech-digital-modules/inlaserworld_engine/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
