@@ -57,7 +57,7 @@ search:
 # Enable or disable heading anchors
 heading_anchors: true
 
-color_scheme: inlaserworld
+color_scheme: dark
 
 # Build settings
 # theme: just-the-docs
