@@ -1,0 +1,37 @@
+
+.language-cpp{
+  & .highlight {
+    & .kt {
+      color: #c139c2;
+    }
+
+    & .nf {
+      color: #45cbf7;
+    }
+  }
+}
+
+.language-c{
+  & .highlight {
+    & .kt {
+      color: #c139c2;
+    }
+
+    & .nf {
+      color: #45cbf7;
+    }
+  }
+}
+
+.language-shell {
+  & .highlight {
+    & .nb {
+      color: #45cbf7;
+    }
+  }
+}
+
+.search-input {
+  color: white;
+}
+
