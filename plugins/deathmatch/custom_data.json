@@ -3,7 +3,8 @@
     "name":"pointsKill",
     "type":"int32_t",
     "value":150,
-    "label":"Points per kill"
+    "label":"Points per kill",
+    "inGameMenu": false
   },
   {
     "name":"pointsDeath",
