@@ -1,0 +1,38 @@
+[
+  {
+    "name":"pointsKill",
+    "type":"int32_t",
+    "value":150,
+    "label":"Points per kill"
+  },
+  {
+    "name":"pointsDeath",
+    "type":"int32_t",
+    "value":-50,
+    "label":"Points per death"
+  },
+  {
+    "name":"pointsHit",
+    "type":"int32_t",
+    "value":0,
+    "label":"Points per hit"
+  },
+  {
+    "name":"pointsPerShoot",
+    "type":"int32_t",
+    "value":0,
+    "label":"Points per shot"
+  },
+  {
+    "name":"pointsDoubleKill",
+    "type":"int32_t",
+    "value":50,
+    "label":"Points per double kill"
+  },
+  {
+    "name":"pointsMonsterKill",
+    "type":"int32_t",
+    "value":100,
+    "label":"Points per monster kill"
+  }
+]

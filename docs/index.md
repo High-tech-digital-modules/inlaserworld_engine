@@ -11,7 +11,7 @@ Let's build the best lasergame game scenarious and epic experiance ever.
 {: .fs-6 .fw-300 }
 
 [Get started](http://example.com/){: .btn .btn-purple }
-[View it on github](http://example.com/){: .btn }
+[View it on github](https://github.com/High-tech-digital-modules/inlaserworld_engine){: .btn }
 
 ---
 ## Introduction
