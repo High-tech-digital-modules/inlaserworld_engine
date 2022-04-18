@@ -10,7 +10,7 @@ nav_order: 1
 Let's build the best lasergame game scenarious and epic experiance ever.
 {: .fs-6 .fw-300 }
 
-[Get started](http://example.com/){: .btn .btn-purple }
+[Get started](/#introduction){: .btn .btn-purple }
 [View it on github](https://github.com/High-tech-digital-modules/inlaserworld_engine){: .btn }
 
 ---
@@ -89,24 +89,22 @@ sudo usermod -aG docker $USER
 # Logout and login again
 ```
 
+Image is currently hosted on private docker repository. To get credentials contact
+[daniel.lazar@htdm.cz](mailto:daniel.lazar@htdm.cz)
+
+```shell
+docker login docker.htdm.net
+```
+
 Now finally let's run docker
 ```shell
-docker run --cap-add=NET_ADMIN --workdir /home/inlaserworld/ -u inlaserworld \
-  --detach --name inlaserworld -t -e DISPLAY=:0 \
-  --security-opt apparmor=unconfined --privileged \
-  -p 7777:7777 -p 7778:7778 -p 5900:5900  docker.htdm.net/inlaserworld:1.0.0
+docker run -it --rm --hostname="$(hostname)" --publish="3389:3389/tcp" \
+  --name="inlaserworldrdp" --shm-size="1g" --cap-add=NET_ADMIN \
+  --security-opt apparmor=unconfined --privileged -p 7777:7777 -p 7778:7778 \
+  docker.htdm.net/inlaserworldrdp:1.0 /bin/bash
+# Optional if docker needs to keep live use --detach
 ```
 
-Final step go to docker and install our lasergame app
-```shell
-docker exec -it -u inlaserworld inlaserworld /bin/bash
-sudo apt-get install /home/inlaserworld/laser*.deb
-```
-
-You will be asked during installation to fill your email. This email is used for admin account.
-Navigate to your browser and write use your ip adress and port 7778. If you use some of server
-machine please check also firewall rules.
-Now if you see login screen your installation is ready to go and you can continue.
-
+Once docker is running continue to [Simulation get started](docs/guides/simulation_instalation.html).
 
 
