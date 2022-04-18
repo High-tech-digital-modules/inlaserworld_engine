@@ -4,7 +4,7 @@ title: Simulation get started
 nav_order: 5
 ---
 
-## Simulation get started
+# Simulation get started
 
 To connect simulation the standard RDP can be used. This guide will show it on MAC OS using 
 microsoft remote desktop application. To get the best performance use resolution 1280x800 and lower the color
@@ -31,3 +31,20 @@ Just a showcase of chest device presentation mode. Note: segments on real device
 effects :) 
 
 ![chest_presentation](../../assets/images/SIM_chest_presentation.png "Chest presentation")
+
+## Simulation console
+This part describes how to use real console. There is no different with real console used in production
+except first user registration. Your docker image should expose port 7778 so please open your broswer
+and fill <IP Adress>:7778 and you should see:
+
+![console_login](../../assets/images/CON_login.png "Console login")
+
+1. Follow up to **Sign up** and fill **"registrationToken"** than you will be asked to fill some 
+information (used only for simulation).
+2. Then for email validation use **"validationtoken"**
+3. Finally, log in
+4. Navigate to device list and you should see devices as shown on picture bellow
+
+![console_device_list](../../assets/images/CON_device_list.png "Console device list")
+
+
