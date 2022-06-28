@@ -202,7 +202,7 @@ void ENGINE_setUVLightModule(uint8_t aModuleIndex, bool aOn);
 play sound by name
 
 ```cpp
-uint8_t ENGINE_playSound(const char laser_sdk output.md README.md test.sh apNameOfSound);
+uint8_t ENGINE_playSound(const char * apNameOfSound);
 ```
 
 ### Params
@@ -242,7 +242,7 @@ uint8_t ENGINE_playSoundOnPlayersChest(const uint8_t aPLayerIndex, const uint32_
 get game template custom string variable by name
 
 ```cpp
-std::string ENGINE_getTcvString(const char laser_sdk output.md README.md test.sh aName, std::string aDefValue);
+std::string ENGINE_getTcvString(const char * aName, std::string aDefValue);
 ```
 
 ### Params
@@ -256,7 +256,7 @@ std::string ENGINE_getTcvString(const char laser_sdk output.md README.md test.sh
 get game template custom unsigned integer variable by name
 
 ```cpp
-uint32_t ENGINE_getTcvUInt(const char laser_sdk output.md README.md test.sh aName, uint32_t aDefValue);
+uint32_t ENGINE_getTcvUInt(const char * aName, uint32_t aDefValue);
 ```
 
 ### Params
@@ -270,7 +270,7 @@ uint32_t ENGINE_getTcvUInt(const char laser_sdk output.md README.md test.sh aNam
 get game template custom signed integer variable by name
 
 ```cpp
-int32_t ENGINE_getTcvInt(const char laser_sdk output.md README.md test.sh aName, int32_t aDefValue);
+int32_t ENGINE_getTcvInt(const char * aName, int32_t aDefValue);
 ```
 
 ### Params
@@ -284,7 +284,7 @@ int32_t ENGINE_getTcvInt(const char laser_sdk output.md README.md test.sh aName,
 get game template custom double variable by name
 
 ```cpp
-double ENGINE_getTcvDouble(const char laser_sdk output.md README.md test.sh aName, double aDefValue);
+double ENGINE_getTcvDouble(const char * aName, double aDefValue);
 ```
 
 ### Params
@@ -298,7 +298,7 @@ double ENGINE_getTcvDouble(const char laser_sdk output.md README.md test.sh aNam
 get game template custom boolean variable by name
 
 ```cpp
-bool ENGINE_getTcvBoolean(const char laser_sdk output.md README.md test.sh aName, bool aDefValue);
+bool ENGINE_getTcvBoolean(const char * aName, bool aDefValue);
 ```
 
 ### Params
@@ -312,7 +312,7 @@ bool ENGINE_getTcvBoolean(const char laser_sdk output.md README.md test.sh aName
 get game template custom device struct by name
 
 ```cpp
-DeviceT ENGINE_getTcvDevice(const char laser_sdk output.md README.md test.sh aName);
+DeviceT ENGINE_getTcvDevice(const char * aName);
 ```
 
 ### Params
@@ -325,7 +325,7 @@ DeviceT ENGINE_getTcvDevice(const char laser_sdk output.md README.md test.sh aNa
 get game template custom color struct by name
 
 ```cpp
-ColorT ENGINE_getTcvColorStruct(const char laser_sdk output.md README.md test.sh aName);
+ColorT ENGINE_getTcvColorStruct(const char * aName);
 ```
 
 ### Params
