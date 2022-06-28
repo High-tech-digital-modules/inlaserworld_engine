@@ -258,16 +258,16 @@ void ENGINE_addTableHit(uint8_t aHitCode, uint8_t aHitFlag);
 {: .no_toc }
 - **aHitCode** - select table row, from which player hit was received, 0 is reserved
 - **aHitFlag** - specify which module was hit,
- 0 reserved
- 1 front_1
- 2 front_2
- 3 left_1
- 4 left_2
- 5 right_1
- 6 right_2
- 7 back_1
- 8 back_2
- 9 weapon
+		 - 0 reserved
+		 - 1 front_1
+		 - 2 front_2
+		 - 3 left_1
+		 - 4 left_2
+		 - 5 right_1
+		 - 6 right_2
+		 - 7 back_1
+		 - 8 back_2
+		 - 9 weapon
 
 ---
 ## ENGINE_addTableKill
@@ -305,16 +305,16 @@ void ENGINE_processDeath(uint8_t aHitCode, uint8_t aHitFlag);
 {: .no_toc }
 - **aHitCode** - select table row, from which player hit was received, 0 is reserved
 - **aHitFlag** - specify which module was hit,
- 0 reserved
- 1 front_1
- 2 front_2
- 3 left_1
- 4 left_2
- 5 right_1
- 6 right_2
- 7 back_1
- 8 back_2
- 9 weapon
+		 - 0 reserved
+		 - 1 front_1
+		 - 2 front_2
+		 - 3 left_1
+		 - 4 left_2
+		 - 5 right_1
+		 - 6 right_2
+		 - 7 back_1
+		 - 8 back_2
+		 - 9 weapon
 
 ---
 ## ENGINE_processHit
@@ -328,16 +328,16 @@ void ENGINE_processHit(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength)
 {: .no_toc }
 - **aHitCode** - select table row, from which player hit was received, 0 is reserved
 - **aHitFlag** - specify which module was hit,
- 0 reserved
- 1 front_1
- 2 front_2
- 3 left_1
- 4 left_2
- 5 right_1
- 6 right_2
- 7 back_1
- 8 back_2
- 9 weapon
+		 - 0 reserved
+		 - 1 front_1
+		 - 2 front_2
+		 - 3 left_1
+		 - 4 left_2
+		 - 5 right_1
+		 - 6 right_2
+		 - 7 back_1
+		 - 8 back_2
+		 - 9 weapon
 - **aHitStrength** - strength of hit, how many healts to decrement, 0 means default strength 100
 
 ---
@@ -353,18 +353,18 @@ void ENGINE_setModuleState(uint16_t aSlaveIndex, uint8_t aLed1, uint8_t aLed2,
 {: .no_toc }
 - **aSlaveIndex** - index of selected slave module, this parameter can be from 0 to NUM_OF_SLAVES
 - **aLed1** - behaviour of Led1, this parameter can be
- 0 led circuit turned off
- 1 led circuit turned on to color1
- 2 led circuit turned on to color2
- 3 led circuit turned on to stroboscope
+		 - 0 led circuit turned off
+		 - 1 led circuit turned on to color1
+		 - 2 led circuit turned on to color2
+		 - 3 led circuit turned on to stroboscope
 - **aLed2** - behaviour of Led2, this parameter can be
- 0 led circuit turned off
- 1 led circuit turned on to color1
- 2 led circuit turned on to color2
- 3 led circuit turned on to stroboscope
+		 - 0 led circuit turned off
+		 - 1 led circuit turned on to color1
+		 - 2 led circuit turned on to color2
+		 - 3 led circuit turned on to stroboscope
 - **aVibration** - behaviour of vibration motor, this parameter can be
- 0 vibration motor disabled
- 1 vibration motor enabled
+		 - 0 vibration motor disabled
+		 - 1 vibration motor enabled
 
 ---
 ## ENGINE_setAllModulesState
@@ -377,18 +377,18 @@ void ENGINE_setAllModulesState(uint8_t aLed1, uint8_t aLed2, uint8_t aVibration)
 ### Params
 {: .no_toc }
 - **aLed1** - behaviour of Led1, this parameter can be
- 0 led circuit turned off
- 1 led circuit turned on to color1
- 2 led circuit turned on to color2
- 3 led circuit turned on to stroboscope
+		 - 0 led circuit turned off
+		 - 1 led circuit turned on to color1
+		 - 2 led circuit turned on to color2
+		 - 3 led circuit turned on to stroboscope
 - **aLed2** - behaviour of Led2, this parameter can be
- 0 led circuit turned off
- 1 led circuit turned on to color1
- 2 led circuit turned on to color2
- 3 led circuit turned on to stroboscope
+		 - 0 led circuit turned off
+		 - 1 led circuit turned on to color1
+		 - 2 led circuit turned on to color2
+		 - 3 led circuit turned on to stroboscope
 - **aVibration** - behaviour of vibration motor, this parameter can be
- 0 vibration motor disabled
- 1 vibration motor enabled
+		 - 0 vibration motor disabled
+		 - 1 vibration motor enabled
 
 ---
 ## ENGINE_setModuleDim
@@ -402,11 +402,11 @@ void ENGINE_setModuleDim(uint16_t aSlaveIndex, uint8_t aDim1, uint8_t aDim2);
 {: .no_toc }
 - **aSlaveIndex** - index of selected slave module, this parameter can be from 0 to NUM_OF_SLAVES
 - **aDim1** - dim of Led1, this parameter can be between:
- 0 led fully turned off
- 100 led fully turned on
+		 - 0 led fully turned off
+		 - 100 led fully turned on
 - **aDim2** - dim of Led2, this parameter can be between:
- 0 led fully turned off
- 100 led fully turned on
+		 - 0 led fully turned off
+		 - 100 led fully turned on
 
 ---
 ## ENGINE_setAllModulesDim
@@ -419,11 +419,11 @@ void ENGINE_setAllModulesDim(uint8_t aDim1, uint8_t aDim2);
 ### Params
 {: .no_toc }
 - **aDim1** - dim of Led1, this parameter can be between:
- 0 led fully turned off
- 100 led fully turned on
+		 - 0 led fully turned off
+		 - 100 led fully turned on
 - **aDim2** - dim of Led2, this parameter can be between:
- 0 led fully turned off
- 100 led fully turned on
+		 - 0 led fully turned off
+		 - 100 led fully turned on
 
 ---
 ## ENGINE_setVibrationAccordingHitFlag
@@ -436,16 +436,16 @@ void ENGINE_setVibrationAccordingHitFlag(uint8_t aHitFlag);
 ### Params
 {: .no_toc }
 - **aHitFlag** - specify which module was hit,
- 0 reserved
- 1 front_1
- 2 front_2
- 3 left_1
- 4 left_2
- 5 right_1
- 6 right_2
- 7 back_1
- 8 back_2
- 9 weapon
+		 - 0 reserved
+		 - 1 front_1
+		 - 2 front_2
+		 - 3 left_1
+		 - 4 left_2
+		 - 5 right_1
+		 - 6 right_2
+		 - 7 back_1
+		 - 8 back_2
+		 - 9 weapon
 
 ---
 ## ENGINE_setColorEffectFade
@@ -458,9 +458,9 @@ void ENGINE_setColorEffectFade(uint8_t aValue);
 ### Params
 {: .no_toc }
 - **aValue** - specify how much is chest turned on,
- 0 fully off
- 100 fully on
- 255 set according to Health
+		 - 0 fully off
+		 - 100 fully on
+		 - 255 set according to Health
 
 ---
 ## ENGINE_getLightState
@@ -668,8 +668,8 @@ void ENGINE_setModuleColor(uint16_t aSlaveIndex, uint8_t aColorType,
 {: .no_toc }
 - **aSlaveIndex** - index of selected slave module, this parameter can be from 0 to NUM_OF_SLAVES
 - **aColorType** - select basic or special color (color 1 or 2), this parameter can be:
- 1 basic color (color 1)
- 2 special color (color 2)
+		 - 1 basic color (color 1)
+		 - 2 special color (color 2)
 - **aColor** - selected color code, structure with items red, green and blue, 8 bit each
 
 ---
@@ -683,8 +683,8 @@ void ENGINE_setAllModulesColor(uint8_t aColorType, colors_t aColor);
 ### Params
 {: .no_toc }
 - **aColorType** - select basic or special color (color 1 or 2), this parameter can be:
- 1 basic color (color 1)
- 2 special color (color 2)
+		 - 1 basic color (color 1)
+		 - 2 special color (color 2)
 - **aColor** - selected color code, structure with items red, green and blue, 8 bit each
 
 ---
@@ -749,8 +749,8 @@ uint8_t ENGINE_loadShot(uint8_t aShotType, uint32_t aSoundID);
 ### Params
 {: .no_toc }
 - **aShotType** - specify RAM buffer
- 0 - sound for shot, 1s length
- 1 - sound for no shot, 0.5s length
+		 - 0 - sound for shot, 1s length
+		 - 1 - sound for no shot, 0.5s length
 - **aSoundID** - ID of sound to be found on SD card
 - **return** - 0 - loading failed, 1 - load succesfull
 
@@ -770,8 +770,8 @@ void ENGINE_makeShootContinuousStart(uint8_t aShotStrength,
 - **aShotCustomInfo** - custom info send in shot message, <0; 15>
 - **aDecreaseAmmoEnable** - flag for enabling or disabling decreasing of ammo
 - **aShotType** - select which shot buffer to use
- 0 - shot buffer
- 1 - no shot buffer
+		 - 0 - shot buffer
+		 - 1 - no shot buffer
 - **aSoundRepeatLength** - length in milliseconds for setting sound playing period. If 0 or bigger than sound length, the original sound length is used
 
 ---
