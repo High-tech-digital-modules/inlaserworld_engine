@@ -30,6 +30,7 @@ int ENGINE_setTimer(void (*apHandler)(), uint32_t aInterval);
 - **apHandler** - Handler called
 - **aInterval** - Interval in miliseconds
 - **return** - index of timer
+
 ### Usage
 {: .no_toc }
 ```cpp
