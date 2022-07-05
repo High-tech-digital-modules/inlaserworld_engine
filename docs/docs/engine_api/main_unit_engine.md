@@ -39,9 +39,9 @@ int ENGINE_setTimer(void (*apHandler)(), uint32_t aInterval);
  void handler() {
 
  }
- void PLUGIN_setup() {
+ void PlUGIN_setup() {
  ...
- gTimer = ENGINE_setTimer(&handler, 100);
+    gTimer = ENGINE_setTimer(&handler, 100);
  ...
  }
 ```
@@ -111,22 +111,21 @@ int32_t ENGINE_getElapsedTime();
 Send custom message to player
 
 ```cpp
-void ENGINE_sendCustomMessage(const uint8_t *apData, uint8_t aLen, int16_t aPlayerIndexTo, int16_t aPlayerIndexFrom);
+void ENGINE_sendCustomMessage(const uint8_t *apData, uint8_t aLen, int16_t aPlayerIndexTo);
 ```
 
 ### Params
 {: .no_toc }
 - **apData** - data to be send
 - **aLen** - Length of data
-- **aPlayerIndexTo** - Index of player who will receive message, -1 reserved for coordinator
-- **aPLayerIndexFrom** - Index of player who sent this message, -1 is default for coordinator
+- **aPlayerIndexTo** - Index of player who will receive message
 
 ---
-## ENGINE_getPLayers
+## ENGINE_getPlayers
 get list of players
 
 ```cpp
-Player * ENGINE_getPLayers();
+Player * ENGINE_getPlayers();
 ```
 
 ### Params
@@ -172,17 +171,42 @@ Player * ENGINE_getPlayerByCode(uint8_t aCode);
 - **return** - player
 
 ---
-## ENGINE_setPLayerByIndex
-set player by index
+## ENGINE_getTeamsLength
+get length of teams
 
 ```cpp
-void ENGINE_setPLayerByIndex(Player *aPlayer, uint8_t aIndex);
+uint8_t ENGINE_getTeamsLength();
 ```
 
 ### Params
 {: .no_toc }
-- **aPlayer** - Player to se set in list
-- **aIndex** - Index of player
+- **return** - length of teams
+
+---
+## ENGINE_getTeamByIndex
+get team by index
+
+```cpp
+Team * ENGINE_getTeamByIndex(uint8_t aIndex);
+```
+
+### Params
+{: .no_toc }
+- **aCode** - index of team
+- **return** - team
+
+---
+## ENGINE_getTeamById
+get team by id
+
+```cpp
+Team * ENGINE_getTeamById(std::string aId);
+```
+
+### Params
+{: .no_toc }
+- **aCode** - id of team
+- **return** - team
 
 ---
 ## ENGINE_setUVLightModule
@@ -228,12 +252,12 @@ uint8_t ENGINE_playSoundId(const uint32_t aMediaId);
 play sound on players device
 
 ```cpp
-uint8_t ENGINE_playSoundOnPlayersChest(const uint8_t aPLayerIndex, const uint32_t aIdOfSound);
+uint8_t ENGINE_playSoundOnPlayersChest(const uint8_t aPlayerIndex, const uint32_t aIdOfSound);
 ```
 
 ### Params
 {: .no_toc }
-- **aPLayerIndex\n** aPLayerIndex
+- **aPlayerIndex\n** aPlayerIndex
 - **aIdOfSound\n** aIdOfSound
 - **return** - 0 if OK, higher than 1 if error
 
