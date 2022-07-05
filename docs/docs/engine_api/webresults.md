@@ -84,6 +84,13 @@ Convert game time to formatted mm:ss string
 ### Params
 {: .no_toc }
 - **num** - seconds attribute
+- **return** formatted string
+
+### Usage
+{: .no_toc }
+```cpp
+ const s = minuteSecondsString(70); // 01:10
+```
 
 ---
 ## findExtremeByProp
@@ -95,10 +102,18 @@ find max or min from players data
 - **attr** - one of IEvPlayers or custom variables
 - **gameResultState** - FRESH_FINISH or FINISHED letting system know where to look
 - **findMin** - optionally parameter by default max is searched if min required use true
+- **return** extreme value, playerName and playerIndex
+
+### Usage
+{: .no_toc }
+```cpp
+ const {extreme: maxFootSteps, playerName, playerIndex}
+   = findExtremeByProp('playerFootSteps', GameResultsState.FRESH_FINISH);
+```
 
 ---
 ## getPlayer
-get player from list by index
+get player from list by index selector hook
 
 
 ### Params
@@ -106,9 +121,16 @@ get player from list by index
 - **index** - index of player in result list
 - **return** IEvPlayers data structure
 
+### Usage
+{: .no_toc }
+```cpp
+ // this must be used with selector it is hook
+ const player = useSelector(getPlayer(index));
+```
+
 ---
 ## getTeam
-get team from list by index
+get team from list by index selector hook
 
 
 ### Params
@@ -116,23 +138,44 @@ get team from list by index
 - **index** - index of team in result list
 - **return** IEvTeam data structure
 
+### Usage
+{: .no_toc }
+```cpp
+ // this must be used with selector it is hook
+ const team = useSelector(getTeam(index));
+```
+
 ---
 ## getPlayersLength
-get players length
+get players length selector hook
 
 
 - **return** number of players
 
+### Usage
+{: .no_toc }
+```cpp
+ // this must be used with selector it is hook
+ const playerNumber = useSelector(getPlayersLength());
+```
+
 ---
 ## getTeamsLength
-get teams length
+get teams length selector hook
 
 
 - **return** number of teams
 
+### Usage
+{: .no_toc }
+```cpp
+ // this must be used with selector it is hook
+ const teamNumber = useSelector(getTeamsLength());
+```
+
 ---
 ## getPlayerProp
-get player prop
+get player prop selector hook
 
 
 ### Params
@@ -141,12 +184,26 @@ get player prop
 - **prop** - keyof IEvPlayers or custom variables
 - **return** value of property
 
+### Usage
+{: .no_toc }
+```cpp
+ // this must be used with selector it is hook
+ const playerName = useSelector(getPlayerProp(index, 'playerName'));
+```
+
 ---
 ## getEvaluationItem
-get on of IEvaluation
+get on of IEvaluation selector hook
 
 
 ### Params
 {: .no_toc }
 - **name** - keyof IEvaluation
 - **return** value of property
+
+### Usage
+{: .no_toc }
+```cpp
+ // this must be used with selector it is hook
+ const evaluationGameTime = useSelector(getEvaluationItem('evaluationGameTime'));
+```
