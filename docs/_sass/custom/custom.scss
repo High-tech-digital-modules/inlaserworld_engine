@@ -10,6 +10,18 @@
   }
 }
 
+.language-javascript{
+  & .highlight {
+    & .kd {
+      color: #c139c2;
+    }
+
+    & .nx {
+      color: #45cbf7;
+    }
+  }
+}
+
 .language-c{
   & .highlight {
     & .kt {
