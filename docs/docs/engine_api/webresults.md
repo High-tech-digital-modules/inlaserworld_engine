@@ -26,6 +26,7 @@ standard react-redux useSelector if it needs to be used
 ---
 ## gameResultState
 state of game could be value of GameResultsState:
+		
 		 RUNNING - Game is running
 		 FRESH_FINISH - Game just finished
 		 FINISHED - Game finished used for final results
@@ -55,7 +56,7 @@ helper function to fetch kill logs, only view needs to be provided
 ### Usage
 {: .no_toc }
 ```javascript
- <KillLog view={<ReactComponent>} style={{ }}}>
+ <KillLog view={<ReactComponent/>} style={{ }}/>
 ```
 
 ---
