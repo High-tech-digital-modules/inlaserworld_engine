@@ -54,7 +54,7 @@ helper function to fetch kill logs, only view needs to be provided
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  <KillLog view={<ReactComponent>} style={{ }}}>
 ```
 
@@ -88,7 +88,7 @@ Convert game time to formatted mm:ss string
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  const s = minuteSecondsString(70); // 01:10
 ```
 
@@ -106,7 +106,7 @@ find max or min from players data
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  const {extreme: maxFootSteps, playerName, playerIndex}
    = findExtremeByProp('playerFootSteps', GameResultsState.FRESH_FINISH);
 ```
@@ -123,7 +123,7 @@ get player from list by index selector hook
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  // this must be used with selector it is hook
  const player = useSelector(getPlayer(index));
 ```
@@ -140,7 +140,7 @@ get team from list by index selector hook
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  // this must be used with selector it is hook
  const team = useSelector(getTeam(index));
 ```
@@ -154,7 +154,7 @@ get players length selector hook
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  // this must be used with selector it is hook
  const playerNumber = useSelector(getPlayersLength());
 ```
@@ -168,7 +168,7 @@ get teams length selector hook
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  // this must be used with selector it is hook
  const teamNumber = useSelector(getTeamsLength());
 ```
@@ -186,7 +186,7 @@ get player prop selector hook
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  // this must be used with selector it is hook
  const playerName = useSelector(getPlayerProp(index, 'playerName'));
 ```
@@ -203,7 +203,7 @@ get on of IEvaluation selector hook
 
 ### Usage
 {: .no_toc }
-```cpp
+```javascript
  // this must be used with selector it is hook
  const evaluationGameTime = useSelector(getEvaluationItem('evaluationGameTime'));
 ```
