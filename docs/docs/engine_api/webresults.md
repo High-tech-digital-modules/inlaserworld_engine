@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Functions for Web results
+title: Engine for Web results
 parent: Engine API
 ---
 
-# Functions for Web results
+# Engine for Web results
 {: .no_toc}
-This is set of function to get data from system that will be rendered
+This is set of functions, consts and global variables to get data from system that will be rendered
 
 <details markdown="block">
   <summary>
