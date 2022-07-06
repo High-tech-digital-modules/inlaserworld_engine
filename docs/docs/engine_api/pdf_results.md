@@ -46,6 +46,13 @@ find max or min from players data
 - **attr** - key of IEvPlayers
 - **findMin** - optionally parameter by default max is searched if min required use true
 
+### Usage
+{: .no_toc }
+```javascript
+ const {extreme: playerPrecision, playerName, playerIndex} = findExtremeByProp(
+   game.result.evaluationPlayers, "playerPrecision")
+```
+
 ---
 ## Table
 class for helping generate table TODO: document class
