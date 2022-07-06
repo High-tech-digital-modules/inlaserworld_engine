@@ -208,3 +208,24 @@ get on of IEvaluation selector hook
  // this must be used with selector it is hook
  const evaluationGameTime = useSelector(getEvaluationItem('evaluationGameTime'));
 ```
+
+---
+## GameResultsState
+const game result state
+		
+		 RUNNING - Game is running
+		 FRESH_FINISH - Game just finished
+		 FINISHED - Game finished used for final results
+
+
+
+---
+## PlayerGameState
+const player game state
+		
+		 END: 0,
+		 ALIVE: 1,
+		 DEAD: 2,
+		 STARTING: 3,
+		 REVIVAL: 4,
+
