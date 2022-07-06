@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Functions for pdf results
+title: Engine for pdf results
 parent: Engine API
 ---
 
-# Functions for pdf results
+# Engine for pdf results
 {: .no_toc}
-This is set of function to get data from system that can be printed out using pdf
+This is set of functions, consts and global variables to get data from system that can be printed out using pdf
 
 <details markdown="block">
   <summary>
