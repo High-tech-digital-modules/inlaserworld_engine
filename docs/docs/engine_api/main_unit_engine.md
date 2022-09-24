@@ -66,8 +66,6 @@ Get game state
 uint16_t ENGINE_getGameState();
 ```
 
-### Params
-{: .no_toc }
 - **return** - Return state of the running game
 
 ---
@@ -78,8 +76,6 @@ Get game previous state
 uint16_t ENGINE_getPreviousGameState();
 ```
 
-### Params
-{: .no_toc }
 - **return** - Return previous state of the running game
 
 ---
@@ -90,8 +86,6 @@ Get remaining time of game
 int32_t ENGINE_getRemainingTime();
 ```
 
-### Params
-{: .no_toc }
 - **return** - Remaining time of game
 
 ---
@@ -102,8 +96,6 @@ Get elapsed time of game
 int32_t ENGINE_getElapsedTime();
 ```
 
-### Params
-{: .no_toc }
 - **return** - Elapsed time of the game
 
 ---
@@ -128,8 +120,6 @@ get list of players
 Player * ENGINE_getPlayers();
 ```
 
-### Params
-{: .no_toc }
 - **return** - list of players
 
 ---
@@ -140,8 +130,6 @@ get length of player
 uint8_t ENGINE_getPlayersLength();
 ```
 
-### Params
-{: .no_toc }
 - **return** - length of player
 
 ---
@@ -178,8 +166,6 @@ get length of teams
 uint8_t ENGINE_getTeamsLength();
 ```
 
-### Params
-{: .no_toc }
 - **return** - length of teams
 
 ---
@@ -245,6 +231,19 @@ uint8_t ENGINE_playSoundId(const uint32_t aMediaId);
 ### Params
 {: .no_toc }
 - **apNameOfSound** - name of sound to be played
+- **return** - 0 if OK, higher than 1 if error
+
+---
+## ENGINE_playSoundFromSoundSet
+play sound from sound set
+
+```cpp
+uint8_t ENGINE_playSoundFromSoundSet(const uint32_t aIndex);
+```
+
+### Params
+{: .no_toc }
+- **aIndex** - index of sound from selected set
 - **return** - 0 if OK, higher than 1 if error
 
 ---
@@ -707,3 +706,73 @@ void ENGINE_lightStartSequence(std::string aAddress, uint16_t aFlags);
 {: .no_toc }
 - **aAddress** - address of light device
 - **aMask** - based on documentation
+
+---
+## ENGINE_lightSetShootCode
+set code used for shoot
+
+```cpp
+void ENGINE_lightSetShootCode(std::string aAddress, uint8_t aCode);
+```
+
+### Params
+{: .no_toc }
+- **code** of shoot
+
+---
+## ENGINE_lightSetShooting
+set shooting by bonus module
+
+```cpp
+ void ENGINE_lightSetShooting(std::string aAddress,
+		int16_t aInfo = -1, int16_t aDelay = -1, int16_t
+		aCount = -1);
+```
+
+### Params
+{: .no_toc }
+- **aInfo** - info in shoot
+- **aDelay** - Period in N x 100ms while 5 is minimum value
+- **aCount** - Number of shoots
+
+### Usage
+{: .no_toc }
+```cpp
+
+ // This will do one shot with available code, info 0
+ ENGINE_lightSetShooting("<address>");
+
+ // This will do one shot with available code, info 0x01
+ ENGINE_lightSetShooting("<address>", 0x01);
+
+ // This will do endless shooting, with info 0x00
+ ENGINE_lightSetShooting("<address>", 0x00, 0x05);
+
+ // This will do endless shooting, with info 0x00 with 0,5s shooting period
+ ENGINE_lightSetShooting("<address>", 0x00, 0x05);
+
+ // This will do specific number (32) of shoots, with info 0x00 with 0,5s period
+ ENGINE_lightSetShooting("<address>", 0x00, 0x05, 32);
+
+ // To stop endless shooting
+ ENGINE_lightSetShooting("<address>", 0x00, 0x00);
+```
+
+---
+## ENGINE_lightLock
+Lock circuits to not be override by global setting
+
+```cpp
+void ENGINE_lightLock(std::string aAddress, uint8_t aLock);
+```
+
+### Params
+{: .no_toc }
+- **aLock** - lock 0b0000YXVU
+
+		 U - First circuit
+		 V - Second circuit
+		 X - Third circuit
+		 Y - UV circuit
+		 0 - unlocked
+		 1 - locked
