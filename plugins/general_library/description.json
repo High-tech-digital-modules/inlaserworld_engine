@@ -1,0 +1,31 @@
+{
+  "name": "General",
+  "gameTime": 1,
+  "preparationTime": 10,
+  "teamsList": [
+    {
+      "id": "73e0a433-f355-409c-833a-cb969213e5de",
+      "name": "",
+      "color": "#3f51b5",
+      "ammo": 30000,
+      "life": 30000,
+      "deathTime": 5,
+      "reviveTime": 5
+    },
+    {
+      "id": "4558a9d8-ddcc-4a5d-b60a-97b9e25befa6",
+      "name": "",
+      "color": "#e91e63",
+      "ammo": 30000,
+      "life": 30000,
+      "deathTime": 5,
+      "reviveTime": 5
+    }
+  ],
+  "minPlayers": 2,
+  "teamGame": false,
+  "globalDeathTime": 5,
+  "globalReviveTime": 1,
+  "isLibrary": true,
+  "libraryIncludes": []
+}
