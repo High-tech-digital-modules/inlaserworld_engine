@@ -1,0 +1,136 @@
+[
+  {
+    "name": "pointsKill",
+    "type": "int32_t",
+    "value": 150,
+    "label": "Points per kill",
+    "inGameMenu": false,
+    "id": "19521977-ac04-4ea6-9148-d5be28fed3d7",
+    "target": 8
+  },
+  {
+    "name": "pointsDeath",
+    "type": "int32_t",
+    "value": -100,
+    "label": "Point per death",
+    "id": "832f60a2-d1e2-40e7-9328-6bd01bb5a50b",
+    "target": 8
+  },
+  {
+    "name": "pointsHit",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per hit",
+    "id": "fe3debc2-8be9-4e20-8505-bb4e2a4958e3",
+    "target": 8
+  },
+  {
+    "name": "pointsPerShoot",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per shoot",
+    "id": "e6eea4a2-ff70-4948-aad9-122d8eaffbef",
+    "target": 8
+  },
+  {
+    "name": "pointsDoubleKill",
+    "type": "int32_t",
+    "value": 50,
+    "label": "Points per double kill",
+    "id": "dff05d7b-a64c-43c6-861c-f89f270d7655",
+    "target": 8
+  },
+  {
+    "name": "pointsMonsterKill",
+    "type": "int32_t",
+    "value": 70,
+    "label": "Points per monster kill",
+    "id": "86ddeb39-8cd5-4c36-b0fe-5672b3bb9153",
+    "target": 8
+  },
+  {
+    "name": "bonusMachineGun",
+    "type": "light",
+    "value": 979,
+    "label": "Bonus machine gun",
+    "id": "079b2f9a-97b1-4b7c-9400-cd8195d96772",
+    "inGameMenu": false,
+    "target": 8,
+    "address": "070707070707070707"
+  },
+  {
+    "name": "bonusArmor",
+    "type": "light",
+    "value": 982,
+    "label": "Bonus armor",
+    "id": "c051d3ca-a0f5-4215-a2cd-e6758d88d535",
+    "target": 8,
+    "address": "080808080808080808"
+  },
+  {
+    "name": "bonusSniper",
+    "type": "light",
+    "value": 983,
+    "label": "Bonus sniper",
+    "id": "1025dc60-946c-44f4-ad3f-617e063dc8a4",
+    "target": 8,
+    "address": "090909090909090909"
+  },
+  {
+    "name": "bonusHealing",
+    "type": "light",
+    "value": 984,
+    "label": "Bonus healing",
+    "id": "3421ed3e-96c5-45fb-a55b-5403cd754c5c",
+    "target": 8,
+    "address": "0A0A0A0A0A0A0A0A0A"
+  },
+  {
+    "name": "colorMachineGun",
+    "type": "color",
+    "value": "#00ffff",
+    "label": "Machine gun color",
+    "id": "d6481ca6-b354-4bac-90df-90eb920e168b",
+    "target": 12
+  },
+  {
+    "name": "colorArmor",
+    "type": "color",
+    "value": "#ff00ff",
+    "label": "Armor color",
+    "id": "a1f3b656-366c-4ea4-ac60-7de88a16f536",
+    "target": 12
+  },
+  {
+    "name": "colorSniper",
+    "type": "color",
+    "value": "#ffff00",
+    "label": "Sniper color",
+    "id": "154b5df6-98f1-4378-9362-fa797db156e6",
+    "target": 12
+  },
+  {
+    "name": "colorHealing",
+    "type": "color",
+    "value": "#00ff00",
+    "label": "Healing color",
+    "id": "096ac0f5-8b53-4c4d-8885-6f444d594d49",
+    "target": 12
+  },
+  {
+    "id": "30c2ee5d-6bcf-4e0c-af66-38a482a79732",
+    "name": "sfxShoot",
+    "type": "media",
+    "value": 109,
+    "label": "Sound of the gun",
+    "target": 4
+  },
+  {
+    "id": "9100e360-79f4-4b6d-a219-e0586065ddef",
+    "name": "sfxEmptyShoot",
+    "type": "media",
+    "value": 112,
+    "label": "Sound of empty gun",
+    "target": 4
+  }
+]
