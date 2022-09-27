@@ -1,0 +1,66 @@
+[
+  {
+    "id": "971c3262-4eb5-4811-b5e3-ad3222e85026",
+    "name": "pointsKill",
+    "type": "int32_t",
+    "value": 150,
+    "label": "Points per kill",
+    "target": 8
+  },
+  {
+    "id": "258cd5dc-8c9a-42c3-b9c1-6cff9ba26253",
+    "name": "pointsDeath",
+    "type": "int32_t",
+    "value": -50,
+    "label": "Point per death",
+    "target": 8
+  },
+  {
+    "id": "a7b59142-ce6a-4e06-9d9c-2ce8f822d68e",
+    "name": "pointsHit",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per hit",
+    "target": 8
+  },
+  {
+    "id": "0c362f78-fe19-4f9e-bb6e-87fc975d20af",
+    "name": "pointsPerShoot",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per shoot",
+    "target": 8
+  },
+  {
+    "id": "a0712335-6bc8-4812-8359-d7489527f045",
+    "name": "pointsDoubleKill",
+    "type": "int32_t",
+    "value": 50,
+    "label": "Points per double kill",
+    "target": 8
+  },
+  {
+    "id": "a7c86906-c252-44c1-88cf-e60993988c3c",
+    "name": "pointsMonsterKill",
+    "type": "int32_t",
+    "value": 100,
+    "label": "Points per monster kill",
+    "target": 8
+  },
+  {
+    "id": "13fba5d3-c99d-4e39-a260-f896243a40ac",
+    "name": "sfxShoot",
+    "type": "media",
+    "value": 109,
+    "label": "Sound of the gun",
+    "target": 4
+  },
+  {
+    "id": "0b82566d-ddb6-45a1-8710-cf153c71d98d",
+    "name": "sfxEmptyShoot",
+    "type": "media",
+    "value": 112,
+    "label": "Sound of empty gun",
+    "target": 4
+  }
+]
