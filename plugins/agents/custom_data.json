@@ -1,0 +1,60 @@
+[
+  {
+    "name": "pointsAgent",
+    "type": "int32_t",
+    "value": 2,
+    "label": "Each second of agent",
+    "id": "0e27a50d-1fff-4a7f-96e8-7d244b34c71d",
+    "target": 8
+  },
+  {
+    "name": "pointsAgentKill",
+    "type": "int32_t",
+    "value": 50,
+    "label": "When kill during agent",
+    "id": "9d78b644-37a9-425b-a4ae-08e11ee768bb",
+    "target": 8
+  },
+  {
+    "name": "pointsBecomeAgent",
+    "type": "int32_t",
+    "value": 100,
+    "label": "When become agent",
+    "id": "0e8a9595-2599-4e40-9095-f37c26eaf4f8",
+    "target": 8
+  },
+  {
+    "name": "sfxShoot",
+    "type": "media",
+    "value": 109,
+    "label": "SFX Shoot",
+    "id": "6a69e853-8fee-45ab-bdfb-90a47dd10224",
+    "target": 4
+  },
+  {
+    "name": "sfxEmptyShoot",
+    "type": "media",
+    "value": 112,
+    "label": "SFX Empty shoot",
+    "id": "2223722e-0297-4eff-8de9-cb6d09b816d6",
+    "target": 4
+  },
+  {
+    "id": "ab5b35dc-2f6c-42bb-a9a0-a9d83b86bae3",
+    "name": "agentColor",
+    "type": "color",
+    "value": "#ff0000",
+    "label": "Agent color",
+    "target": 6,
+    "inGameMenu": false
+  },
+  {
+    "id": "1d2cb34c-04f2-495e-9c2f-ca4b86ec1b1e",
+    "name": "normalColor",
+    "type": "color",
+    "value": "#00ffff",
+    "label": "Normal color",
+    "target": 6,
+    "inGameMenu": false
+  }
+]

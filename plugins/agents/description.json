@@ -1,11 +1,11 @@
 {
-  "name": "TeamDeathMatch",
+  "name": "Agents",
   "gameTime": 12,
   "preparationTime": 10,
   "teamsList": [
     {
-      "id": "5e2ffc89-8c9f-4acf-af26-4080254788fc",
-      "name": "TeamBlue",
+      "id": "ec7df52e-773f-46fa-b5f1-24c9366d01f6",
+      "name": "",
       "color": "#3f51b5",
       "ammo": 30000,
       "life": 30000,
@@ -13,8 +13,8 @@
       "reviveTime": 5
     },
     {
-      "id": "4a440d04-ff52-41d8-8a2b-1da16a7c6970",
-      "name": "TeamRed",
+      "id": "9f23f6c5-ded0-41de-802a-bc14158c6d07",
+      "name": "",
       "color": "#e91e63",
       "ammo": 30000,
       "life": 30000,
@@ -23,8 +23,7 @@
     }
   ],
   "minPlayers": 2,
-  "teamGame": true,
-  "canManageTeams": true,
+  "teamGame": false,
   "globalDeathTime": 5,
   "globalReviveTime": 1,
   "isLibrary": false,
