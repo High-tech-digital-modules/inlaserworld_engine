@@ -1,0 +1,48 @@
+{
+  "name": "Orbs Chest",
+  "soundItemList": [
+    {
+      "name": "loaded",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "gameStarting",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "death",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "aliveAgain",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "machineGunReceived",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "armorReceived",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "sniperReceived",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "healingReceived",
+      "label": "",
+      "mediaId": 0
+    }
+  ],
+  "subName": "en",
+  "subType": 0,
+  "soundSetChildren": []
+}

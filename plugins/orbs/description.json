@@ -1,0 +1,32 @@
+{
+  "name": "Orbs",
+  "gameTime": 10,
+  "preparationTime": 10,
+  "teamsList": [
+    {
+      "name": "",
+      "color": "#3f51b5",
+      "ammo": 30000,
+      "life": 30000,
+      "deathTime": 5,
+      "reviveTime": 5,
+      "id": "c063252f-39ba-4390-9ca2-edaf9f4073d5"
+    },
+    {
+      "name": "",
+      "color": "#e91e63",
+      "ammo": 30000,
+      "life": 30000,
+      "deathTime": 5,
+      "reviveTime": 5,
+      "id": "b21a7770-1c1d-4f22-9e41-4cb331dc5dc1"
+    }
+  ],
+  "minPlayers": 1,
+  "teamGame": false,
+  "canManageTeams": false,
+  "globalDeathTime": 5,
+  "globalReviveTime": 3,
+  "isLibrary": false,
+  "libraryIncludes": []
+}
