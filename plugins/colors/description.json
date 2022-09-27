@@ -1,0 +1,32 @@
+{
+  "name": "Colors",
+  "gameTime": 12,
+  "preparationTime": 10,
+  "teamsList": [
+    {
+      "id": "d01568f4-c65a-4469-92a6-d072e7da99c1",
+      "name": "",
+      "color": "#3f51b5",
+      "ammo": 30000,
+      "life": 30000,
+      "deathTime": 5,
+      "reviveTime": 5
+    },
+    {
+      "id": "dde044b1-d94c-4f9f-8bd6-11d39ec08c2d",
+      "name": "",
+      "color": "#e91e63",
+      "ammo": 30000,
+      "life": 30000,
+      "deathTime": 5,
+      "reviveTime": 5
+    }
+  ],
+  "minPlayers": 2,
+  "teamGame": false,
+  "canManageTeams": false,
+  "globalDeathTime": 5,
+  "globalReviveTime": 1,
+  "isLibrary": false,
+  "libraryIncludes": []
+}

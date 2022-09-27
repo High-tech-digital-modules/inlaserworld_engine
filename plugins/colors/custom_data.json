@@ -1,0 +1,99 @@
+[
+  {
+    "name": "color1",
+    "type": "color",
+    "value": "#00ffff",
+    "label": "Color 1",
+    "id": "24e83e80-20e3-4155-ac68-1ca1a5a4108b",
+    "target": 12
+  },
+  {
+    "name": "color2",
+    "type": "color",
+    "value": "#ff00ff",
+    "label": "Color 2",
+    "id": "2fbd246a-5d6d-4d8a-81d2-b6e416cef8dd",
+    "target": 12
+  },
+  {
+    "name": "color3",
+    "type": "color",
+    "value": "#ffff00",
+    "label": "Color 3",
+    "id": "18ddd2a3-46fa-45e3-b179-e902919970ac",
+    "target": 12
+  },
+  {
+    "name": "color4",
+    "type": "color",
+    "value": "#ff0000",
+    "label": "Color 4",
+    "id": "196f686a-e615-4d3d-be5c-3d8c01d49fbb",
+    "target": 12
+  },
+  {
+    "name": "color5",
+    "type": "color",
+    "value": "#00ff00",
+    "label": "Color 5",
+    "id": "57fd82fd-8eef-4b76-a100-0d5aa17731da",
+    "target": 12
+  },
+  {
+    "name": "color6",
+    "type": "color",
+    "value": "#0000ff",
+    "label": "Color 6",
+    "id": "09dec940-5336-4107-b2c6-11ec2cbfe6ea",
+    "target": 12
+  },
+  {
+    "name": "playerCount",
+    "type": "uint32_t",
+    "value": 2,
+    "label": "Počet hracu v týmu",
+    "inGameMenu": true,
+    "id": "605df2bb-58a7-4291-9409-05244fbb62cb",
+    "target": 8
+  },
+  {
+    "name": "pointsKill",
+    "type": "int32_t",
+    "value": 50,
+    "label": "Body za zabití",
+    "id": "9da3c425-44b8-4312-8d7a-c04beed59e0a",
+    "target": 8
+  },
+  {
+    "name": "pointsFriendlyFire",
+    "type": "int32_t",
+    "value": "-50",
+    "label": "Body za zabití vlastního",
+    "id": "07b4b466-de7f-4f9d-88fd-9cf0194ade7f",
+    "target": 8
+  },
+  {
+    "name": "pointElimination",
+    "type": "int32_t",
+    "value": "200",
+    "label": "Body za eliminaci posledního",
+    "id": "cff7b0e9-fe05-4232-bf8c-e831692a0bc2",
+    "target": 8
+  },
+  {
+    "id": "60243aac-c1b0-4158-be9d-dd6126e2e8a9",
+    "name": "sfxShoot",
+    "type": "media",
+    "value": 109,
+    "label": "Sound of the gun",
+    "target": 4
+  },
+  {
+    "id": "2aed414e-ab16-4777-bfb2-5bec3835679c",
+    "name": "sfxEmptyShoot",
+    "type": "media",
+    "value": 112,
+    "label": "Sound of empty gun",
+    "target": 4
+  }
+]
