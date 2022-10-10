@@ -3,6 +3,8 @@
 
 uint8_t gOrbs = 15;
 
+uint8_t gOrbsMirror[100];
+
 void setOrbColor(std::string aAddress, ColorT aColor) {
   ENGINE_lightClearOperationBuffer(aAddress);
   ENGINE_lightClearSequenceBuffer(aAddress, 0b01010101);
@@ -47,51 +49,70 @@ void PLUGIN_main() {
 	if (state != 0x03 && time == 300) {
     	ENGINE_playSoundFromSoundSet(Min5Remaining);
 	}
-    if (state != 0x03 && time == 60) {
-    	ENGINE_playSoundFromSoundSet(Min1Remaining);
-    }
-    
-    for(uint8_t i = 0; i < ENGINE_getPlayersLength(); i++) {
-        
-        Player *p = ENGINE_getPlayerByIndex(i);
-        int32_t score = 
-            pointsKill * p->kills +
-            pointsDeath * (p->deaths) +
-            pointsHit * (p->hits - p->kills) + 
-            pointsPerShoot * p->usedAmmo + 
-            pointsDoubleKill * p->bonusKillCounter[2] +
-            pointsMonsterKill * p->bonusKillCounter[3];
-        p->score = score;
-    }
+  if (state != 0x03 && time == 60) {
+  	ENGINE_playSoundFromSoundSet(Min1Remaining);
+  }
+  
+  for(uint8_t i = 0; i < ENGINE_getPlayersLength(); i++) {
+      
+      Player *p = ENGINE_getPlayerByIndex(i);
+      int32_t score = 
+          pointsKill * p->kills +
+          pointsDeath * (p->deaths) +
+          pointsHit * (p->hits - p->kills) + 
+          pointsPerShoot * p->usedAmmo + 
+          pointsDoubleKill * p->bonusKillCounter[2] +
+          pointsMonsterKill * p->bonusKillCounter[3];
+      p->score = score;
+  }
+}
+
+void processOrbs(uint8_t aPlayerOrbs, uint8_t aPlayerIndex) {
+  gOrbsMirror[aPlayerIndex] = 0;
+  if (aPlayerOrbs >> 0 & 1) {
+    gOrbs |= 1 << 0;
+    setOrbColor(bonusMachineGun, colorMachineGun);
+  } 
+  if (aPlayerOrbs >> 1 & 1) {
+    gOrbs |= 1 << 1;
+    setOrbColor(bonusArmor, colorArmor);
+  } 
+  if (aPlayerOrbs >> 2 & 1) {
+    gOrbs |= 1 << 2;
+    setOrbColor(bonusSniper, colorSniper);
+  } 
+  if (aPlayerOrbs >> 3 & 1) {
+    gOrbs |= 1 << 3;
+    setOrbColor(bonusHealing, colorHealing);
+  }
 }
 
 void PLUGIN_receivedCustomData(uint8_t *apData, uint8_t aLen, uint8_t aPlayerIndex) {
   if(apData[0] == 0) {
-    if (apData[1] >> 0 & 1) {
-      gOrbs |= 1 << 0;
-      setOrbColor(bonusMachineGun, colorMachineGun);
-    } 
-    if (apData[1] >> 1 & 1) {
-      gOrbs |= 1 << 1;
-      setOrbColor(bonusArmor, colorArmor);
-    } 
-    if (apData[1] >> 2 & 1) {
-      gOrbs |= 1 << 2;
-      setOrbColor(bonusSniper, colorSniper);
-    } 
-    if (apData[1] >> 3 & 1) {
-      gOrbs |= 1 << 3;
-      setOrbColor(bonusHealing, colorHealing);
+    processOrbs(apData[1], aPlayerIndex);
+  }
+}
+
+void PLUGIN_playerGetKilled(uint8_t aPlayerIndex, uint8_t aWhoPlayerIndex) {
+  processOrbs(gOrbsMirror[aPlayerIndex], aPlayerIndex);
+}
+
+void PLUGIN_receivedCustomBackupData(uint8_t *apData, uint8_t aLen, uint8_t aPlayerIndex) {
+  if(gOrbsMirror[aPlayerIndex] != apData[0]) {
+    for(uint8_t i = 0; i < 4; i++) {
+      if((gOrbsMirror[aPlayerIndex] >> i & 1) != (apData[0] >> i & 1)) {
+        uint8_t lData[2] = { 0, i };
+        ENGINE_sendCustomMessage((uint8_t*)lData, 2, aPlayerIndex);
+      }
     }
   }
 }
 
-void PLUGIN_receivedCustomBackupData(uint8_t *apData, uint8_t aLen, uint8_t aPlayerIndex) {
-  
-}
-
 void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
   Player *p = ENGINE_getPlayerByCode(aCode);
+  if(!p) {
+    return;
+  }
   setOrbColor(aAddress, {0, 0, 0});
   uint8_t orbIndex = 255;
   if (aAddress.compare(bonusMachineGun) == 0) {
@@ -121,5 +142,6 @@ void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
         break;
     }
   }
+  gOrbsMirror[p->index] |= (1UL << orbIndex);
   gOrbs &= ~(1UL << orbIndex);
 }
