@@ -248,7 +248,6 @@ void PLUGIN_processCustomMessage(uint8_t* apData, uint16_t aLength,
 		uint8_t aDevice) {
 	if (apData[0] == 'A') {
 	  ENGINE_playSoundFromSoundSet(becomeAgent);
-	  ENGINE_playSoundFromSoundSet(0);
 		gvIsAgent = 1;
 		ENGINE_setPeriodicInfoByte(gvIsAgent, 0);
 	}

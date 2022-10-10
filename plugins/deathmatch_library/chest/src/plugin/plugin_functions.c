@@ -185,7 +185,6 @@ void DEATHMATCH_processCustomMessage(uint8_t* apData, uint16_t aLength,
   if(aLength == 1) {
     if(apData[0] == (uint8_t)'H') {
       ENGINE_playSound(sfxKillDone);
-      ENGINE_toggleLightState();
     }	    
 	}
 }
