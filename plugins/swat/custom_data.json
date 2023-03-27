@@ -16,14 +16,6 @@
     "target": 8
   },
   {
-    "id": "a7b59142-ce6a-4e06-9d9c-2ce8f822d68e",
-    "name": "pointsHit",
-    "type": "int32_t",
-    "value": 0,
-    "label": "Points per hit",
-    "target": 8
-  },
-  {
     "id": "0c362f78-fe19-4f9e-bb6e-87fc975d20af",
     "name": "pointsPerShoot",
     "type": "int32_t",
@@ -51,7 +43,7 @@
     "id": "13fba5d3-c99d-4e39-a260-f896243a40ac",
     "name": "sfxShoot",
     "type": "media",
-    "value": 109,
+    "value": 129,
     "label": "Sound of the gun",
     "target": 4
   },
@@ -59,8 +51,43 @@
     "id": "0b82566d-ddb6-45a1-8710-cf153c71d98d",
     "name": "sfxEmptyShoot",
     "type": "media",
-    "value": 112,
+    "value": 130,
     "label": "Sound of empty gun",
     "target": 4
+  },
+  {
+    "id": "fcfce6aa-bb8e-4038-884f-1da52af72a1c",
+    "name": "UVEnabled",
+    "type": "boolean",
+    "value": 0,
+    "label": "Enable UV lights",
+    "target": 8,
+    "inGameMenu": true
+  },
+  {
+    "id": "d5fd3166-8f23-4aeb-94b2-dbcfad40c673",
+    "name": "redLightsEnabled",
+    "type": "boolean",
+    "value": 0,
+    "label": "Enable dark red lights",
+    "target": 8,
+    "inGameMenu": true
+  },
+  {
+    "id": "98b7e315-df3d-4fa6-b895-529823f7e7b5",
+    "name": "sfxKillDone",
+    "type": "media",
+    "value": 109,
+    "label": "Kill done sound effect",
+    "target": 4
+  },
+  {
+    "id": "37e8ff19-bd36-4130-834f-e5f72cd3235b",
+    "name": "redLightPercentage",
+    "type": "uint32_t",
+    "value": 20,
+    "label": "Red light strength in percentage",
+    "target": 8,
+    "inGameMenu": true
   }
 ]

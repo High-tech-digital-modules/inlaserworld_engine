@@ -40,57 +40,39 @@
       "name": "Min1Remaining",
       "label": "",
       "mediaId": 0
+    },
+    {
+      "name": "BonusActivated",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "BonusDeactivated",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "BonusTaken",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "MineActivated",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "DoubleKill",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "MonsterKill",
+      "label": "",
+      "mediaId": 0
     }
   ],
   "subName": "en",
   "subType": 1,
-  "soundSetChildren": [
-    {
-      "name": "Deathmatch Arena",
-      "soundItemList": [
-        {
-          "name": "five",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "four",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "three",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "two",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "one",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "arenaLeaderChange",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "5MinRemaining",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "",
-          "label": "",
-          "mediaId": 0
-        }
-      ],
-      "subName": "cz",
-      "subType": 1
-    }
-  ]
+  "soundSetChildren": []
 }

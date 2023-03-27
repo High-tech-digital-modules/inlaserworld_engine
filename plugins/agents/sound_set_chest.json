@@ -25,42 +25,14 @@
       "name": "death",
       "label": "",
       "mediaId": 0
+    },
+    {
+      "name": "doubleAgent",
+      "label": "",
+      "mediaId": 0
     }
   ],
   "subName": "en",
   "subType": 0,
-  "soundSetChildren": [
-    {
-      "name": "Agents Chest",
-      "soundItemList": [
-        {
-          "name": "becomeAgent",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "loaded",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "aliveAgain",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "gameStarting",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "",
-          "label": "",
-          "mediaId": 0
-        }
-      ],
-      "subName": "cz",
-      "subType": 0
-    }
-  ]
+  "soundSetChildren": []
 }

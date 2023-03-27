@@ -7,6 +7,14 @@ void PLUGIN_pressedUserButton(void) {
 	DEATHMATCH_pressedUserButton();
 }
 
+void PLUGIN_pressedTrigger(void) {
+  DEATHMATCH_pressedTrigger();
+}
+
+void PLUGIN_releasedTrigger(void) {
+  DEATHMATCH_releasedTrigger();
+}
+
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
   DEATHMATCH_hitByEnemy(aHitCode, aHitFlag, aHitStrength, aHitCustomInfo, aLife, aHealth);
@@ -43,12 +51,13 @@ void PLUGIN_changedGameStateToEnding(uint8_t aGameStateLast) {
 void PLUGIN_processCustomMessage(uint8_t* apData, uint16_t aLength,
 		uint8_t aDevice) {
 	DEATHMATCH_processCustomMessage(apData, aLength, aDevice);
+	ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
 }
 
 void PLUGIN_customInit(volatile colors_t* apModulesColor1,
 		volatile colors_t* apModulesColor2, volatile uint8_t* apModulesDim1,
 		volatile uint8_t* apModulesDim2, uint8_t* apModulesVibrationStrength,
 		volatile uint8_t* apModulesState) {
-		  DEATHMATCH_customInit(apModulesColor1, apModulesColor2, apModulesDim1,
+	DEATHMATCH_customInit(apModulesColor1, apModulesColor2, apModulesDim1,
 		    apModulesDim2, apModulesVibrationStrength, apModulesState);
 }

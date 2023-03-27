@@ -1,0 +1,18 @@
+[
+  {
+    "id": "df827782-44c7-4686-b623-babb0817f5ba",
+    "name": "sfxDoubleKill",
+    "type": "media",
+    "value": 119,
+    "label": "Sound for double kill",
+    "target": 12
+  },
+  {
+    "id": "8df4075e-a26e-4125-915a-49386a4744ba",
+    "name": "sfxMonsterKill",
+    "type": "media",
+    "value": 127,
+    "label": "Sound for monster kill",
+    "target": 12
+  }
+]
