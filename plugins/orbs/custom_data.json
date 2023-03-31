@@ -2,7 +2,7 @@
   {
     "name": "pointsKill",
     "type": "int32_t",
-    "value": 100,
+    "value": 150,
     "label": "Points per kill",
     "inGameMenu": false,
     "id": "19521977-ac04-4ea6-9148-d5be28fed3d7",
@@ -11,7 +11,7 @@
   {
     "name": "pointsDeath",
     "type": "int32_t",
-    "value": -100,
+    "value": -50,
     "label": "Point per death",
     "id": "832f60a2-d1e2-40e7-9328-6bd01bb5a50b",
     "target": 8
@@ -43,7 +43,7 @@
   {
     "name": "pointsMonsterKill",
     "type": "int32_t",
-    "value": 70,
+    "value": 100,
     "label": "Points per monster kill",
     "id": "86ddeb39-8cd5-4c36-b0fe-5672b3bb9153",
     "target": 8
