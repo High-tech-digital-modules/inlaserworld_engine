@@ -11,7 +11,7 @@
   {
     "name": "pointsDeath",
     "type": "int32_t",
-    "value": -100,
+    "value": -50,
     "label": "Point per death",
     "id": "832f60a2-d1e2-40e7-9328-6bd01bb5a50b",
     "target": 8
@@ -43,7 +43,7 @@
   {
     "name": "pointsMonsterKill",
     "type": "int32_t",
-    "value": 70,
+    "value": 100,
     "label": "Points per monster kill",
     "id": "86ddeb39-8cd5-4c36-b0fe-5672b3bb9153",
     "target": 8
@@ -51,39 +51,39 @@
   {
     "name": "bonusMachineGun",
     "type": "light",
-    "value": 979,
+    "value": 5,
     "label": "Bonus machine gun",
     "id": "079b2f9a-97b1-4b7c-9400-cd8195d96772",
     "inGameMenu": false,
     "target": 8,
-    "address": "070707070707070707"
+    "address": "050505050505050505"
   },
   {
     "name": "bonusArmor",
     "type": "light",
-    "value": 982,
+    "value": 6,
     "label": "Bonus armor",
     "id": "c051d3ca-a0f5-4215-a2cd-e6758d88d535",
     "target": 8,
-    "address": "080808080808080808"
+    "address": "060606060606060606"
   },
   {
     "name": "bonusSniper",
     "type": "light",
-    "value": 983,
+    "value": 7,
     "label": "Bonus sniper",
     "id": "1025dc60-946c-44f4-ad3f-617e063dc8a4",
     "target": 8,
-    "address": "090909090909090909"
+    "address": "070707070707070707"
   },
   {
     "name": "bonusHealing",
     "type": "light",
-    "value": 984,
+    "value": 8,
     "label": "Bonus healing",
     "id": "3421ed3e-96c5-45fb-a55b-5403cd754c5c",
     "target": 8,
-    "address": "0A0A0A0A0A0A0A0A0A"
+    "address": "080808080808080808"
   },
   {
     "name": "colorMachineGun",
@@ -121,7 +121,7 @@
     "id": "30c2ee5d-6bcf-4e0c-af66-38a482a79732",
     "name": "sfxShoot",
     "type": "media",
-    "value": 109,
+    "value": 0,
     "label": "Sound of the gun",
     "target": 4
   },
@@ -129,8 +129,34 @@
     "id": "9100e360-79f4-4b6d-a219-e0586065ddef",
     "name": "sfxEmptyShoot",
     "type": "media",
-    "value": 112,
+    "value": 0,
     "label": "Sound of empty gun",
     "target": 4
+  },
+  {
+    "id": "866f8ce2-51bd-43c3-8ce5-fbe211831b1d",
+    "name": "colorArena",
+    "type": "color",
+    "value": "#3f0000",
+    "label": "Color of all arena lights",
+    "target": 8,
+    "inGameMenu": true
+  },
+  {
+    "id": "cdf27771-0315-4663-8831-f368b4d57cdc",
+    "name": "sfxKillDone",
+    "type": "media",
+    "value": 0,
+    "label": "Kill done sound effect",
+    "target": 4
+  },
+  {
+    "id": "760d0ed2-271c-4ad2-bbc9-d8ba3d6a9665",
+    "name": "bonusRandomDistribution",
+    "type": "boolean",
+    "value": true,
+    "label": "random distribution of bonuses on targets",
+    "target": 8,
+    "inGameMenu": true
   }
 ]

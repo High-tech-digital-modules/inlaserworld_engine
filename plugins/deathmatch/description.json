@@ -24,6 +24,7 @@
   ],
   "minPlayers": 2,
   "teamGame": false,
+  "canManageTeams": false,
   "globalDeathTime": 5,
   "globalReviveTime": 1,
   "isLibrary": false,

@@ -89,11 +89,11 @@ void PLUGIN_pressedTrigger(void) {
 				|| (lOptionTouchEnabled == 0)) {
 			if (ENGINE_getAmmo() > 0) {
 			  if(!(gvOrbs >> 0 & 1)) {
-			    ENGINE_makeShoot((gvOrbs >> 2 & 1) ? 0xFF : 0x08, 0x00); /*use default shot strength, no shot custom info*/
+			    ENGINE_makeShoot((gvOrbs >> 2 & 1) ? 0x0F : 0x01, 0x00); /*use default shot strength, no shot custom info*/
 				  ENGINE_decrementAmmo(1);
 				  ENGINE_playShoot(0);
 			  } else {
-			    ENGINE_makeShootContinuousStart((gvOrbs >> 2 & 1) ? 0xFF : 0x08, 0x00, 1, 0, 100);
+			    ENGINE_makeShootContinuousStart((gvOrbs >> 2 & 1) ? 0x0F : 0x01, 0x00, 1, 0, 100);
 			  }
 			} else {
 				ENGINE_playShoot(1);
@@ -129,13 +129,19 @@ void PLUGIN_releasedUserButton(void) {
  */
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
-  if(gvOrbs >> 1 & 1) {
-    aHitStrength /= 2;
-  }
+	if(aHitStrength > 80){
+		aHitStrength = 50;
+	} else {
+		aHitStrength = 26; /*26 instead of 25 due to shield and /2, which will now lead to 13 (8 shots) instead of 12 (9 shots)*/
+	}
+  	if(gvOrbs >> 1 & 1) {
+    	aHitStrength /= 2;
+  	}
 	ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
 	/*process kill*/
 	if (ENGINE_getHealth() == 0) {
 		ENGINE_processDeath(aHitCode, aHitFlag);
+		ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
 		gvOrbs = 0;
 		gvOrbsCount = 0;
 		ENGINE_setPeriodicInfoByte(gvOrbs, 0);
@@ -256,6 +262,11 @@ void PLUGIN_changedGameStateToEnding(uint8_t aGameStateLast) {
  */
 void PLUGIN_processCustomMessage(uint8_t* apData, uint16_t aLength,
 		uint8_t aDevice) {
+	  if(aLength == 1) {
+      if(apData[0] == (uint8_t)'H') {
+        ENGINE_playSound(sfxKillDone);
+      }	    
+	  }  
 	  if(apData[0] == 0) {
 	    if(!(gvOrbs >> apData[1] & 1)) {
 	      gvOrbsCount++;
@@ -321,9 +332,12 @@ void PLUGIN_processCustomMessage(uint8_t* apData, uint16_t aLength,
             break;
 	      }
 	    }
+		uint8_t lData[2] = {1, apData[1]};
+		ENGINE_sendCustomMessage(lData, 2, 0);
 	    gvOrbs |= 1 << apData[1];
 	    ENGINE_setPeriodicInfoByte(gvOrbs, 0);
 	  }
+	  ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
 }
 /*
  * part of PLUGIN_init, for users part of initialization, for example global vars for timers (length_death,...)

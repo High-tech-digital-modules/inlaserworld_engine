@@ -26,7 +26,7 @@
   {
     "name": "sfxShoot",
     "type": "media",
-    "value": 109,
+    "value": 0,
     "label": "SFX Shoot",
     "id": "6a69e853-8fee-45ab-bdfb-90a47dd10224",
     "target": 4
@@ -34,7 +34,7 @@
   {
     "name": "sfxEmptyShoot",
     "type": "media",
-    "value": 112,
+    "value": 0,
     "label": "SFX Empty shoot",
     "id": "2223722e-0297-4eff-8de9-cb6d09b816d6",
     "target": 4
@@ -52,7 +52,7 @@
     "id": "1d2cb34c-04f2-495e-9c2f-ca4b86ec1b1e",
     "name": "normalColor",
     "type": "color",
-    "value": "#00ffff",
+    "value": "#0000ff",
     "label": "Normal color",
     "target": 6,
     "inGameMenu": false

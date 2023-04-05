@@ -10,9 +10,9 @@ function generateHeader(doc) {
     .text('Adresa: Zámecká 18, 702 00 Ostrava', options)
 }
 
-function generateGiftVoucher(doc, containerOption) {
+function generateGiftVoucher(doc, containerOption, offset) {
   doc.font(boldText).text('DÁRKOVÝ POUKAZ - Chytrý a originální dárek k narozeninám',
-    table3Width + table4width + 55 + doc.widthOfString('a'.repeat(20)), doc.page.height / 2, containerOption)
+    offset, doc.page.height / 2, containerOption)
   doc.moveDown();
   doc.font(regularText).text('Poukazka lze využít na libovolnou aktivitu v ZC Horník', containerOption)
   doc.font(boldText).text('LASER GAME / VIRTUÁLNÍ REALITA / ARCHERY GAME', containerOption)

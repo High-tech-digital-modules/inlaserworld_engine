@@ -4,6 +4,14 @@
  *  Created on: 13. 9. 2020
  *      Author: Bodie
  */
+#ifdef VSCODE
+#include "custom_variables_map.h"
+#include "sound_set_map.h"
+#include <stdint.h>
+#include "engine_def.h"
+#endif
+
+#define CODE_LAST_SIZE	4
 
 volatile uint8_t gvTimeBlinking = 0;
 volatile uint16_t gvTimeBlinkingCounter = 0;
@@ -15,11 +23,47 @@ volatile uint16_t gvTimeDeathCounter = 0;
 volatile uint8_t gvTimeRevival = 0;
 volatile uint16_t gvTimeRevivalCounter = 0;
 
+volatile uint8_t gvTimeAgentReceived = 0;
+volatile uint16_t gvTimeAgentReceivedCounter = 0;
+
 volatile uint16_t gvLengthBlinking = 20;		//in 0,01*seconds
 volatile uint16_t gvLengthDeath = 0;		//in 0,01*seconds
 volatile uint16_t gvLengthRevival = 0;		//in 0,01*seconds
+volatile uint16_t gvLengthAgentReceived = 200;		//in 0,01*seconds
 
 volatile uint8_t gvIsAgent = 0;
+volatile uint8_t gvAgentBuffered = 0;	
+volatile uint8_t gvChestCodeLast[CODE_LAST_SIZE] = {0};
+volatile uint8_t gvBackupCodeLast[CODE_LAST_SIZE] = {0};
+
+
+void clearCodeLastArray(uint8_t *apCodeArray){
+	uint8_t i;
+	for(i = 0; i < CODE_LAST_SIZE; i++){
+		apCodeArray[i] = 0;
+	}
+}
+
+void addCodeLastArray(uint8_t *apCodeArray, uint8_t aCode){
+	uint8_t i;
+	for(i = 1; i < CODE_LAST_SIZE; i++){
+		apCodeArray[i] = apCodeArray[i-1];
+	}
+	apCodeArray[0] = aCode;
+}
+
+/*
+ * checks if apCodeArray contains aCode, if yes, returns 1, otherwice returns 0
+ */
+uint8_t checkCodeLastArray(uint8_t *apCodeArray, uint8_t aCode){
+	uint8_t i;
+	for(i = 0; i < CODE_LAST_SIZE; i++){
+		if(apCodeArray[i] == aCode){
+			return 1;
+		}
+	}
+	return 0;
+}
 
 /*
  * part in while loop in main
@@ -71,6 +115,19 @@ void PLUGIN_timer10ms(void) {
 		}
 	} else {
 		gvTimeRevivalCounter = 0;
+	}
+
+	/*agent received counter*/
+	if (gvTimeAgentReceived == 1) {
+		if (gvTimeAgentReceivedCounter < gvLengthAgentReceived)
+			gvTimeAgentReceivedCounter++;
+		else {
+			gvTimeAgentReceived = 0;
+			clearCodeLastArray(gvBackupCodeLast);
+			clearCodeLastArray(gvChestCodeLast);		
+		}
+	} else {
+		gvTimeAgentReceivedCounter = 0;
 	}
 }
 
@@ -125,8 +182,12 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		if (ENGINE_getHealth() == 0) {
 			ENGINE_processDeath(aHitCode, aHitFlag);
 			if (gvIsAgent == 1) {
-				gvIsAgent = 0;
-				ENGINE_setPeriodicInfoByte(gvIsAgent, 0);
+				if(gvAgentBuffered == 0){
+					gvIsAgent = 0;					
+				} else {
+					gvAgentBuffered--;
+				}
+				ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
 				ENGINE_sendCustomMessage((uint8_t*) "A", 1, aHitCode);
 			}
 		}
@@ -224,6 +285,9 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
 	gvTimeRevival = 1;
 	ENGINE_playSoundFromSoundSet(aliveAgain);
 	ENGINE_setHealth(100);
+	if(gvIsAgent == 1){
+		ENGINE_playSoundFromSoundSet(becomeAgent);
+	}
 }
 
 /*
@@ -247,10 +311,61 @@ void PLUGIN_changedGameStateToEnding(uint8_t aGameStateLast) {
 void PLUGIN_processCustomMessage(uint8_t* apData, uint16_t aLength,
 		uint8_t aDevice) {
 	if (apData[0] == 'A') {
-	  ENGINE_playSoundFromSoundSet(becomeAgent);
-		gvIsAgent = 1;
-		ENGINE_setPeriodicInfoByte(gvIsAgent, 0);
+		if(gvTimeAgentReceived == 1 && checkCodeLastArray(gvBackupCodeLast, aDevice) == 1){
+			//ENGINE_setHealth((gvAgentBuffered + gvIsAgent) * 10);
+			//ENGINE_setAmmo(aDevice);
+			//ENGINE_setLife(gvBackupCodeLast[0]*100);
+			return;
+		} //else if(gvTimeAgentReceived == 1){
+			//ENGINE_setHealth((gvAgentBuffered + gvIsAgent) * 10);
+			//ENGINE_setAmmo(aDevice);
+			//ENGINE_setLife(gvBackupCodeLast[0]*100);
+		//}
+		if(gvIsAgent == 0){
+			ENGINE_playSoundFromSoundSet(becomeAgent);
+			gvIsAgent = 1;			
+		} else {
+			gvAgentBuffered++;
+			ENGINE_playSoundFromSoundSet(doubleAgent);			
+		}
+		//enable timer for checking if the same message is received from chest
+		if(gvTimeAgentReceived == 0){
+			gvTimeAgentReceived = 1;
+		} else {
+			gvTimeAgentReceivedCounter = 0;
+		}
+		addCodeLastArray(gvChestCodeLast, aDevice);
+	  	ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
+	} else if (apData[0] == 'B') {		
+		//if the code in backup message is the same as in array from chests, ignore it
+		if(gvTimeAgentReceived == 1 && checkCodeLastArray(gvChestCodeLast, apData[2]) == 1){
+			//ENGINE_setAmmo(apData[2]);
+			//ENGINE_setLife(gvChestCodeLast[0]*100);
+			return;
+		}
+		//if agent backup message contains the same agent number as actual, ignore it
+		if((gvIsAgent + gvAgentBuffered) >= apData[1]){
+			return;
+		}		
+		if(apData[1] == 1){
+			ENGINE_playSoundFromSoundSet(becomeAgent);
+			gvIsAgent = 1;			
+		} else {
+			gvAgentBuffered = apData[1] - 1;
+			gvIsAgent = 1;
+			ENGINE_playSoundFromSoundSet(doubleAgent);			
+		}
+		//enable timer for checking if the same message is received from chest
+		if(gvTimeAgentReceived == 0){
+			gvTimeAgentReceived = 1;
+		} else {
+			gvTimeAgentReceivedCounter = 0;
+		}
+		addCodeLastArray(gvBackupCodeLast, apData[2]);
+		//gvBackupCodeLast = apData[2];
+	  	ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
 	}
+	ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
 }
 
 /*

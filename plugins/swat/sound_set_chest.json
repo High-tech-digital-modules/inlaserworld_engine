@@ -1,5 +1,5 @@
 {
-  "name": "Deathmatch Chest",
+  "name": "Deathmatch v2 Chest",
   "soundItemList": [
     {
       "name": "loaded",
@@ -18,6 +18,21 @@
     },
     {
       "name": "aliveAgain",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "immortality",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "invisibility",
+      "label": "",
+      "mediaId": 0
+    },
+    {
+      "name": "machine_gun",
       "label": "",
       "mediaId": 0
     }

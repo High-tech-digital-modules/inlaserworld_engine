@@ -152,6 +152,7 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 	/*process kill*/
 	if (ENGINE_getHealth() == 0) {
 		ENGINE_processDeath(aHitCode, aHitFlag);
+		ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
 	}
 }
 
@@ -253,6 +254,7 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
  */
 void PLUGIN_changedGameStateToStarting(uint8_t aGameStateLast) {
 	gvTimeBlinking = 1;
+	ENGINE_setLightState(1);
 }
 
 /*
@@ -261,6 +263,7 @@ void PLUGIN_changedGameStateToStarting(uint8_t aGameStateLast) {
 void PLUGIN_changedGameStateToEnding(uint8_t aGameStateLast) {
 	ENGINE_setAllModulesDim(100, 100);
 	ENGINE_setAllModulesState(1, 2, 0);
+	ENGINE_setLightState(0);
 }
 
 /*
@@ -268,7 +271,12 @@ void PLUGIN_changedGameStateToEnding(uint8_t aGameStateLast) {
  */
 void PLUGIN_processCustomMessage(uint8_t* apData, uint16_t aLength,
 		uint8_t aDevice) {
-
+  if(aLength == 1) {
+    if(apData[0] == (uint8_t)'H') {
+      ENGINE_playSound(sfxKillDone);
+    }	    
+	}
+	ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
 }
 
 /*
