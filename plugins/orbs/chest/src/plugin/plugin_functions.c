@@ -129,26 +129,30 @@ void PLUGIN_releasedUserButton(void) {
  */
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
-	if(aHitStrength > 80){
-		aHitStrength = 50;
-	} else {
-		aHitStrength = 26; /*26 instead of 25 due to shield and /2, which will now lead to 13 (8 shots) instead of 12 (9 shots)*/
-	}
-  	if(gvOrbs >> 1 & 1) {
-    	aHitStrength /= 2;
-  	}
-	ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
-	/*process kill*/
-	if (ENGINE_getHealth() == 0) {
-		ENGINE_processDeath(aHitCode, aHitFlag);
-		ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
-		gvOrbs = 0;
-		gvOrbsCount = 0;
-		ENGINE_setPeriodicInfoByte(gvOrbs, 0);
-		ENGINE_setAllModulesColor(1, gvBaseColor);
-	  ENGINE_setAllModulesColor(2, gvBaseColor);
-	  ENGINE_setAllModulesState(1, 1 ,0);
-	}
+    uint8_t lGameState = ENGINE_getGameState();
+
+	if (lGameState == game_state_alive){	
+	    if(aHitStrength > 80){
+			aHitStrength = 50;
+		} else {
+			aHitStrength = 26; /*26 instead of 25 due to shield and /2, which will now lead to 13 (8 shots) instead of 12 (9 shots)*/
+		}
+	  	if(gvOrbs >> 1 & 1) {
+	    	aHitStrength /= 2;
+	  	}
+		ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
+		/*process kill*/
+		if (ENGINE_getHealth() == 0) {
+			ENGINE_processDeath(aHitCode, aHitFlag);
+			ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
+			gvOrbs = 0;
+			gvOrbsCount = 0;
+			ENGINE_setPeriodicInfoByte(gvOrbs, 0);
+			ENGINE_setAllModulesColor(1, gvBaseColor);
+			ENGINE_setAllModulesColor(2, gvBaseColor);
+			ENGINE_setAllModulesState(1, 1 ,0);
+		}
+	}        
 }
 /*
  * part in while loop in main after detecting hit from slave module

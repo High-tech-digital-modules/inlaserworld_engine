@@ -145,15 +145,18 @@ void PLUGIN_releasedUserButton(void) {
  */
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
+    uint8_t lGameState = ENGINE_getGameState();
 
-	ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
-	gvTimeStroboscope = 1;
+	if (lGameState == game_state_alive){
+		ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
+		gvTimeStroboscope = 1;
 
-	/*process kill*/
-	if (ENGINE_getHealth() == 0) {
-		ENGINE_processDeath(aHitCode, aHitFlag);
-		ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
-	}
+		/*process kill*/
+		if (ENGINE_getHealth() == 0) {
+			ENGINE_processDeath(aHitCode, aHitFlag);
+			ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
+		}
+	}        
 }
 
 /*
