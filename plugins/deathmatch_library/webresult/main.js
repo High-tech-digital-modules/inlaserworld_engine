@@ -58,8 +58,7 @@ function PlayerRotatedName ( {index} ) {
 function PlayerTableField ({ rank, index }) {
   const player = useSelector(getPlayer(index));
   const player2 = useSelector(getPlayer(rank));
-  /*const gameTemplate = useSelector(state => state.commonList['finishedGames']
-    .list[indexInList].selectedGameTemplate);*/
+  const teamNumber = useSelector(getTeamsLength());
   const gameTemplate = null;
   if(!player.hits) {
     return null;
@@ -72,9 +71,9 @@ function PlayerTableField ({ rank, index }) {
   }
   
   let friendlyHit = false;
-  if (gameTemplate) {
+  if (teamNumber > 0) {
     friendlyHit = (player.playerColor === player2.playerColor 
-      && player.hits[rank].hitsTotal && gameTemplate.teamGame);
+      && player.hits[rank].hitsTotal);
   }
   
   return <SPlayerTableFieldItem 
