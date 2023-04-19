@@ -27,6 +27,6 @@
   "canManageTeams": false,
   "globalDeathTime": 5,
   "globalReviveTime": 1,
-  "isLibrary": true,
+  "isLibrary": false,
   "libraryIncludes": []
 }

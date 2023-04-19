@@ -1,7 +1,7 @@
 {
   "name": "Agents",
   "gameTime": 12,
-  "preparationTime": 10,
+  "preparationTime": 15,
   "teamsList": [
     {
       "id": "ec7df52e-773f-46fa-b5f1-24c9366d01f6",
@@ -24,6 +24,7 @@
   ],
   "minPlayers": 4,
   "teamGame": false,
+  "noTeamGame": true,
   "canManageTeams": false,
   "globalDeathTime": 5,
   "globalReviveTime": 1,

@@ -51,7 +51,7 @@
   {
     "name": "bonusMachineGun",
     "type": "light",
-    "value": 5,
+    "value": "",
     "label": "Bonus machine gun",
     "id": "079b2f9a-97b1-4b7c-9400-cd8195d96772",
     "inGameMenu": false,
@@ -61,7 +61,7 @@
   {
     "name": "bonusArmor",
     "type": "light",
-    "value": 6,
+    "value": "",
     "label": "Bonus armor",
     "id": "c051d3ca-a0f5-4215-a2cd-e6758d88d535",
     "target": 8,
@@ -70,7 +70,7 @@
   {
     "name": "bonusSniper",
     "type": "light",
-    "value": 7,
+    "value": "",
     "label": "Bonus sniper",
     "id": "1025dc60-946c-44f4-ad3f-617e063dc8a4",
     "target": 8,
@@ -79,7 +79,7 @@
   {
     "name": "bonusHealing",
     "type": "light",
-    "value": 8,
+    "value": "",
     "label": "Bonus healing",
     "id": "3421ed3e-96c5-45fb-a55b-5403cd754c5c",
     "target": 8,

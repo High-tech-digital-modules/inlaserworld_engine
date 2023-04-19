@@ -1,7 +1,7 @@
 {
   "name": "SWAT",
   "gameTime": 12,
-  "preparationTime": 10,
+  "preparationTime": 15,
   "teamsList": [
     {
       "id": "b4828dcb-b122-4cd8-8ff4-36f5c26b5e37",
@@ -24,6 +24,7 @@
   ],
   "minPlayers": 2,
   "teamGame": false,
+  "noTeamGame": true,
   "canManageTeams": false,
   "globalDeathTime": 5,
   "globalReviveTime": 1,
