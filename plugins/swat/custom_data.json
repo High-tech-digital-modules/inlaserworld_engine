@@ -43,7 +43,7 @@
     "id": "13fba5d3-c99d-4e39-a260-f896243a40ac",
     "name": "sfxShoot",
     "type": "media",
-    "value": 129,
+    "value": 0,
     "label": "Sound of the gun",
     "target": 4
   },
@@ -51,7 +51,7 @@
     "id": "0b82566d-ddb6-45a1-8710-cf153c71d98d",
     "name": "sfxEmptyShoot",
     "type": "media",
-    "value": 130,
+    "value": 0,
     "label": "Sound of empty gun",
     "target": 4
   },
@@ -77,7 +77,7 @@
     "id": "98b7e315-df3d-4fa6-b895-529823f7e7b5",
     "name": "sfxKillDone",
     "type": "media",
-    "value": 109,
+    "value": 0,
     "label": "Kill done sound effect",
     "target": 4
   },
