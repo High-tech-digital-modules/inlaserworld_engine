@@ -170,28 +170,31 @@ void PLUGIN_pressedUserButton(void) {
  */
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
+    uint8_t lGameState = ENGINE_getGameState();
 
-	if (gvIsAgent == aHitCustomInfo) {
-		uint8_t lHealthTemp = ENGINE_getHealth();
-		ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
-		ENGINE_setHealth(lHealthTemp);
-	} else {
-		ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
+	if (lGameState == game_state_alive){
+		if (gvIsAgent == aHitCustomInfo) {
+			uint8_t lHealthTemp = ENGINE_getHealth();
+			ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
+			ENGINE_setHealth(lHealthTemp);
+		} else {
+			ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
 
-		/*process kill*/
-		if (ENGINE_getHealth() == 0) {
-			ENGINE_processDeath(aHitCode, aHitFlag);
-			if (gvIsAgent == 1) {
-				if(gvAgentBuffered == 0){
-					gvIsAgent = 0;					
-				} else {
-					gvAgentBuffered--;
+			/*process kill*/
+			if (ENGINE_getHealth() == 0) {
+				ENGINE_processDeath(aHitCode, aHitFlag);
+				if (gvIsAgent == 1) {
+					if(gvAgentBuffered == 0){
+						gvIsAgent = 0;					
+					} else {
+						gvAgentBuffered--;
+					}
+					ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
+					ENGINE_sendCustomMessage((uint8_t*) "A", 1, aHitCode);
 				}
-				ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
-				ENGINE_sendCustomMessage((uint8_t*) "A", 1, aHitCode);
 			}
-		}
-	}
+    	}
+    }
 }
 
 /*

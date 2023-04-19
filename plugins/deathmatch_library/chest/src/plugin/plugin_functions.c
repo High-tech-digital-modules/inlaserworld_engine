@@ -243,27 +243,29 @@ void DEATHMATCH_pressedUserButton(void) {
 
 void DEATHMATCH_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
+  uint8_t lGameState = ENGINE_getGameState();
 
-  if((aHitCode == bonusShotCode) && (aHitCustomInfo != 0)) {
-    if(gvTimeBonusObtainedDelay == 1){
+  if (lGameState == game_state_alive){
+    if((aHitCode == bonusShotCode) && (aHitCustomInfo != 0)) {
+      if(gvTimeBonusObtainedDelay == 1){
+        return;
+      }
+	  gvBonusObtained = 1;
+      bonusObtained(aHitCustomInfo);
+      gvTimeBonusObtainedDelay = 1;
+      ENGINE_setVibrationAccordingHitFlag(9); //weapon vibration
       return;
     }
-	gvBonusObtained = 1;
-    bonusObtained(aHitCustomInfo);
-    gvTimeBonusObtainedDelay = 1;
-	ENGINE_setVibrationAccordingHitFlag(9); //weapon vibration
-    return;
-  }
 
-  if(gvActualBonus == bonusImmortality){
-    return;
-  }
+    if(gvActualBonus == bonusImmortality){
+      return;
+    }
 
-  if(aHitCode == bonusShotCode){
-	gvMineHits++;
-	ENGINE_setPeriodicInfoByte((gvMineHits >> 8)&0xFF, 0);
-	ENGINE_setPeriodicInfoByte(gvMineHits&0xFF, 1);
-  }
+    if(aHitCode == bonusShotCode){
+	  gvMineHits++;
+	  ENGINE_setPeriodicInfoByte((gvMineHits >> 8)&0xFF, 0);
+	  ENGINE_setPeriodicInfoByte(gvMineHits&0xFF, 1);
+    }
   
 	ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
 
@@ -272,6 +274,7 @@ void DEATHMATCH_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStren
 		ENGINE_processDeath(aHitCode, aHitFlag);
 		ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
 	}
+  }
 }
 
 void DEATHMATCH_setModulesState(uint8_t aState, uint8_t aGameState,

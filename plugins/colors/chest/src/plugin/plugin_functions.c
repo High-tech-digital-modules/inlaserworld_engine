@@ -124,18 +124,21 @@ void PLUGIN_releasedUserButton(void) {
  */
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 		uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
+    uint8_t lGameState = ENGINE_getGameState();
 
-	ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
+	if (lGameState == game_state_alive){
+		ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
 
-	/*process kill*/
-	if (ENGINE_getHealth() == 0) {
-		ENGINE_processDeath(aHitCode, aHitFlag);
-		if (aHitCustomInfo != gvColorIndex) {
-			gvColorIndex = aHitCustomInfo;
-			ENGINE_setAllModulesColor(1, gvColorsTable[gvColorIndex]);
-			ENGINE_setPeriodicInfoByte(gvColorIndex, 0);
+		/*process kill*/
+		if (ENGINE_getHealth() == 0) {
+			ENGINE_processDeath(aHitCode, aHitFlag);
+			if (aHitCustomInfo != gvColorIndex) {
+				gvColorIndex = aHitCustomInfo;
+				ENGINE_setAllModulesColor(1, gvColorsTable[gvColorIndex]);
+				ENGINE_setPeriodicInfoByte(gvColorIndex, 0);
+			}
 		}
-	}
+    }
 }
 
 /*
