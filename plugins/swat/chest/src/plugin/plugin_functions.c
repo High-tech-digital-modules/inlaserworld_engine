@@ -19,6 +19,7 @@ volatile uint16_t gvLengthDeath = 0;		//in 0,01*seconds
 volatile uint16_t gvLengthRevival = 0;		//in 0,01*seconds
 
 volatile uint8_t gvHitCodeLast = 0;
+volatile uint8_t gvAlreadyDead = 0;
 
 /*
  * part in while loop in main
@@ -156,7 +157,9 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 			ENGINE_processDeath(aHitCode, aHitFlag);
 			ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
 		}
-	}        
+	} else {
+        gvAlreadyDead = 1;
+    }        
 }
 
 /*
@@ -197,10 +200,11 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
 	for (i = 0; i < MODULES_NUMBER; i++)
 		apModulesState[i] = lMessageTemp;
 
-	if (aHitFlag != 0) { /* && (game_state == game_state_dead))*/
+	if (aHitFlag != 0 && gvAlreadyDead == 0) { /* && (game_state == game_state_dead))*/
 		gvHitCodeLast = aHitFlag;
 		ENGINE_setVibrationAccordingHitFlag(aHitFlag);
 	}
+    gvAlreadyDead = 0;
 
 	if (gvHitCodeLast != 0) {
 		if (gvTimeStroboscopeLed == 1) {
