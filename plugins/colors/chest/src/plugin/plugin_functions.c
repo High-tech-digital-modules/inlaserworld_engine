@@ -18,6 +18,7 @@ volatile uint16_t gvLengthRevival = 0;		//in 0,01*seconds
 colors_t gvColorsTable[COLORS_MAX_NMBR];
 volatile uint8_t gvGameStarted = 0;
 volatile uint8_t gvColorIndex = 255;
+volatile uint8_t gvAlreadyDead = 0;
 
 /*
  * part in while loop in main
@@ -138,6 +139,8 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 				ENGINE_setPeriodicInfoByte(gvColorIndex, 0);
 			}
 		}
+    } else {
+        gvAlreadyDead = 1;
     }
 }
 
@@ -185,7 +188,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
 		ENGINE_setColorEffectFade(0xFF); /*set according to the Health*/
 	}
 
-	if (aHitFlag != 0) { /* && (game_state == game_state_dead))*/
+	if (aHitFlag != 0 && gvAlreadyDead == 0) { /* && (game_state == game_state_dead))*/
 		/*change dim value, send for all chest slaves, not for weapon*/
 		if (aGameState == game_state_dead) {
 			/*reset dim to 100_*/
@@ -198,6 +201,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
 				led_stroboscope) | LED2(led_stroboscope);
 		ENGINE_setVibrationAccordingHitFlag(aHitFlag);
 	}
+    gvAlreadyDead = 0;
 
 	/*backlight of display*/
 	if ((aState == state_game) || (aState == state_ending)) {

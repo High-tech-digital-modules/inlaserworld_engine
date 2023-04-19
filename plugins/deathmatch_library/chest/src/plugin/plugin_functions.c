@@ -48,6 +48,7 @@ typedef enum{
 } bonusType;// gvActualBonus = bonusNone;
 
 volatile static bonusType gvActualBonus = bonusNone;
+volatile uint8_t gvAlreadyDead = 0;
 
 void bonusMachineGunStop(void) {
   if(gvActualBonus == bonusMachineGun) {
@@ -274,7 +275,9 @@ void DEATHMATCH_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStren
 		ENGINE_processDeath(aHitCode, aHitFlag);
 		ENGINE_sendCustomMessage((uint8_t*)"H", 1, aHitCode);
 	}
-  }
+  } else {
+        gvAlreadyDead = 1;
+    }
 }
 
 void DEATHMATCH_setModulesState(uint8_t aState, uint8_t aGameState,
@@ -322,7 +325,7 @@ void DEATHMATCH_setModulesState(uint8_t aState, uint8_t aGameState,
 		apModulesState[8] |= VIBRATION(VIBRATION_ON);
 	}
 
-	if ((aHitFlag != 0) && (gvTimeBonusObtainedDelay == 0)) { /* && (game_state == game_state_dead))*/
+	if ((aHitFlag != 0) && (gvTimeBonusObtainedDelay == 0) && gvAlreadyDead == 0) { /* && (game_state == game_state_dead))*/
 		/*change dim value, send for all chest slaves, not for weapon*/
 		if (aGameState == game_state_dead) {
 			/*reset dim to 100_*/
@@ -334,6 +337,7 @@ void DEATHMATCH_setModulesState(uint8_t aState, uint8_t aGameState,
 				led_stroboscope) | LED2(led_stroboscope);
 		ENGINE_setVibrationAccordingHitFlag(aHitFlag);
 	}
+    gvAlreadyDead = 0;
 
 	/*backlight of display*/
 	if ((aState == state_game) || (aState == state_ending)) {

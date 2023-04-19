@@ -35,6 +35,7 @@ volatile uint8_t gvIsAgent = 0;
 volatile uint8_t gvAgentBuffered = 0;	
 volatile uint8_t gvChestCodeLast[CODE_LAST_SIZE] = {0};
 volatile uint8_t gvBackupCodeLast[CODE_LAST_SIZE] = {0};
+volatile uint8_t gvAlreadyDead = 0;
 
 
 void clearCodeLastArray(uint8_t *apCodeArray){
@@ -194,6 +195,8 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 				}
 			}
     	}
+    } else {
+        gvAlreadyDead = 1;
     }
 }
 
@@ -243,11 +246,12 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
 	for (i = 0; i < MODULES_NUMBER; i++)
 		apModulesState[i] = lMessageTemp;
 
-	if (aHitFlag != 0) { /* && (game_state == game_state_dead))*/
+	if (aHitFlag != 0 && gvAlreadyDead == 0) { /* && (game_state == game_state_dead))*/
 		apModulesState[aHitFlag - 1] |= LED1(
 				led_stroboscope) | LED2(led_stroboscope);
 		ENGINE_setVibrationAccordingHitFlag(aHitFlag);
 	}
+    gvAlreadyDead = 0;
 
 	/*backlight of display*/
 	if ((aState == state_game) || (aState == state_ending)) {

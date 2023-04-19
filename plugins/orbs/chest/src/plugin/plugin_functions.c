@@ -14,6 +14,7 @@ volatile uint8_t gvOrbsCount = 0;
 colors_t gvBaseColor = { 200, 0, 0 };
 volatile uint8_t gvHittedModuleIndex = 0xFF; //specify if some module was hitted last run of algorithm
 volatile uint8_t gvHittedModuleLastState = 0; //state of module before hitted for restore light circuits settings
+volatile uint8_t gvAlreadyDead = 0;
 /*
  * part in while loop in main
  */
@@ -152,7 +153,9 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
 			ENGINE_setAllModulesColor(2, gvBaseColor);
 			ENGINE_setAllModulesState(1, 1 ,0);
 		}
-	}        
+	} else {
+        gvAlreadyDead = 1;
+    }        
 }
 /*
  * part in while loop in main after detecting hit from slave module
@@ -195,7 +198,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
 		  gvHittedModuleIndex = 0xFF;
 		}
 	}
-	if (aHitCode != 0) { /* && (game_state == game_state_dead))*/
+	if (aHitCode != 0 && gvAlreadyDead == 0) { /* && (game_state == game_state_dead))*/
 		/*change dim value, send for all chest slaves, not for weapon*/
 		if (aGameState == game_state_dead) {
 			/*reset dim to 100_*/
@@ -210,6 +213,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
 				led_stroboscope) | LED2(led_stroboscope);
 		ENGINE_setVibrationAccordingHitFlag(aHitCode);
 	}
+    gvAlreadyDead = 0;
 	/*backlight of display*/
 	if ((aState == state_game) || (aState == state_ending)) {
 		apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_special));
