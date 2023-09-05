@@ -46,20 +46,23 @@ void LIGHT_setArenaLightsColor(ColorT aColor, uint8_t aUVEnable) {
   ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x7000 );
   usleep(40000);
   ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x4000 );*/
-  
+  usleep(40000);
   ENGINE_lightSetColors(pgLightBroadcastAddress, aColor, aColor, aColor, aUVEnable);
   std::vector<DeviceT> lBonusModules = ENGINE_getBonusModules();
   for(DeviceT lModule : lBonusModules){
+    usleep(40000);
     ENGINE_lightSetColors(lModule.address, aColor, gLightColorBlack, gLightColorBlack, aUVEnable);
   }
 }
 
 void LIGHT_switchOffModule(std::string aAddress) {
+  usleep(40000);
   ENGINE_lightStartSequence(aAddress, 0x5555 ); //stop all operations
   usleep(40000);
 }
 
 void LIGHT_switchOffAllModules(void) {
+  usleep(40000);
   ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x5555 ); //stop all operations
   usleep(40000);
 }

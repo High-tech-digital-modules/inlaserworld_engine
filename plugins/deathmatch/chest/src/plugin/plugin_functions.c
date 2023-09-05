@@ -5,6 +5,23 @@
 #include <stdint.h>
 #endif
 
+#define DI_RANK 0x0001
+#define DI_SCORE 0x0002
+#define DI_HEALTH 0x0004
+#define DI_LIFE 0x0008
+#define DI_AMMO 0x0010
+#define DI_INIT 0x0020
+#define DI_BONUS 0x0040
+#define DI_BONUS_TIME 0x0080
+#define DI_SWITCH_BASIC 0x0100
+#define DI_KILLED 0x0200
+#define DI_HIT 0x0400
+
+#define DL_NONE 0
+#define DL_BONUS 1
+#define DL_KILLED 2
+#define DL_HIT 3
+
 volatile uint8_t gvTimeBlinking = 0;
 volatile uint16_t gvTimeBlinkingCounter = 0;
 volatile uint8_t gvTimeBlinkingLed = 0;
@@ -24,11 +41,15 @@ volatile uint16_t gvTimePulseCounter = 0;
 volatile uint8_t gvTimeBonusObtainedDelay = 0;
 volatile uint16_t gvTimeBonusObtainedDelayCounter = 0;
 
+volatile uint8_t gvTimeDisplayHit = 0;
+volatile uint16_t gvTimeDisplayHitCounter = 0;
+
 volatile uint16_t gvLengthBlinking = 20;            // in 0,01*seconds
 volatile uint16_t gvLengthDeath = 0;                // in 0,01*seconds
 volatile uint16_t gvLengthRevival = 0;              // in 0,01*seconds
 volatile uint16_t gvLengthBonus = 3000;             // in 0,01*seconds
 volatile uint16_t gvLengthBonusObtainedDelay = 500; // in 0,01*seconds
+volatile uint16_t gvLengthDisplayHit = 300;         // in 0,01*seconds
 
 // volatile static char new_filename[50];
 volatile uint8_t gvBonusObtained = 0;
@@ -49,6 +70,15 @@ typedef enum {
 
 volatile static bonusType gvActualBonus = bonusNone;
 volatile uint8_t gvAlreadyDead = 0;
+
+volatile uint16_t gvDisplayIndex = 0;
+volatile uint8_t gvOtherCode = 0;
+volatile uint8_t gvDisplayLock = 0;
+volatile uint8_t gvDisplayLockLast = 0;
+const colors_t gcColorWhite = {0x80, 0x80, 0x80};
+const colors_t gcColorGreen = {0x00, 0xF0, 0x00};
+const colors_t gcColorRed = {0xF0, 0x00, 0x00};
+const colors_t gcColorYellow = {0xF0, 0xF0, 0x00};
 
 void bonusMachineGunStop(void) {
     if (gvActualBonus == bonusMachineGun) {
@@ -82,6 +112,7 @@ void bonusObtained(uint8_t aBonusType) {
         gvLengthBonus = gcLengthBonusImmortality;
         break;
     }
+    gvDisplayIndex |= DI_BONUS;
 }
 
 /*
@@ -110,7 +141,92 @@ void logToFile(char *text) {
   fclose(fp);
 }*/
 
+void PLUGIN_changedRank(uint8_t aRank, uint8_t aRankLast) {
+    gvDisplayIndex |= DI_RANK;
+}
+
+void PLUGIN_changedScore(int32_t aScore, int32_t aScoreLast) {
+    // gvDisplayIndex |= DI_SCORE;
+}
+
 void PLUGIN_mainLoop(void) {
+    if (gvDisplayIndex != 0) {
+        uint8_t lGameState = ENGINE_getGameState();
+        uint8_t lDisplayDraw = 0;
+
+        if ((gvDisplayIndex & DI_RANK) != 0) {
+            gvDisplayIndex &= ~DI_RANK;
+            ENGINE_selectDisplayBuffer(1);
+            if (shootPower == 100) {
+                DISPLAY_rank(37, 18, 1);
+            } else {
+                DISPLAY_rank(37, 2, 1);
+            }
+            lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
+        } else if ((gvDisplayIndex & DI_HEALTH) != 0) {
+            gvDisplayIndex &= ~DI_HEALTH;
+            if (shootPower != 100) {
+                ENGINE_selectDisplayBuffer(1);
+                DISPLAY_health(15, 39, 1);
+                lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
+            }
+
+        } else if ((gvDisplayIndex & DI_BONUS) != 0) {
+            gvDisplayIndex &= ~DI_BONUS;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_bonus(gvActualBonus);
+            gvDisplayLock = DL_BONUS;
+            lDisplayDraw = 1;
+        } else if ((gvDisplayIndex & DI_BONUS_TIME) != 0) {
+            gvDisplayIndex &= ~DI_BONUS_TIME;
+            if (gvDisplayLock == DL_BONUS) {
+                if (lGameState != game_state_dead) {
+                    ENGINE_selectDisplayBuffer(2);
+                    DISPLAY_bonusTime(gvLengthBonus - gvTimeBonusCounter);
+                }
+                lDisplayDraw = 1;
+            }
+        } else if ((gvDisplayIndex & DI_SWITCH_BASIC) != 0) {
+            gvDisplayIndex &= ~DI_SWITCH_BASIC;
+            if (lGameState != game_state_dead) {
+                ENGINE_selectDisplayBuffer(1);
+                gvDisplayLock = DL_NONE;
+                lDisplayDraw = 1;
+            }
+        } else if ((gvDisplayIndex & DI_KILLED) != 0) {
+            gvDisplayIndex &= ~DI_KILLED;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_killed(gvOtherCode);
+            gvOtherCode = 0;
+            gvDisplayLock = DL_KILLED;
+            lDisplayDraw = 1;
+        } else if ((gvDisplayIndex & DI_HIT) != 0) {
+            gvDisplayIndex &= ~DI_HIT;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_hit(gvOtherCode);
+            gvOtherCode = 0;
+            gvDisplayLock = DL_HIT;
+            lDisplayDraw = 1;
+            gvTimeDisplayHit = 1;
+        } else if ((gvDisplayIndex & DI_INIT) != 0) {
+            gvDisplayIndex &= ~DI_INIT;
+            ENGINE_selectDisplayBuffer(1);
+            ENGINE_clearDisplayBuffer();
+            if (shootPower == 100) {
+                DISPLAY_initLayout(1);
+            } else {
+                DISPLAY_initLayout(2);
+                gvDisplayIndex |= DI_HEALTH;
+            }
+            gvDisplayIndex |= DI_RANK;
+        }
+        if (lDisplayDraw == 1) {
+            ENGINE_drawBufferToDisplay(0);
+        }
+    }
 }
 
 void PLUGIN_timer10ms(void) {
@@ -167,13 +283,17 @@ void PLUGIN_timer10ms(void) {
 
     /*bonus counter*/
     if (gvTimeBonus == 1) {
-        if (gvTimeBonusCounter < gvLengthBonus)
+        if (gvTimeBonusCounter < gvLengthBonus) {
             gvTimeBonusCounter++;
-        else {
+            if (gvTimeBonusCounter % 10 == 0) {
+                gvDisplayIndex |= DI_BONUS_TIME;
+            }
+        } else {
             gvTimeBonus = 0;
             bonusMachineGunStop();
             bonusImmortalityStop();
             gvActualBonus = bonusNone;
+            gvDisplayIndex |= DI_SWITCH_BASIC;
         }
     } else {
         gvTimeBonusCounter = 0;
@@ -202,6 +322,23 @@ void PLUGIN_timer10ms(void) {
         gvTimePulseCounter = 0;
         gvTimePulse = 1;
     }
+
+    /*display counter*/
+    if (gvTimeDisplayHit == 1) {
+        if (gvTimeDisplayHitCounter < gvLengthDisplayHit)
+            gvTimeDisplayHitCounter++;
+        else {
+            gvTimeDisplayHitCounter = 0;
+            gvTimeDisplayHit = 0;
+            if (gvTimeBonus == 1) {
+                gvDisplayIndex |= DI_BONUS;
+            } else {
+                gvDisplayIndex |= DI_SWITCH_BASIC;
+            }
+        }
+    } else {
+        gvTimeDisplayHitCounter = 0;
+    }
 }
 
 void PLUGIN_pressedTrigger(void) {
@@ -217,6 +354,7 @@ void PLUGIN_pressedTrigger(void) {
                     ENGINE_makeShoot(0xFF, 0x00); /*use default shot strength, no shot custom info*/
                     ENGINE_decrementAmmo(1);
                     ENGINE_playShoot(0);
+                    gvDisplayIndex |= DI_AMMO;
                 }
             } else {
                 ENGINE_playShoot(1);
@@ -242,6 +380,7 @@ void PLUGIN_pressedUserButton(void) {
 void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
                        uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
     uint8_t lGameState = ENGINE_getGameState();
+    aHitStrength = shootPower;
 
     if (lGameState == game_state_alive) {
         if ((aHitCode == bonusShotCode) && (aHitCustomInfo != 0)) {
@@ -266,11 +405,14 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
         }
 
         ENGINE_processHit(aHitCode, aHitFlag, aHitStrength);
+        gvDisplayIndex |= DI_HEALTH;
 
         /*process kill*/
         if (ENGINE_getHealth() == 0) {
             ENGINE_processDeath(aHitCode, aHitFlag);
             ENGINE_sendCustomMessage((uint8_t *)"H", 1, aHitCode);
+            gvDisplayIndex |= DI_KILLED;
+            gvOtherCode = aHitCode;
         }
     } else {
         gvAlreadyDead = 1;
@@ -337,13 +479,33 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     gvAlreadyDead = 0;
 
     /*backlight of display*/
+    if (gvDisplayLock != gvDisplayLockLast) {
+        gvDisplayLockLast = gvDisplayLock;
+        switch (gvDisplayLock) {
+        case DL_NONE:
+            apModulesColor2[MODULE_MAIN_BOARD] = gcColorWhite;
+            break;
+        case DL_KILLED:
+            apModulesColor2[MODULE_MAIN_BOARD] = gcColorRed;
+            break;
+        case DL_HIT:
+            apModulesColor2[MODULE_MAIN_BOARD] = gcColorGreen;
+            break;
+        case DL_BONUS:
+            apModulesColor2[MODULE_MAIN_BOARD] = gcColorYellow;
+            break;
+        default:
+            break;
+        }
+    }
+
     if ((aState == state_game) || (aState == state_ending)) {
         apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_special));
         uint8_t lOptionTouchEnabled = ENGINE_getOptionsTouchEnabled();
         if (((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) {
-            apModulesState[MODULE_MAIN_BOARD] |= LED2(led_basic);
+            apModulesState[MODULE_MAIN_BOARD] |= LED2(led_special);
         } else {
-            apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_basic));
+            apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_special));
         }
     }
 }
@@ -353,6 +515,7 @@ void PLUGIN_changedGameStateToAlive(uint8_t aGameStateLast) {
     gvTimeBlinking = 0;
     if (aGameStateLast == game_state_starting) {
         ENGINE_playSoundFromSoundSet(gameStarting);
+        gvDisplayIndex |= DI_INIT;
     }
 }
 
@@ -368,6 +531,12 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
     ENGINE_playSoundFromSoundSet(aliveAgain);
     ENGINE_setHealth(100);
 
+    if (gvTimeBonus == 1) {
+        gvDisplayIndex |= DI_BONUS;
+    } else {
+        gvDisplayIndex |= DI_SWITCH_BASIC;
+    }
+    gvDisplayIndex |= DI_HEALTH;
     // logToFile("Revival");
 }
 
@@ -387,6 +556,8 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
     if (aLength == 1) {
         if (apData[0] == (uint8_t)'H') {
             ENGINE_playSound(sfxKillDone);
+            gvDisplayIndex |= DI_HIT;
+            gvOtherCode = aDevice;
         }
     }
     if (bonusEnabled == 1) {
@@ -409,6 +580,8 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
     ENGINE_setShotStrength(shootPower);
 
     ENGINE_setPeriodicInfoLength(2);
+    ENGINE_controlDisplayFromPlugin();
+    ENGINE_setModuleColor(MODULE_MAIN_BOARD, 2, gcColorWhite);
     /*
       FILE *fp = open_next_file("/tmp/chest_log_");
       fprintf(fp, "log begin\r\n");
