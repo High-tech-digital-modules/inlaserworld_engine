@@ -4,7 +4,7 @@ ROOT_PATH=$(pwd | grep -o ".*/inlaserworld_engine")
 
 echo "$ROOT_PATH"
 
-for D in "$ROOT_PATH"/plugins/*; do
+for D in "$ROOT_PATH"/plugins/* "$ROOT_PATH"/plugins/inlaser_plugins/*; do
   if [ -f "${D}/description.json" ]; then
     isLibrary=$(jq .isLibrary "${D}/description.json")
     SYNC_PATH="$ROOT_PATH/base/arena/base_plugin"
@@ -23,6 +23,8 @@ for D in "$ROOT_PATH"/plugins/*; do
     SYNC_PATH="$ROOT_PATH/base/chest/STM32F427_main_board_plugin_template"
     [ "$isLibrary" == "true" ] && SYNC_PATH="$ROOT_PATH/base/chest/STM32F427_main_board_plugin_library_template"
     cp "$SYNC_PATH"/BUILD.mk\
+      "${D}/chest/"
+    [ "$isLibrary" == "false" ] && cp "$SYNC_PATH"/stm32f4_flash.ld\
       "${D}/chest/"
     cp -r "$SYNC_PATH"/build-linux-d\
       "${D}/chest/"
