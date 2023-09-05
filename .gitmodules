@@ -1,0 +1,3 @@
+[submodule "plugins/inlaser_plugins"]
+	path = plugins/inlaser_plugins
+	url = git@bitbucket.org:htdm/inlaser_plugins.git
