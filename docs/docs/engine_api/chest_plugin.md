@@ -25,8 +25,6 @@ Part in while loop in main
 void PLUGIN_mainLoop(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## PLUGIN_timer10ms
@@ -36,8 +34,6 @@ Part in timer interrupt with periode 10 milliseconds
 void PLUGIN_timer10ms(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## PLUGIN_timer1s
@@ -59,8 +55,6 @@ Part in external interrupt for trigger press
 void PLUGIN_pressedTrigger(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## PLUGIN_releasedTrigger
@@ -70,8 +64,6 @@ Part in external interrupt for trigger release
 void PLUGIN_releasedTrigger(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## PLUGIN_pressedUserButton
@@ -81,8 +73,6 @@ Part in external interrupt for user button press
 void PLUGIN_pressedUserButton(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## PLUGIN_releasedUserButton
@@ -92,8 +82,6 @@ Part in external interrupt for user button release
 void PLUGIN_releasedUserButton(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## PLUGIN_hitByEnemy
@@ -265,6 +253,32 @@ void PLUGIN_changedGameStateToEnding(uint8_t aGameStateLast);
 ### Params
 {: .no_toc }
 - **aGameStateLast** - last game state
+
+---
+## PLUGIN_changedRank
+Part in while loop in main triggered by receive message with new rank
+
+```cpp
+void PLUGIN_changedRank(uint8_t aRank, uint8_t aRankLast);
+```
+
+### Params
+{: .no_toc }
+- **aRank** - new received rank
+- **aRankLast** - last rank value
+
+---
+## PLUGIN_changedScore
+Part in while loop in main triggered by receive message with new score
+
+```cpp
+void PLUGIN_changedScore(int32_t aScore, int32_t aScoreLast);
+```
+
+### Params
+{: .no_toc }
+- **aScore** - new received score
+- **aScoreLast** - last score value
 
 ---
 ## PLUGIN_processCustomMessage

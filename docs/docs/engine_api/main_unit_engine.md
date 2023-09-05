@@ -776,3 +776,58 @@ void ENGINE_lightLock(std::string aAddress, uint8_t aLock);
 		 Y - UV circuit
 		 0 - unlocked
 		 1 - locked
+
+---
+## ENGINE_lightSetColors
+Set module colors
+
+```cpp
+void ENGINE_lightSetColors(
+		const std::string aAddress,
+		ColorT aCircuitOne,
+		ColorT aCircuitTwo,
+		ColorT aCircuitThree,
+		uint8_t aCircuitUv);
+```
+
+### Params
+{: .no_toc }
+- **aAddress** - Address of module
+- **aCircuitOne** - Color struct of first circuit
+- **aCircuitTwo** - Color struct of second circuit
+- **aCircuitThree** - Color struct of third circuit
+- **aCircuitUv** - UV circuit value
+
+---
+## ENGINE_getRandomBonusModule
+Get random bonus module from list of device selected as bonus
+
+```cpp
+DeviceT ENGINE_getRandomBonusModule();
+```
+
+- **return** - DeviceT structure
+
+---
+## ENGINE_getBonusModules
+Get all bonus modules from list of device selected as bonus
+
+```cpp
+std::vector ENGINE_getBonusModules;
+```
+
+- **return** - vector of DeviceT structure
+
+---
+## ENGINE_switchPlayerTeam
+Switch player team by team index and player index
+
+```cpp
+ void  ENGINE_switchPlayerTeam(const uint32_t aPlayerIndex, const uint32_t aTeamIndex, const uint8_t aFlags = 0x03);
+```
+
+### Params
+{: .no_toc }
+- **aPlayerIndex** - index of player
+- **aTeamIndex** - index of team
+- **aFlags** - 0x000000ct - c = send color, t = send table

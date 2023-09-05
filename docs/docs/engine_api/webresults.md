@@ -175,6 +175,22 @@ get teams length selector hook
 ```
 
 ---
+## getTeamName
+Function to get team name by color or name
+
+
+### Params
+{: .no_toc }
+- **team** - Team object
+
+### Usage
+{: .no_toc }
+```javascript
+ // this must be used with selector it is hook
+ const teamName = getTeamName(team);
+```
+
+---
 ## getPlayerProp
 get player prop selector hook
 
@@ -228,4 +244,49 @@ const player game state
 		 DEAD: 2,
 		 STARTING: 3,
 		 REVIVAL: 4,
+
+
+
+---
+## getResultSnapshotsLength
+get length of snapshots
+
+
+- **return** length of snapshots
+
+---
+## getVisualizationColor
+get color of visualization based on color selected
+
+
+### Params
+{: .no_toc }
+- **color** - color of selection
+- **return** color of visualization
+
+---
+## setSnapshotResultIndex
+set result snapshot index
+
+
+### Params
+{: .no_toc }
+- **index** - index of result snapshot
+
+---
+## tl
+translate function for local template translations
+
+
+
+---
+## tg
+translate function for global translations
+
+
+
+---
+## customData
+extracted custom template data
+
 

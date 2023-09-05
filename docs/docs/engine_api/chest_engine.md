@@ -25,8 +25,6 @@ Get actual game state
 uint8_t ENGINE_getGameState(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - actual game_state
 
 ---
@@ -49,8 +47,6 @@ Get info about touch sensor
 uint8_t ENGINE_getTouchPressed(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - touch pressed state, 0 not pressed, 1 pressed
 
 ---
@@ -61,8 +57,6 @@ Get settings about touch sensor enabled
 uint8_t ENGINE_getOptionsTouchEnabled(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - options touch enabled state, 0 not enabled, 1 (other) enabled
 
 ---
@@ -73,8 +67,6 @@ Get actual life
 uint16_t ENGINE_getLife(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - actual life
 
 ---
@@ -109,8 +101,6 @@ Get actual health
 uint8_t ENGINE_getHealth(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - actual health
 
 ---
@@ -145,8 +135,6 @@ Get actual ammo
 uint16_t ENGINE_getAmmo(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - actual ammo
 
 ---
@@ -181,8 +169,6 @@ Get time length of death
 uint16_t ENGINE_getLengthDeath(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - length of death in seconds
 
 ---
@@ -193,8 +179,6 @@ Get time length of starting interval
 uint8_t ENGINE_getLengthStarting(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - length of starting interval in seconds
 
 ---
@@ -205,8 +189,6 @@ Get time length of revival interval
 uint16_t ENGINE_getLengthRevival(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - length of revival interval in seconds
 
 ---
@@ -217,8 +199,6 @@ Get time length of game
 uint16_t ENGINE_getLengthGame(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - length of game in seconds
 
 ---
@@ -485,8 +465,6 @@ Get state of weapon light
 uint8_t ENGINE_getLightState(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - actual light state, 0 = off, 1 = on
 
 ---
@@ -509,8 +487,6 @@ Toggle state of weapon light
 void ENGINE_toggleLightState(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## ENGINE_getDisplayTime
@@ -520,8 +496,6 @@ Get time shown at display (starting countdown, game time,...)
 uint16_t ENGINE_getDisplayTime(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - time from dislay in seconds
 
 ---
@@ -556,8 +530,6 @@ Get selected shot strength (send by shot message)
 uint8_t ENGINE_getShotStrength(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - shot strength in interval <SHOT_MULTIPLIER-100> with step size SHOT_MULTIPLIER
 
 ---
@@ -580,8 +552,6 @@ Get shot range value (physical current source settings)
 uint8_t ENGINE_getShotRange(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - shot range value (0-100), 0 is smallest range
 
 ---
@@ -663,8 +633,6 @@ Get the state of sending custom message
 uint8_t ENGINE_getCustomMessageState(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - state of message sending
 
 		 0x00 ENGINE_CUSTOM_MSG_STATE_READY
@@ -729,8 +697,6 @@ Get the state of trigger
 uint8_t ENGINE_getTriggerState(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - 0 - pressed, 1 - released
 
 ---
@@ -741,8 +707,6 @@ Get the state of user button
 uint8_t ENGINE_getUserButtonState(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - 0 - pressed, 1 - released
 
 ---
@@ -753,8 +717,6 @@ Get the actual steps count
 uint16_t ENGINE_getSteps(void);
 ```
 
-### Params
-{: .no_toc }
 - **return** - number of measured steps
 
 ---
@@ -803,8 +765,6 @@ Stop continuous shooting (sending shot message)
 void ENGINE_makeShootContinuousStop(void);
 ```
 
-### Params
-{: .no_toc }
 
 ---
 ## ENGINE_playSoundFromSoundSet
@@ -817,3 +777,453 @@ void ENGINE_playSoundFromSoundSet(uint8_t aSoundSetIndex);
 ### Params
 {: .no_toc }
 - **aSoundSetIndex** - index of sound in sound set table, <0; 99> or strictly <0; sound_set_nmbr_of_sounds>
+
+---
+## ENGINE_controlDisplayFromPlugin
+Enable control of display from plugin, disable default layout and info showing
+
+```cpp
+void ENGINE_controlDisplayFromPlugin(void);
+```
+
+### Params
+{: .no_toc }
+- **None\n\n\t\t** None
+
+		 @retval None
+
+---
+## ENGINE_selectDisplayBuffer
+Switch actual buffer for all drawing to selected one
+
+```cpp
+void ENGINE_selectDisplayBuffer(uint8_t aNumber);
+```
+
+### Params
+{: .no_toc }
+- **buffer_nmbr** - number of display buffer to be used, 1 or 2
+
+		 @retval None
+
+---
+## ENGINE_clearDisplayBuffer
+Clear actual buffer
+
+```cpp
+void ENGINE_clearDisplayBuffer(void);
+```
+
+### Params
+{: .no_toc }
+- **None\n\n\t\t** None
+
+		 @retval None
+
+---
+## ENGINE_drawBufferToDisplay
+Draws buffer to display
+
+```cpp
+void ENGINE_drawBufferToDisplay(uint8_t aBufferType);
+```
+
+### Params
+{: .no_toc }
+- **BufferType** - select which buffer will be drawn to display, valid values are 0 for actual, 1 for buffer1 and 2 for buffer2
+
+		 @retval None
+
+---
+## ENGINE_drawBufferToDisplayTimeouted
+Draws buffer to display and after timeout switch to other
+
+```cpp
+void ENGINE_drawBufferToDisplayTimeouted(uint8_t aBufferType, uint16_t aTimeout);
+```
+
+### Params
+{: .no_toc }
+- **BufferType** - select which buffer will be drawn to display, valid values are 0 for the other than actual, 1 for buffer1 and 2 for buffer2
+- **Timeout** - the time in [ms] for how long the buffer will be displayed
+
+		 @retval None
+
+---
+## ENGINE_drawPixel
+Draw pixel of specified color to coordinates [x,y]
+
+```cpp
+void ENGINE_drawPixel(uint8_t aX, uint8_t aY, uint8_t aColor);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **color** - white = 0, black = 1
+
+		 @retval None
+
+---
+## ENGINE_drawLine
+Draw line of specified color between coordinates [x0,y0] and [x1,y1]
+
+```cpp
+void ENGINE_drawLine(uint8_t aX0, uint8_t aY0, uint8_t aX1, uint8_t aY1, uint8_t aColor);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **color** - white = 0, black = 1
+
+		 @retval None
+
+---
+## ENGINE_drawRectangle
+Draw rectangle of specified color between coordinates [x0,y0] and [x1,y1]
+
+```cpp
+void ENGINE_drawRectangle(uint8_t aX0, uint8_t aY0, uint8_t aX1, uint8_t aY1, uint8_t aColor);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **color** - white = 0, black = 1
+
+		 @retval None
+
+---
+## ENGINE_fillRectangle
+Draw filled reclangle of specified color with selected width and height from point [x,y]
+
+```cpp
+void ENGINE_fillRectangle(uint8_t aX, uint8_t aY, uint8_t aWidth,
+		uint8_t aHeight, uint8_t aColor);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **width** - width of rectangle (x axis)
+- **height** - height of rectangle (y axis)
+- **color** - white = 0, black = 1
+
+		 @retval None
+
+---
+## ENGINE_drawCircle
+Draw circle of specified color with center in coordinates [x,y] and radius r
+
+```cpp
+void ENGINE_drawCircle(uint8_t aX, uint8_t aY, uint8_t aR, uint8_t aColor);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **R** - radius
+- **color** - white = 0, black = 1
+
+		 @retval None
+
+---
+## ENGINE_fillCircle
+Draw filled circle of specified color with selected radius from pivot [x,y]
+
+```cpp
+void ENGINE_fillCircle(uint8_t aX, uint8_t aY, uint8_t aRadius, uint8_t aColor);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate of pivot
+- **Y** - vertical coordinate of pivot
+- **Radius** - circle radius
+- **color** - white = 0, black = 1
+
+		 @retval None
+
+---
+## ENGINE_drawChar
+Draw single character from point [x,y] (upper left point)
+
+```cpp
+void ENGINE_drawChar(uint8_t aX, uint8_t aY, uint8_t aChar, uint8_t aSize);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **Char** - character to be drawn
+- **Size** - size of font, 0 is small, 1 is big
+
+		 @retval None
+
+---
+## ENGINE_drawString
+Draw string from point [x,y] (upper left point)
+
+```cpp
+void ENGINE_drawString(uint8_t aX, uint8_t aY, uint8_t* aString, uint8_t aSize);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **String** - text to be drawn
+- **Size** - size of font, 0 is small, 1 is big
+
+		 @retval None
+
+---
+## ENGINE_drawInt
+Draw integer number aligned with point [x,y]
+
+```cpp
+void ENGINE_drawInt(uint8_t aX, uint8_t aY, int32_t aValue, uint8_t aAlign,
+		uint8_t aSize);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **Value** - number to be drawn
+- **Align** - select align of number against point, left 'L', right 'R' and center 'C'
+- **Size** - size of font, 0 is small, 1 is big
+
+		 @retval None
+
+---
+## ENGINE_drawBar
+Draw bar from upper left point [x,y] with border according to width and height and percentage bar
+
+```cpp
+void ENGINE_drawBar(uint8_t aX, uint8_t aY, uint8_t aWidth, uint8_t aHeight,
+		uint8_t aPercentage, uint8_t aOrientation);
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **width** - width of rectangle (x axis)
+- **height** - height of rectangle (y axis)
+- **Percentage** - size of bar
+- **Orientation** - H for horizontal and V for vertical bar
+
+		 @retval None
+
+---
+## ENGINE_drawBitmap
+Draw bitmap with [width,height] from upper left point [x,y], each row divided into whole bytes
+
+```cpp
+void ENGINE_drawBitmap(uint8_t aX, uint8_t aY, uint8_t aWidth, uint8_t aHeight,
+		uint8_t* aBitmap );
+```
+
+### Params
+{: .no_toc }
+- **X** - horizontal coordinate
+- **Y** - vertical coordinate
+- **width** - width of bitmap (x axis)
+- **height** - height of bitmap (y axis)
+- **Bitmap** - pointer to uint8_t array with bitmap, each row starts with new byte
+
+		 @retval None
+
+---
+## ENGINE_invertDisplayBuffer
+Inverts each bit in selected display buffer
+
+```cpp
+void ENGINE_invertDisplayBuffer(uint8_t aBufferType);
+```
+
+### Params
+{: .no_toc }
+- **** BufferType - select which buffer will be drawn to display, valid values are 0 for actual, 1 for buffer1 and 2 for buffer2
+
+		 @retval None
+
+---
+## ENGINE_getRank
+Returns actual rank of player
+
+```cpp
+uint8_t ENGINE_getRank(void);
+```
+
+### Params
+{: .no_toc }
+- **** None
+
+		 @retval Rank
+
+---
+## ENGINE_getScore
+Returns actual score of player
+
+```cpp
+int32_t ENGINE_getScore(void);
+```
+
+### Params
+{: .no_toc }
+- **** None
+
+		 @retval Score
+
+---
+## ENGINE_getCode
+Returns code of player
+
+```cpp
+uint8_t ENGINE_getCode(void);
+```
+
+### Params
+{: .no_toc }
+- **** None
+
+		 @retval Code
+
+---
+## ENGINE_getPlayerName
+Returns name of player selected by code
+
+```cpp
+uint8_t ENGINE_getPlayerName(uint8_t* apName, uint8_t aCode);
+```
+
+### Params
+{: .no_toc }
+- **** Code - code of player whose name will be returned
+- **** Name - pointer to buffer, where the player name will be copied, at least 21 bytes
+
+		 @retval Length - returns length of Name
+
+---
+## ENGINE_setLaserAutoControl
+Select if laser is automatically controlled by shooting or not
+
+```cpp
+void ENGINE_setLaserAutoControl(uint8_t aState);
+```
+
+### Params
+{: .no_toc }
+- **** State - new state of automatic laser control, 1 is enabled, 0 is disabled
+
+		 @retval None
+
+---
+## ENGINE_setLaserFlashing
+Select if laser is continuously flashing
+
+```cpp
+void ENGINE_setLaserFlashing(uint8_t aState);
+```
+
+### Params
+{: .no_toc }
+- **** State - new state of laser flashing, 1 is enabled, 0 is disabled
+
+		 @retval None
+
+---
+## ENGINE_stopSound
+Stops playing of sound, clear all sounds in sound buffer if channel1 selected
+
+```cpp
+void ENGINE_stopSound(uint8_t aChannel);
+```
+
+### Params
+{: .no_toc }
+- **** Channel - selects which channel is stopped. 1 = channel1 (sounds), 2 = channel2 (shoot), 0 = both channels
+
+		 @retval None
+
+---
+## ENGINE_clearSoundBuffer
+Clears sound buffer. Actually played sound on ch1 is finished normally
+
+```cpp
+void ENGINE_clearSoundBuffer(void);
+```
+
+### Params
+{: .no_toc }
+- **** None
+
+		 @retval None
+
+---
+## ENGINE_deleteSoundFromBuffer
+delete all instances of selected sound from sound buffer, no influence if already playing
+
+```cpp
+void ENGINE_deleteSoundFromBuffer(uint32_t aSoundID, uint8_t aSoundFromSoundSet);
+```
+
+### Params
+{: .no_toc }
+- **** SoundID - ID of sound selected to be deleted (or SoundSetID)
+- **** SoundFromSoundSet - specifies if selected sound is from sound set, 1 = sound from soundset, 0 = only soundID
+
+		 @retval None
+
+---
+## ENGINE_playSoundImmediately
+play selected sound immediately (add it to front of sound buffer)
+
+```cpp
+void ENGINE_playSoundImmediately(uint32_t aSoundID, uint8_t aSoundFromSoundSet, uint8_t aStopActualSound);
+```
+
+### Params
+{: .no_toc }
+- **** SoundID - ID of sound selected to be deleted (or SoundSetID)
+- **** SoundFromSoundSet - specifies if selected sound is from sound set, 1 = sound from soundset, 0 = only soundID
+- **** StopActualSound - specifies if demand to stop actually playing sound (1) or not (0). If 1, actual sound is stopped and selected is played immediately, if 0, selected sound is played after actual ends
+
+		 @retval None
+
+---
+## ENGINE_generateRandomNumber
+generate random number from 0 to selected max value
+
+```cpp
+uint32_t ENGINE_generateRandomNumber(uint32_t aMaxValue);
+```
+
+### Params
+{: .no_toc }
+- **** MaxValue - upper limit of interval for generating random number
+
+		 @retval generated random number
+
+---
+## ENGINE_setStroboscopeMode
+set different stroboscope mode, recommended to use only in Init function
+
+```cpp
+void ENGINE_setStroboscopeMode(uint8_t aMode);
+```
+
+### Params
+{: .no_toc }
+- **** Mode - index of mode, 0 is basic lightning for 1s, 1 is 3 fast blinks, 2 is 5 fast blinks
+
+		 @retval none

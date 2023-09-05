@@ -75,3 +75,22 @@ moment package
 ## game
 whole QueueGame object selected from database
 
+
+
+---
+## customData
+extracted template customData
+
+
+
+---
+## tl
+translate function for local template translations
+
+
+
+---
+## tg
+translate function for global translations
+
+
