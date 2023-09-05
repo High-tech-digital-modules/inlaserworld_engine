@@ -786,11 +786,6 @@ Enable control of display from plugin, disable default layout and info showing
 void ENGINE_controlDisplayFromPlugin(void);
 ```
 
-### Params
-{: .no_toc }
-- **None\n\n\t\t** None
-
-		 @retval None
 
 ---
 ## ENGINE_selectDisplayBuffer
@@ -804,8 +799,6 @@ void ENGINE_selectDisplayBuffer(uint8_t aNumber);
 {: .no_toc }
 - **buffer_nmbr** - number of display buffer to be used, 1 or 2
 
-		 @retval None
-
 ---
 ## ENGINE_clearDisplayBuffer
 Clear actual buffer
@@ -814,11 +807,6 @@ Clear actual buffer
 void ENGINE_clearDisplayBuffer(void);
 ```
 
-### Params
-{: .no_toc }
-- **None\n\n\t\t** None
-
-		 @retval None
 
 ---
 ## ENGINE_drawBufferToDisplay
@@ -832,8 +820,6 @@ void ENGINE_drawBufferToDisplay(uint8_t aBufferType);
 {: .no_toc }
 - **BufferType** - select which buffer will be drawn to display, valid values are 0 for actual, 1 for buffer1 and 2 for buffer2
 
-		 @retval None
-
 ---
 ## ENGINE_drawBufferToDisplayTimeouted
 Draws buffer to display and after timeout switch to other
@@ -846,8 +832,6 @@ void ENGINE_drawBufferToDisplayTimeouted(uint8_t aBufferType, uint16_t aTimeout)
 {: .no_toc }
 - **BufferType** - select which buffer will be drawn to display, valid values are 0 for the other than actual, 1 for buffer1 and 2 for buffer2
 - **Timeout** - the time in [ms] for how long the buffer will be displayed
-
-		 @retval None
 
 ---
 ## ENGINE_drawPixel
@@ -863,8 +847,6 @@ void ENGINE_drawPixel(uint8_t aX, uint8_t aY, uint8_t aColor);
 - **Y** - vertical coordinate
 - **color** - white = 0, black = 1
 
-		 @retval None
-
 ---
 ## ENGINE_drawLine
 Draw line of specified color between coordinates [x0,y0] and [x1,y1]
@@ -879,8 +861,6 @@ void ENGINE_drawLine(uint8_t aX0, uint8_t aY0, uint8_t aX1, uint8_t aY1, uint8_t
 - **Y** - vertical coordinate
 - **color** - white = 0, black = 1
 
-		 @retval None
-
 ---
 ## ENGINE_drawRectangle
 Draw rectangle of specified color between coordinates [x0,y0] and [x1,y1]
@@ -894,8 +874,6 @@ void ENGINE_drawRectangle(uint8_t aX0, uint8_t aY0, uint8_t aX1, uint8_t aY1, ui
 - **X** - horizontal coordinate
 - **Y** - vertical coordinate
 - **color** - white = 0, black = 1
-
-		 @retval None
 
 ---
 ## ENGINE_fillRectangle
@@ -914,8 +892,6 @@ void ENGINE_fillRectangle(uint8_t aX, uint8_t aY, uint8_t aWidth,
 - **height** - height of rectangle (y axis)
 - **color** - white = 0, black = 1
 
-		 @retval None
-
 ---
 ## ENGINE_drawCircle
 Draw circle of specified color with center in coordinates [x,y] and radius r
@@ -930,8 +906,6 @@ void ENGINE_drawCircle(uint8_t aX, uint8_t aY, uint8_t aR, uint8_t aColor);
 - **Y** - vertical coordinate
 - **R** - radius
 - **color** - white = 0, black = 1
-
-		 @retval None
 
 ---
 ## ENGINE_fillCircle
@@ -948,8 +922,6 @@ void ENGINE_fillCircle(uint8_t aX, uint8_t aY, uint8_t aRadius, uint8_t aColor);
 - **Radius** - circle radius
 - **color** - white = 0, black = 1
 
-		 @retval None
-
 ---
 ## ENGINE_drawChar
 Draw single character from point [x,y] (upper left point)
@@ -965,8 +937,6 @@ void ENGINE_drawChar(uint8_t aX, uint8_t aY, uint8_t aChar, uint8_t aSize);
 - **Char** - character to be drawn
 - **Size** - size of font, 0 is small, 1 is big
 
-		 @retval None
-
 ---
 ## ENGINE_drawString
 Draw string from point [x,y] (upper left point)
@@ -981,8 +951,6 @@ void ENGINE_drawString(uint8_t aX, uint8_t aY, uint8_t* aString, uint8_t aSize);
 - **Y** - vertical coordinate
 - **String** - text to be drawn
 - **Size** - size of font, 0 is small, 1 is big
-
-		 @retval None
 
 ---
 ## ENGINE_drawInt
@@ -1000,8 +968,6 @@ void ENGINE_drawInt(uint8_t aX, uint8_t aY, int32_t aValue, uint8_t aAlign,
 - **Value** - number to be drawn
 - **Align** - select align of number against point, left 'L', right 'R' and center 'C'
 - **Size** - size of font, 0 is small, 1 is big
-
-		 @retval None
 
 ---
 ## ENGINE_drawBar
@@ -1021,8 +987,6 @@ void ENGINE_drawBar(uint8_t aX, uint8_t aY, uint8_t aWidth, uint8_t aHeight,
 - **Percentage** - size of bar
 - **Orientation** - H for horizontal and V for vertical bar
 
-		 @retval None
-
 ---
 ## ENGINE_drawBitmap
 Draw bitmap with [width,height] from upper left point [x,y], each row divided into whole bytes
@@ -1040,8 +1004,6 @@ void ENGINE_drawBitmap(uint8_t aX, uint8_t aY, uint8_t aWidth, uint8_t aHeight,
 - **height** - height of bitmap (y axis)
 - **Bitmap** - pointer to uint8_t array with bitmap, each row starts with new byte
 
-		 @retval None
-
 ---
 ## ENGINE_invertDisplayBuffer
 Inverts each bit in selected display buffer
@@ -1052,9 +1014,7 @@ void ENGINE_invertDisplayBuffer(uint8_t aBufferType);
 
 ### Params
 {: .no_toc }
-- **** BufferType - select which buffer will be drawn to display, valid values are 0 for actual, 1 for buffer1 and 2 for buffer2
-
-		 @retval None
+- **BufferType** - select which buffer will be drawn to display, valid values are 0 for actual, 1 for buffer1 and 2 for buffer2
 
 ---
 ## ENGINE_getRank
@@ -1064,11 +1024,7 @@ Returns actual rank of player
 uint8_t ENGINE_getRank(void);
 ```
 
-### Params
-{: .no_toc }
-- **** None
-
-		 @retval Rank
+- **return** Rank
 
 ---
 ## ENGINE_getScore
@@ -1078,11 +1034,7 @@ Returns actual score of player
 int32_t ENGINE_getScore(void);
 ```
 
-### Params
-{: .no_toc }
-- **** None
-
-		 @retval Score
+- **return** Score
 
 ---
 ## ENGINE_getCode
@@ -1092,11 +1044,7 @@ Returns code of player
 uint8_t ENGINE_getCode(void);
 ```
 
-### Params
-{: .no_toc }
-- **** None
-
-		 @retval Code
+- **return** Code
 
 ---
 ## ENGINE_getPlayerName
@@ -1108,10 +1056,9 @@ uint8_t ENGINE_getPlayerName(uint8_t* apName, uint8_t aCode);
 
 ### Params
 {: .no_toc }
-- **** Code - code of player whose name will be returned
-- **** Name - pointer to buffer, where the player name will be copied, at least 21 bytes
-
-		 @retval Length - returns length of Name
+- **Code** - code of player whose name will be returned
+- **Name** - pointer to buffer, where the player name will be copied, at least 21 bytes
+- **return** Length - returns length of Name
 
 ---
 ## ENGINE_setLaserAutoControl
@@ -1123,9 +1070,7 @@ void ENGINE_setLaserAutoControl(uint8_t aState);
 
 ### Params
 {: .no_toc }
-- **** State - new state of automatic laser control, 1 is enabled, 0 is disabled
-
-		 @retval None
+- **State** - new state of automatic laser control, 1 is enabled, 0 is disabled
 
 ---
 ## ENGINE_setLaserFlashing
@@ -1137,9 +1082,7 @@ void ENGINE_setLaserFlashing(uint8_t aState);
 
 ### Params
 {: .no_toc }
-- **** State - new state of laser flashing, 1 is enabled, 0 is disabled
-
-		 @retval None
+- **State** - new state of laser flashing, 1 is enabled, 0 is disabled
 
 ---
 ## ENGINE_stopSound
@@ -1151,9 +1094,7 @@ void ENGINE_stopSound(uint8_t aChannel);
 
 ### Params
 {: .no_toc }
-- **** Channel - selects which channel is stopped. 1 = channel1 (sounds), 2 = channel2 (shoot), 0 = both channels
-
-		 @retval None
+- **Channel** - selects which channel is stopped. 1 = channel1 (sounds), 2 = channel2 (shoot), 0 = both channels
 
 ---
 ## ENGINE_clearSoundBuffer
@@ -1163,11 +1104,6 @@ Clears sound buffer. Actually played sound on ch1 is finished normally
 void ENGINE_clearSoundBuffer(void);
 ```
 
-### Params
-{: .no_toc }
-- **** None
-
-		 @retval None
 
 ---
 ## ENGINE_deleteSoundFromBuffer
@@ -1179,10 +1115,8 @@ void ENGINE_deleteSoundFromBuffer(uint32_t aSoundID, uint8_t aSoundFromSoundSet)
 
 ### Params
 {: .no_toc }
-- **** SoundID - ID of sound selected to be deleted (or SoundSetID)
-- **** SoundFromSoundSet - specifies if selected sound is from sound set, 1 = sound from soundset, 0 = only soundID
-
-		 @retval None
+- **SoundID** - ID of sound selected to be deleted (or SoundSetID)
+- **SoundFromSoundSet** - specifies if selected sound is from sound set, 1 = sound from soundset, 0 = only soundID
 
 ---
 ## ENGINE_playSoundImmediately
@@ -1194,11 +1128,9 @@ void ENGINE_playSoundImmediately(uint32_t aSoundID, uint8_t aSoundFromSoundSet, 
 
 ### Params
 {: .no_toc }
-- **** SoundID - ID of sound selected to be deleted (or SoundSetID)
-- **** SoundFromSoundSet - specifies if selected sound is from sound set, 1 = sound from soundset, 0 = only soundID
-- **** StopActualSound - specifies if demand to stop actually playing sound (1) or not (0). If 1, actual sound is stopped and selected is played immediately, if 0, selected sound is played after actual ends
-
-		 @retval None
+- **SoundID** - ID of sound selected to be deleted (or SoundSetID)
+- **SoundFromSoundSet** - specifies if selected sound is from sound set, 1 = sound from soundset, 0 = only soundID
+- **StopActualSound** - specifies if demand to stop actually playing sound (1) or not (0). If 1, actual sound is stopped and selected is played immediately, if 0, selected sound is played after actual ends
 
 ---
 ## ENGINE_generateRandomNumber
@@ -1210,9 +1142,8 @@ uint32_t ENGINE_generateRandomNumber(uint32_t aMaxValue);
 
 ### Params
 {: .no_toc }
-- **** MaxValue - upper limit of interval for generating random number
-
-		 @retval generated random number
+- **MaxValue** - upper limit of interval for generating random number
+- **return** generated random number
 
 ---
 ## ENGINE_setStroboscopeMode
@@ -1224,6 +1155,4 @@ void ENGINE_setStroboscopeMode(uint8_t aMode);
 
 ### Params
 {: .no_toc }
-- **** Mode - index of mode, 0 is basic lightning for 1s, 1 is 3 fast blinks, 2 is 5 fast blinks
-
-		 @retval none
+- **Mode** - index of mode, 0 is basic lightning for 1s, 1 is 3 fast blinks, 2 is 5 fast blinks
