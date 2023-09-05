@@ -1,9 +1,9 @@
 
 function PlayerScore({ index} ) {
   const player = useSelector(getPlayer(index));
-      
+
   return <SPlayerDataScoreRow bigger={gameResultState !== GameResultsState.FINISHED}>
-    <SPlayerDataScoreRowItem 
+    <SPlayerDataScoreRowItem
       style={{ minWidth: 80 }}>{player.playerScore}</SPlayerDataScoreRowItem>
     <SPlayerDataScoreRowItem>{player.playerKills}</SPlayerDataScoreRowItem>
     <SPlayerDataScoreRowItem>{player.playerDeaths}</SPlayerDataScoreRowItem>
@@ -19,36 +19,36 @@ function PlayerScore({ index} ) {
 
 function Player ( {index} ) {
   const player = useSelector(getPlayer(index));
-  return <SPlayerItem 
-    running={gameResultState === GameResultsState.RUNNING} 
+  return <SPlayerItem
+    running={gameResultState === GameResultsState.RUNNING}
     bigger={gameResultState !== GameResultsState.FINISHED}>
     {/*<SColorCircle style={{ backgroundColor:  
       '#' + ('000000' + ((player.playerColor) >>> 0).toString(16)).slice(-6) }} />*/}
-      <SColorCircle style={{ backgroundColor:  player.isAgent ? customData.agentColor : customData.normalColor }} />
+    <SColorCircle style={{ backgroundColor:  player.isAgent ? customData.agentColor : customData.normalColor }} />
     <SRank>{(index + 1) + '. '}</SRank>
     <div>{player.playerName}</div>
-  </SPlayerItem>;  
+  </SPlayerItem>;
 }
 
 function TeamScore({ index} ) {
   const team = useSelector(getTeam(index));
-      
+
   return <SPlayerDataScoreRow bigger={gameResultState !== GameResultsState.FINISHED}>
-    <SPlayerDataScoreRowItem 
+    <SPlayerDataScoreRowItem
       style={{ minWidth: 120 }} >{team.score}</SPlayerDataScoreRowItem>
   </SPlayerDataScoreRow>;
 }
 
 function Team ( {index} ) {
   const team = useSelector(getTeam(index));
-  return <SPlayerItem 
+  return <SPlayerItem
     bigger={gameResultState !== GameResultsState.FINISHED}
     running={gameResultState === GameResultsState.RUNNING}>
-    <SColorCircle style={{ backgroundColor:  
-      '#' + ('000000' + ((team.color) >>> 0).toString(16)).slice(-6) }} />
+    <SColorCircle style={{ backgroundColor:
+        '#' + ('000000' + ((team.color) >>> 0).toString(16)).slice(-6) }} />
     <SRank>{(index + 1) + '. '}</SRank>
     <div>{team.name.length > 15 ? team.name.substring(0, 15) + '...' : team.name}</div>
-  </SPlayerItem>;  
+  </SPlayerItem>;
 }
 
 function PlayerRotatedName ( {index} ) {
@@ -56,7 +56,7 @@ function PlayerRotatedName ( {index} ) {
   return <SPlayerTableHeaderItem bigger={gameResultState !== GameResultsState.FINISHED}>
     <SPlayerTableHeaderItemName bigger={gameResultState !== GameResultsState.FINISHED}>
       {playerName}</SPlayerTableHeaderItemName>
-  </SPlayerTableHeaderItem> 
+  </SPlayerTableHeaderItem>
 }
 
 function PlayerTableField ({ rank, index }) {
@@ -74,19 +74,19 @@ function PlayerTableField ({ rank, index }) {
   if(typeof player.hits[rank].hitsTotal === 'undefined') {
     return <SPlayerTableFieldSame bigger={gameResultState !== GameResultsState.FINISHED}/>
   }
-  
+
   let friendlyHit = false;
   if (gameTemplate) {
-    friendlyHit = (player.playerColor === player2.playerColor 
+    friendlyHit = (player.playerColor === player2.playerColor
       && player.hits[rank].hitsTotal && gameTemplate.teamGame);
   }
-  
-  return <SPlayerTableFieldItem 
+
+  return <SPlayerTableFieldItem
     bigger={gameResultState !== GameResultsState.FINISHED}
     style={{ ...friendlyHit ? {
-                            color: '#C72C54',
-                            fontWeight: 'bold',
-                          } : {  } }}>
+        color: '#C72C54',
+        fontWeight: 'bold',
+      } : {  } }}>
     {player.hits[rank].hitsTotal}
   </SPlayerTableFieldItem>
 }
@@ -130,8 +130,8 @@ function KillLogRow({ log, colorArray, gameTime, index, opacity }) {
     </SKillLogRowItem>
     <SKillLogRowItem>
       {log.killLogWho +
-      (log.bonus > 1 ? '(' + log.bonus + ')' : '') +
-      (hitsAssistance.length > 0 ? ' + ' + hitsAssistance.join(', ') : '')
+        (log.bonus > 1 ? '(' + log.bonus + ')' : '') +
+        (hitsAssistance.length > 0 ? ' + ' + hitsAssistance.join(', ') : '')
       }
     </SKillLogRowItem>
     <div className='base32x32icon PistolIconStyle'/>
@@ -150,12 +150,12 @@ function CountDown () {
       strokeWidth={14}
       styles={{
         path: { stroke: `rgba(${barColor}, ${evaluationGameTime * 100 /
-        (gameTime * 60)})`, strokeWidth: 8 },
+          (gameTime * 60)})`, strokeWidth: 8 },
         text: { fill: '#fff', fontSize: '16px' },
         trail: { stroke: '#282C31', strokeWidth: 14 },
       }}
       percentage={evaluationGameTime * 100 /
-      (gameTime * 60)}
+        (gameTime * 60)}
       text={minuteSecondsString(evaluationGameTime)}
     />
   </SGameProgress>;
@@ -163,7 +163,7 @@ function CountDown () {
 
 function OnlinePlayerGameScore() {
   const players = useSelector(getEvaluationItem('evaluationPlayers'));
-  
+
   return (
     <FlipMove style={{width: '100%'}} duration={750} easing='ease-out'>
       {
@@ -180,7 +180,7 @@ function OnlinePlayerGameScore() {
 
 function OnlineTeamGameScore() {
   const teams = useSelector(getEvaluationItem('evaluationTeams'));
-  
+
   return (
     <FlipMove style={{width: '100%'}} duration={750} easing='ease-out'>
       {
@@ -213,24 +213,24 @@ function Main () {
       playersTableHeader.push(<PlayerRotatedName index={i}/>);
     }
   }
-  
+
   const playersTableFields = [];
   if (gameResultState !== GameResultsState.RUNNING) {
     for(let i = 0; i < playerNumber; i++) {
       playersTableFields.push(<PlayerTableFieldRow index={i} playerLength={playerNumber}/>);
     }
   }
-  
+
   const teams = [];
   for(let i = 0; i < teamNumber; i++) {
     teams.push(<Team index={i}/>);
   }
-  
+
   const teamScore = [];
   for(let i = 0; i < teamNumber; i++) {
     teamScore.push(<TeamScore index={i}/>);
   }
-  
+
   return <SResult style={{ color: '#fff' }}>
     {gameResultState === GameResultsState.RUNNING && <CountDown/>}
     <SContent>
@@ -281,7 +281,7 @@ function Main () {
               </SPlayerTableHeaderItemName>
             </SPlayerTableHeaderItem>
           </SPlayerDataHeaderItem>
-          
+
         </SPlayerDataHeader>
         {gameResultState !== GameResultsState.RUNNING ? <div>{playerScore}</div> : <OnlinePlayerGameScore/>}
       </div>
@@ -327,7 +327,7 @@ function Main () {
       </div>}
     </SContent>
     <div style={{ flex: 2 }}/>
-    {gameResultState !== GameResultsState.FRESH_FINISH && <KillLog 
+    {gameResultState !== GameResultsState.FRESH_FINISH && <KillLog
       style={{
         maxHeight: '35vh',
         overflow: 'auto',

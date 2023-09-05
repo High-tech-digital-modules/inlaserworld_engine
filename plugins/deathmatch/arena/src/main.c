@@ -145,7 +145,7 @@ void selectNewBonus(void) {
 }
 
 void selectBonusActivateTime(void) {
-    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 15000 + rand() % 15000);
+    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 5000 + rand() % 5000);//15000 + rand() % 15000
 }
 
 void selectMineActivateTime(void) {

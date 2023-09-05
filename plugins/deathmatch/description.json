@@ -1,7 +1,7 @@
 {
   "name": "DeathMatch",
   "gameTime": 12,
-  "preparationTime": 15,
+  "preparationTime": 2,
   "teamsList": [
     {
       "id": "5e2ffc89-8c9f-4acf-af26-4080254788fc",
@@ -25,6 +25,9 @@
   "minPlayers": 2,
   "teamGame": true,
   "noTeamGame": true,
+  "useTeamTranslationByColor": false,
+  "disableSelectTeamColor": false,
+  "disableSelectPlayerColor": false,
   "canManageTeams": true,
   "globalDeathTime": 5,
   "globalReviveTime": 1,

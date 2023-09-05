@@ -79,7 +79,7 @@ for(let i = 0; i < game.result.evaluationPlayers.length; i+=12) {
   doc.roundedRect(doc.page.width - 20,80, 5, doc.page.height - 140).fill('#e4e4e4');
   doc.roundedRect(15,60, doc.page.width - 30, 10, 5).fill('#000');
   doc.roundedRect(15,65, doc.page.width - 30, 15).fill('#000');
-  doc.font(boldText).fontSize(12).fill('#eee').text(`Datum: ${moment(game.endDate)
+  doc.font(boldText).fontSize(12).fill('#eee').text(`Datum: ${moment(game.result.endDate)
     .format('DD.MM.YYYY hh:mm')}`, 40, 63);
   
   const table = generateMainTable(i, i+12);
