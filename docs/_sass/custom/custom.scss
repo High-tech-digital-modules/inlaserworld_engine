@@ -42,6 +42,19 @@
   }
 }
 
+.highlight {
+  & .p {
+    color: white;
+  }
+
+  & .o {
+    color: white;
+  }
+  & .n {
+    color: #50a04f;
+  }
+}
+
 .search-input {
   color: white;
 }
