@@ -42,6 +42,25 @@
 *.idb
 *.pdb
 
+# Engine specific files
+plugins/**/build-linux-d
+plugins/**/build-linux-o
+plugins/**/build-raspbian-o
+plugins/**/build-raspbian-d
+plugins/**/build-stm32-d
+plugins/**/build-stm32-o
+plugins/**/custom_variables_map.c
+plugins/**/custom_variables_map.h
+plugins/**/sound_set_map.h
+plugins/**/use_functions_def.h
+plugins/**/submodules.h
+plugins/**/library_*.h
+plugins/**/custom_variables_map_*.h
+plugins/**/BUILD.mk
+plugins/**/SUBMODULES.mk
+
+
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
