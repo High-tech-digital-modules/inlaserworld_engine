@@ -72,7 +72,8 @@ SECTIONS
     *engine_*.o(.text*)          	/* .text* sections (code) */
     *custom_*.o(.text)           	/* .text sections (code) */
     *custom_*.o(.text*)          	/* .text* sections (code) */
-   
+    *(.text)
+    *(.text*)
     . = ALIGN(4);
     _emytext = .;        /* define a global symbols at end of code */
   } >PLUGINRAM
