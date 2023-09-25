@@ -33,3 +33,7 @@ LIB_INC =                                                                \
 LIB_LIBS =                                                               \
 
 -include ../SUBMODULES.mk
+
+CUSTOM_DEP_TARGET = plugin.o
+CUSTOM_DEP_DEPENDENCIES = $(SDK_ROOT)/raspberry/lib/plugin_base/src/plugin.c \
+../src/main.c
