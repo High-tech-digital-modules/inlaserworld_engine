@@ -33,3 +33,7 @@ LIB_INC =                                                                \
 -I$(SDK_ROOT)/3rdParty/rapidjson-1.1.0/include
 
 LIB_LIBS =                                                               \
+
+CUSTOM_DEP_TARGET = plugin_library.o
+CUSTOM_DEP_DEPENDENCIES = $(SDK_ROOT)/raspberry/lib/plugin_library_base/src/plugin_library.c \
+../src/main.c

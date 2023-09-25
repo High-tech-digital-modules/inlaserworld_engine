@@ -48,3 +48,8 @@ FLAGS += -D PLUGIN_CODE
 LIB_INC += -I$(SDK_ROOT)/firmware/stm/32F427/include                               \
 
 endif
+
+CUSTOM_DEP_TARGET = plugin_library_init.o
+CUSTOM_DEP_DEPENDENCIES = $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_library_base/src/plugin_library_init.c \
+../src/plugin/plugin_functions.c
+

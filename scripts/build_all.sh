@@ -2,11 +2,16 @@
 
 ROOT_PATH=$(pwd | grep -o ".*/inlaserworld_engine")
 
-echo "$ROOT_PATH"
 
+
+FINAL_PATH="$ROOT_PATH/plugins"
+# Check if the first command-line argument ($1) is provided
+if [ -n "$1" ]; then
+    FINAL_PATH="$FINAL_PATH/$1"
+fi
 cd "$ROOT_PATH" || exit 1
 
-for path in $(find "$ROOT_PATH/plugins" -name BUILD.mk); do
+for path in $(find $FINAL_PATH -name BUILD.mk); do
         for buildPath in $(find $(dirname $path) -name Makefile); do
               if [[ "$(dirname $buildPath)" == *-o ]]; then
                   make -C $(dirname $buildPath) || exit 1

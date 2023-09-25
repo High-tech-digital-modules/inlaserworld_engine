@@ -71,3 +71,7 @@ APP_INC =                                                                  \
 endif
 
 -include ../SUBMODULES.mk
+
+CUSTOM_DEP_TARGET = plugin_init.o
+CUSTOM_DEP_DEPENDENCIES = $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_base/src/plugin_init.c \
+../src/plugin/plugin_functions.c
