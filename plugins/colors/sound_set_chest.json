@@ -4,22 +4,44 @@
     {
       "name": "loaded",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 73
     },
     {
       "name": "gameStarting",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 96
     },
     {
       "name": "death",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 59
     },
     {
       "name": "aliveAgain",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 96
+    },
+    {
+      "name": "immortality",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 65
+    },
+    {
+      "name": "invisibility",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 66
+    },
+    {
+      "name": "machine_gun",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 79
     }
   ],
   "subName": "en",
