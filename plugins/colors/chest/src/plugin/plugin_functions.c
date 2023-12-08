@@ -18,6 +18,7 @@
 #define DI_SWITCH_BASIC 0x0100
 #define DI_KILLED 0x0200
 #define DI_HIT 0x0400
+#define DI_PLAYERS_COUNT 0x0800
 
 #define DL_NONE 0
 #define DL_BONUS 1
@@ -86,6 +87,7 @@ volatile uint8_t gvColorIndex = 255;
 volatile uint8_t gvAlreadyDead = 0;
 volatile uint8_t gvTeamsCount = 0;
 volatile uint8_t gvRoundEndProcess = 0;
+volatile uint8_t gvPlayersInTeam = 0;
 
 void colorRainbowSet(void) {
     colors_t lColor1;
@@ -309,7 +311,7 @@ void PLUGIN_timer10ms(void) {
         ENGINE_setGameState(game_state_dead);
         gvTimeDeath = 1;
         colorRainbowSet();
-        if(gvTimeBonus == 1){
+        if (gvTimeBonus == 1) {
             gvTimeBonusCounter = gvLengthBonus;
         }
         gvTimeBlinking = 0;
@@ -487,7 +489,7 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
                        uint8_t aHitCustomInfo, uint16_t aLife, uint8_t aHealth) {
     uint8_t lGameState = ENGINE_getGameState();
 
-    if (lGameState == game_state_alive) {
+    if (lGameState == game_state_alive || lGameState == game_state_revival) {
         if ((aHitCode == bonusShotCode) && (aHitCustomInfo != 0)) {
             if (gvTimeBonusObtainedDelay == 1) {
                 return;
@@ -503,10 +505,12 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
             return;
         }
 
+        aHitStrength = shootPower;
         if (aHitCode == bonusShotCode) {
             gvMineHits++;
             ENGINE_setPeriodicInfoByte((gvMineHits >> 8) & 0xFF, 0);
             ENGINE_setPeriodicInfoByte(gvMineHits & 0xFF, 1);
+            aHitStrength = 100;
         }
 
         if (aHitCustomInfo != gvColorIndex || aHitCode == bonusShotCode) {
@@ -571,10 +575,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
         } else if (aGameState == game_state_alive) {
             lMessageTemp = LED1(led_basic) | LED2(led_basic);
         } else if (aGameState == game_state_revival) {
-            if (gvTimeBlinkingLed == 1)
-                lMessageTemp = LED1(led_basic) | LED2(led_special);
-            else
-                lMessageTemp = LED1(led_basic) | LED2(led_basic);
+            lMessageTemp = LED1(led_basic) | LED2(led_basic);
         } else if (aGameState == game_state_dead) {
             if (gvRoundEndProcess == 2) {
                 lMessageTemp = LED1(led_basic) | LED2(led_special);
@@ -584,8 +585,24 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     }
 
     if (aGameState != game_state_alive) {
-        for (i = 0; i < MODULES_NUMBER; i++)
+        uint8_t lDimValueRevival1 = 100;
+        uint8_t lDimValueRevival2 = 0;
+        if (gvTimeRevivalCounter * 2 < gvLengthRevival) {
+            lDimValueRevival1 = gvTimeRevivalCounter * aHealth * 2 / gvLengthRevival;
+        } else {
+            lDimValueRevival2 = (2 * gvTimeRevivalCounter - gvLengthRevival) * aHealth / gvLengthRevival;
+        }
+        for (i = 0; i < MODULES_NUMBER; i++) {
             apModulesState[i] = lMessageTemp;
+            if (gvTimeRevival == 1) {
+                apModulesDim1[i] = lDimValueRevival1;
+                apModulesDim2[i] = lDimValueRevival2;
+            }
+        }
+        if (aGameState == game_state_dead) {
+            apModulesState[0] |= LED1(led_basic);
+            apModulesState[1] |= LED1(led_basic);
+        }
     } else {
         if (gvActualBonus == bonusInvisibility) {
             for (i = 0; i < MODULES_NUMBER; i++)
@@ -684,7 +701,7 @@ void PLUGIN_changedGameStateToDead(uint8_t aGameStateLast) {
  * part in while loop in main triggered by game_state change
  */
 void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
-    gvTimeBlinking = 1;
+    // gvTimeBlinking = 1;
     gvTimeRevival = 1;
     ENGINE_playSoundFromSoundSet(aliveAgain);
     ENGINE_setHealth(100);
@@ -737,6 +754,12 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
     /*dead after round*/
     if ((apData[0] == 'D') && (aDevice == 0x00)) {
         gvRoundEndProcess = 1;
+    }
+
+    /*players count in team*/
+    if ((apData[0] == 'C') && (aDevice == 0x00)) {
+        gvPlayersInTeam = apData[1];
+        gvDisplayIndex |= DI_PLAYERS_COUNT;
     }
 
     /*bonus process*/

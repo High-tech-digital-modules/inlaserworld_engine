@@ -67,7 +67,7 @@
     "id": "93bff10c-3edc-4b2f-b972-3f42cef49a28",
     "name": "shootPower",
     "type": "uint32_t",
-    "value": 100,
+    "value": 20,
     "label": "Shoot power",
     "target": 4,
     "inGameMenu": true

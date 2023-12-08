@@ -10,16 +10,7 @@
       "ammo": 30000,
       "life": 30000,
       "deathTime": 5,
-      "reviveTime": 5
-    },
-    {
-      "id": "dde044b1-d94c-4f9f-8bd6-11d39ec08c2d",
-      "name": "",
-      "color": "#e91e63",
-      "ammo": 30000,
-      "life": 30000,
-      "deathTime": 5,
-      "reviveTime": 5
+      "reviveTime": 2
     }
   ],
   "minPlayers": 2,

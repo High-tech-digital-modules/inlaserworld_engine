@@ -29,6 +29,7 @@ typedef struct {
 } PlayerData;
 
 PlayerData gPlayerData[100];
+uint8_t gPlayersInTeams[MAX_TEAMS] = {0};
 
 volatile uint8_t gvBonusIndex = 1;
 volatile uint8_t gvBonusShotCode = 0;
@@ -213,20 +214,33 @@ void roundInitTeams(void) {
         lMsg[1] = gPlayerData[i].teamIndex;
         ENGINE_sendCustomMessage(lMsg, 2, i);
     }
+
+    playersInTeamsCount();
+    lMsg[0] = 'C';
+    for (uint8_t i = 0; i < gPlayersCount; i++) {
+        lMsg[1] = gPlayersInTeams[gPlayerData[i].teamIndex];
+        ENGINE_sendCustomMessage(lMsg, 2, i);
+    }
+}
+
+void playersInTeamsCount(void) {
+    for (uint8_t i = 0; i < MAX_TEAMS; i++) {
+        gPlayersInTeams[i] = 0;
+    }
+    for (uint8_t i = 0; i < gPlayersCount; i++) {
+        uint8_t lTeamIndex = gPlayerData[i].teamIndex;
+        gPlayersInTeams[lTeamIndex]++;
+    }
 }
 
 void arenaColorProcess(void) {
-    uint8_t lPlayersInTeams[MAX_TEAMS] = {0};
     uint8_t lColorChangeFlag = 0;
     uint8_t lLeadingTeamIndexTmp = gLeadingTeamIndex;
-    for (uint8_t i = 0; i < gPlayersCount; i++) {
-        uint8_t lTeamIndex = gPlayerData[i].teamIndex;
-        lPlayersInTeams[lTeamIndex]++;
-    }
+    playersInTeamsCount();
     printf("in color new leader %d\n", gLeadingTeamIndex);
     for (uint8_t i = 0; i < gTeamsCount; i++) {
-        printf("t %d %d, ", i, lPlayersInTeams[i]);
-        if (lPlayersInTeams[i] > lPlayersInTeams[gLeadingTeamIndex]) {
+        printf("t %d %d, ", i, gPlayersInTeams[i]);
+        if (gPlayersInTeams[i] > gPlayersInTeams[gLeadingTeamIndex]) {
             gLeadingTeamIndex = i;
             lColorChangeFlag = 1;
             printf("color change by new leader\n");
@@ -239,7 +253,7 @@ void arenaColorProcess(void) {
         while (lCounter < gTeamsCount) {
             uint8_t lIndex = (lCounter + gLeadingTeamIndex) % gTeamsCount;
             printf("indx %d\n", lIndex);
-            if (lPlayersInTeams[lIndex] == lPlayersInTeams[gLeadingTeamIndex]) {
+            if (gPlayersInTeams[lIndex] == gPlayersInTeams[gLeadingTeamIndex]) {
                 gLeadingTeamIndex = lIndex;
                 lCounter = gTeamsCount;
                 lColorChangeFlag = 1;
@@ -551,13 +565,7 @@ void PLUGIN_gameStateChanged(uint8_t aState) {
             }
         }
     } else if (aState == 0x03) {
-        roundInitTeams();
-        for (uint8_t i = 0; i < ENGINE_getPlayersLength(); i++) {
-            uint8_t lMsg[2] = {'I', 0};
-
-            lMsg[1] = gPlayerData[i].teamIndex;
-            ENGINE_sendCustomMessage(lMsg, 2, i);
-        }
+        roundInitTeams();        
     }
 }
 
@@ -603,7 +611,21 @@ void PLUGIN_receivedCustomBackupData(uint8_t *apData, uint8_t aLen, uint8_t aPla
 #ifdef SIMULATION_PLUGIN
     // printf("data %d\n", aPlayerIndex);
 #endif
-    gPlayerData[aPlayerIndex].teamIndex = apData[0];
+    if (gPlayerData[aPlayerIndex].teamIndex != apData[0]) {
+        uint8_t lTeamIndex1 = gPlayerData[aPlayerIndex].teamIndex;
+        uint8_t lTeamIndex2 = apData[0];
+        gPlayerData[aPlayerIndex].teamIndex = apData[0];
+        /*calculate players in teams*/
+        playersInTeamsCount();
+        /*send message for each player*/
+        uint8_t lMsg[2] = {'C', 0};
+        for (uint8_t i = 0; i < gPlayersCount; i++) {
+            if (gPlayerData[i].teamIndex == lTeamIndex1 || gPlayerData[i].teamIndex == lTeamIndex2) {
+                lMsg[1] = gPlayersInTeams[gPlayerData[i].teamIndex];
+                ENGINE_sendCustomMessage(lMsg, 2, i);
+            }
+        }
+    }
 
     /*
     playerIndexes[aPlayerIndex] = apData[0];
