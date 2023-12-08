@@ -249,9 +249,9 @@ void processOrbs(uint8_t aPlayerOrbs, uint8_t aPlayerIndex) {
 
 void PLUGIN_receivedCustomData(uint8_t *apData, uint8_t aLen, uint8_t aPlayerIndex) {
 #ifdef LOG_ENABLED
-        if (fp != NULL) {
-            fprintf(fp, "rec %d %d\n", apData[0], aLen);
-        }
+    if (fp != NULL) {
+        fprintf(fp, "rec %d %d\n", apData[0], aLen);
+    }
 #endif
 
     /*if received ACK for sending bonus to player, clear repeat timer sending feature*/

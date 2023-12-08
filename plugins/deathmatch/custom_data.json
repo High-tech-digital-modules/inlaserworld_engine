@@ -62,7 +62,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound of the gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 92
   },
   {
     "id": "96aa2418-1aff-4179-8607-9932257c537a",
@@ -70,7 +71,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound of empty gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 93
   },
   {
     "id": "2ce16494-d12a-472b-8801-004335893b7b",
@@ -78,7 +80,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound when you kill someone",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 68
   },
   {
     "id": "5ffb01d2-133d-469c-bb65-fd49cb9b83bf",
@@ -130,7 +133,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound for mine explosion",
-    "target": 8
+    "target": 8,
+    "inlaserworldId": 25
   },
   {
     "id": "296b39d2-9ee2-46ad-8b4f-f1d38a96b95b",

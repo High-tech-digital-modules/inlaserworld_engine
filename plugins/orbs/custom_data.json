@@ -123,7 +123,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound of the gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 92
   },
   {
     "id": "9100e360-79f4-4b6d-a219-e0586065ddef",
@@ -131,7 +132,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound of empty gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 93
   },
   {
     "id": "866f8ce2-51bd-43c3-8ce5-fbe211831b1d",
@@ -148,7 +150,8 @@
     "type": "media",
     "value": 0,
     "label": "Kill done sound effect",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 68
   },
   {
     "id": "760d0ed2-271c-4ad2-bbc9-d8ba3d6a9665",

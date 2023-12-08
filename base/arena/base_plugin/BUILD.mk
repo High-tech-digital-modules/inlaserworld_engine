@@ -15,6 +15,10 @@ z := $(shell (makeheaders ../src/custom_variables_map.c || touch ../src/custom_v
 endif
 endif
 
+ifdef SIMULATION_PLUGIN
+FLAGS+=-DSIMULATION_PLUGIN
+endif
+
 LIBS_NAME=libplugin
 
 FLAGS += -fPIC 

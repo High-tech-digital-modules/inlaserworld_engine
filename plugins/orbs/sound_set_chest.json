@@ -4,45 +4,54 @@
     {
       "name": "loaded",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 73
     },
     {
       "name": "gameStarting",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 96
     },
     {
       "name": "death",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 59
     },
     {
       "name": "aliveAgain",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 96
     },
     {
       "name": "machineGunReceived",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 6
     },
     {
       "name": "armorReceived",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 1
     },
     {
       "name": "sniperReceived",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 7
     },
     {
       "name": "healingReceived",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 3
     }
   ],
   "subName": "en",
   "subType": 0,
+  "isDefault": true,
   "soundSetChildren": []
 }

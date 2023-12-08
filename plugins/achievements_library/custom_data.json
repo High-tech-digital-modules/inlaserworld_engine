@@ -5,7 +5,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound for double kill",
-    "target": 12
+    "target": 12,
+    "inlaserworldId": 60
   },
   {
     "id": "8df4075e-a26e-4125-915a-49386a4744ba",
@@ -13,6 +14,7 @@
     "type": "media",
     "value": 0,
     "label": "Sound for monster kill",
-    "target": 12
+    "target": 12,
+    "inlaserworldId": 80
   }
 ]

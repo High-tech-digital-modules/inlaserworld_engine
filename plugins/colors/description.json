@@ -1,7 +1,7 @@
 {
   "name": "Colors",
   "gameTime": 12,
-  "preparationTime": 10,
+  "preparationTime": 15,
   "teamsList": [
     {
       "id": "d01568f4-c65a-4469-92a6-d072e7da99c1",
@@ -23,12 +23,12 @@
     }
   ],
   "minPlayers": 2,
-  "teamGame": true,
-  "noTeamGame": false,
+  "teamGame": false,
+  "noTeamGame": true,
   "useTeamTranslationByColor": false,
   "disableSelectTeamColor": false,
   "disableSelectPlayerColor": true,
-  "canManageTeams": true,
+  "canManageTeams": false,
   "globalDeathTime": 5,
   "globalReviveTime": 1,
   "isLibrary": false,

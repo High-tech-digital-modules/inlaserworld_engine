@@ -8,7 +8,8 @@
 
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 64
-#define CS_WEAPONS_ALL_NMBR 11
+#define CS_WEAPONS_ALL_NMBR 12
+#define CS_NONWEAPON_ITEMS_NMBR 3
 
 typedef struct {
     const uint8_t *data;
@@ -1596,6 +1597,61 @@ static const uint8_t image_data_knife[40] = {
 static const tImage knife = {image_data_knife, 35, 8,
                              8};
 
+static const uint8_t image_data_tactical_shield[46] = {
+    0x3f, 0xfc,
+    0x7f, 0xfe,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xf0, 0x0f,
+    0xf0, 0x0f,
+    0xf0, 0x0f,
+    0xf0, 0x0f,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0xff, 0xff,
+    0x7f, 0xfe,
+    0x3f, 0xfc};
+static const tImage tactical_shield = {image_data_tactical_shield, 16, 23,
+                                       8};
+
+static const uint8_t image_data_lightning_cs[10] = {
+    0x38,
+    0x38,
+    0x70,
+    0x70,
+    0xf8,
+    0xf8,
+    0x70,
+    0x60,
+    0xc0,
+    0x80};
+static const tImage lightning_cs = {image_data_lightning_cs, 5, 10,
+                                    8};
+
+static const uint8_t image_data_sum[10] = {
+    0xfe,
+    0x80,
+    0x40,
+    0x20,
+    0x10,
+    0x10,
+    0x20,
+    0x40,
+    0x80,
+    0xfe};
+static const tImage sum = {image_data_sum, 7, 10,
+                           8};
+
 static const tImage *gListOfImages[23] = {&weapon, &trophy, &target, &steps, &shield_big, &shield, &pistol_small, &medaile, &aim, &ak47, &ak47_small_2, &ammo, &arrows, &bomb, &bomb_small, &defuse, &flash, &flash_big, &heart, &heart_big, &invisibility_big, &machinegun_big, &machinegun_small};
 
 typedef enum {
@@ -1604,7 +1660,7 @@ typedef enum {
     teamNone = 255
 } teamType;
 
-volatile static tImage *gvpWeaponsAllList[CS_WEAPONS_ALL_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp}; // 10 weapons + knife
+volatile static tImage *gvpWeaponsAllList[CS_WEAPONS_ALL_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield}; // 10 weapons + knife + shield
 
 void DISPLAY_drawBitmap(uint8_t aX, uint8_t aY, uint8_t aBitmapIndex) {
     ENGINE_drawBitmap(aX, aY, gListOfImages[aBitmapIndex]->width, gListOfImages[aBitmapIndex]->height, gListOfImages[aBitmapIndex]->data);
@@ -1694,7 +1750,7 @@ void DISPLAY_drawRank_gg(uint8_t aX, uint8_t aY, uint8_t aRank, uint8_t aKills) 
         ENGINE_drawBitmap(aX + 10, aY, medaile.width, medaile.height, medaile.data);
         ENGINE_drawInt(aX + medaile.width + 25, aY + 7, aRank, 'C', 1);
     } else {
-        //ENGINE_drawBitmap(aX + 1, aY, medaile.width, medaile.height, medaile.data);
+        // ENGINE_drawBitmap(aX + 1, aY, medaile.width, medaile.height, medaile.data);
         ENGINE_drawInt(aX + 13, aY + 7, aRank, 'C', 1);
         ENGINE_drawBitmap(aX + 32, aY + 8, skull_cs.width, skull_cs.height, skull_cs.data);
         if (aKills > 9) {
@@ -1762,7 +1818,7 @@ void DISPLAY_bullets(uint8_t aX, uint8_t aY, uint8_t aBulletCount, uint8_t aMaga
     // ENGINE_fillRectangle(aX + 50, aY, 11, 22, 0); // clean space for bullets number
     if (aBulletCount == 0xFF) {
         // ENGINE_drawChar(aX + 3 * ammo.width + 10 + 11 + 2 - 5, aY + 2, 236, 1);
-        //ENGINE_fillRectangle(aX + 8, aY, 50, 22, 0); // clean space for bullets number
+        // ENGINE_fillRectangle(aX + 8, aY, 50, 22, 0); // clean space for bullets number
         ENGINE_drawBitmap(aX + 2 * ammo.width, aY + 1, ammo.width, ammo.height, ammo.data);
         ENGINE_drawChar(aX + 3 * ammo.width + 10 + 11 - 15, aY + 2, 'o', 1);
         ENGINE_drawChar(aX + 3 * ammo.width + 10 + 11 - 6, aY + 2, 'o', 1);
@@ -1944,7 +2000,7 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
                        uint16_t aPrice,
                        uint8_t aAmmo,
                        uint8_t aMagazine,
-                       uint8_t *aWeaponsList,
+                       uint8_t *apWeaponsList,
                        uint8_t aWeaponListIndex,
                        uint8_t aWeaponListLength,
                        uint8_t aBombHolding,
@@ -1956,29 +2012,55 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
         itemAmmo
     } itemStateType;
     uint8_t i = 0;
-    tImage *lItem1;
-    tImage *lItem2;
-    tImage *lItem3;
-    tImage *lItemList[CS_WEAPONS_ALL_NMBR + 3] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &ammo, &Kevlar2, &defuse}; // 10 weapons, knife, kevlar, ammo, defuse
+    tImage *lpItem1;
+    tImage *lpItem2;
+    tImage *lpItem3;
+    tImage *lpItemList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield, &ammo, &Kevlar2, &defuse}; // 10 weapons, knife, kevlar, ammo, defuse
+    uint8_t *lpItemNameList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {
+        "Knife",
+        "USP",
+        "Glock",
+        "Deagle",
+        "MP5",
+        "P90",
+        "M4",
+        "AK47",
+        "AUG",
+        "SG552",
+        "AWP",
+        "Shield",
+        "Ammo",
+        "Kevlar",
+        "DefKit",
+    };
+    uint8_t lItemNameLength = 0;
     int16_t lX1, lX2, lX3;
     uint8_t lY1, lY2, lY3;
     int16_t lDist1, lDist2, lDist3;
     uint8_t lItemCount = aWeaponListLength + 2;
     uint8_t lWeaponsCount = aWeaponListLength;
+    uint8_t lItemIsShield = 0;
     const uint8_t lcPixels = 10;
     const uint8_t lcMiddleX = 64;
     const uint8_t lcMiddleY = 28;
     const uint8_t lcKevlarIndex = lWeaponsCount + 1;
+    const uint8_t lcShieldIndex = 11;
 
     if (aDefuseEnabled == 1) {
         lItemCount++;
     }
 
-    for (i = 0; i < lWeaponsCount; i++) {
-        lItemList[i] = lItemList[aWeaponsList[i]];
+    if (aItemIndex == lcShieldIndex) {
+        lItemIsShield = 1;
     }
-    for (i = 0; i < 3; i++) {
-        lItemList[lWeaponsCount + i] = lItemList[CS_WEAPONS_ALL_NMBR + i];
+
+    for (i = 0; i < lWeaponsCount; i++) {
+        lpItemList[i] = lpItemList[apWeaponsList[i]];
+        lpItemNameList[i] = lpItemNameList[apWeaponsList[i]];
+    }
+    for (i = 0; i < CS_NONWEAPON_ITEMS_NMBR; i++) {
+        lpItemList[lWeaponsCount + i] = lpItemList[CS_WEAPONS_ALL_NMBR + i];
+        lpItemNameList[lWeaponsCount + i] = lpItemNameList[CS_WEAPONS_ALL_NMBR + i];
     }
 
     if (aItemIndex < CS_WEAPONS_ALL_NMBR) {
@@ -1987,18 +2069,23 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
         aItemIndex = aItemIndex - CS_WEAPONS_ALL_NMBR + lWeaponsCount;
     }
 
-    lItem1 = lItemList[(aItemIndex - 1 + lItemCount) % lItemCount];
-    lItem2 = lItemList[aItemIndex];
-    lItem3 = lItemList[(aItemIndex + 1) % lItemCount];
+    lpItem1 = lpItemList[(aItemIndex - 1 + lItemCount) % lItemCount];
+    lpItem2 = lpItemList[aItemIndex];
+    lpItem3 = lpItemList[(aItemIndex + 1) % lItemCount];
 
-    lX1 = lcPixels - lItem1->width;
-    lX2 = lcMiddleX - lItem2->width / 2;
+    lX1 = lcPixels - lpItem1->width;
+    lX2 = lcMiddleX - lpItem2->width / 2;
     lX3 = DISPLAY_WIDTH - lcPixels;
-    lY1 = lcMiddleY - lItem1->height / 2;
-    lY2 = lcMiddleY - lItem2->height / 2;
-    lY3 = lcMiddleY - lItem3->height / 2;
+    lY1 = lcMiddleY - lpItem1->height / 2;
+    lY2 = lcMiddleY - lpItem2->height / 2;
+    lY3 = lcMiddleY - lpItem3->height / 2;
+
+    while (lpItemNameList[aItemIndex][lItemNameLength] != 0 && lItemNameLength < 6) {
+        lItemNameLength++;
+    }
 
     ENGINE_drawLine(128 - aTimeBuying * 128 / 1000, 41, 128, 41, 1);
+    ENGINE_drawLine(0, 15, aTimeBuying * 128 / 1000, 15, 1);
 
     ENGINE_drawChar(0, 46, 36, 1);
     ENGINE_drawInt(15, 46, aMoney, 'L', 1);
@@ -2008,58 +2095,70 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
     }
 
     if (aSwipe == 0) {
+        uint8_t lXName = 0;
+        uint8_t lXNameLength = lItemNameLength * 6 + 10 - lItemIsShield * 5; // 6 is char size on display and 10 is space between anme and price
         // ENGINE_drawString(0, 48, "Price", 0);
         if (aItemState != itemBought) {
-            ENGINE_drawInt(68, 5, aPrice, 'C', 0);
             uint8_t lXDollar = 61;
-            while (aPrice > 0) {
-                aPrice /= 10;
+            uint8_t lXPrice = 68;
+            uint16_t lPriceTemp = aPrice;
+            while (lPriceTemp > 0) {
+                lPriceTemp /= 10;
                 lXDollar -= 3;
             }
+            lXPrice += lXNameLength / 2;
+            lXDollar += lXNameLength / 2;
+            lXName = lXDollar - lXNameLength;
+            ENGINE_drawInt(lXPrice, 5, aPrice, 'C', 0);
             ENGINE_drawChar(lXDollar, 5, 36, 0);
-        }
-
-        if ((aItemState == itemBought || aItemState == itemAmmo) || (aItemState == itemAvailable && aItemIndex == lcKevlarIndex && aAmmo > 0)) {
-            if (aItemIndex < lWeaponsCount) {
-                ENGINE_drawInt(103 - 2, 46, aAmmo, 'R', 1);
-                ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
-                ENGINE_drawInt(103 + 10 + 1, 46, aMagazine, 'L', 1);
-            } else if (aItemIndex == lcKevlarIndex) {
-                ENGINE_drawInt(115, 46, aAmmo, 'R', 1);
-                ENGINE_drawChar(115, 46, '%', 1);
-            }
         } else {
-            if (aItemIndex < lWeaponsCount) {
-                ENGINE_drawChar(88, 46, '-', 1);
-                ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
-                ENGINE_drawChar(103 + 10 + 1, 46, '-', 1);
-            } else if (aItemIndex == lcKevlarIndex) {
-                ENGINE_drawChar(105, 46, '-', 1);
+            lXName = 68 - lXNameLength / 2;
+        }
+        ENGINE_drawString(lXName, 5, lpItemNameList[aItemIndex], 0);
+
+        if (lItemIsShield == 0) {
+            if ((aItemState == itemBought || aItemState == itemAmmo) || (aItemState == itemAvailable && aItemIndex == lcKevlarIndex && aAmmo > 0)) {
+                if (aItemIndex < lWeaponsCount) {
+                    ENGINE_drawInt(103 - 2, 46, aAmmo, 'R', 1);
+                    ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
+                    ENGINE_drawInt(103 + 10 + 1, 46, aMagazine, 'L', 1);
+                } else if (aItemIndex == lcKevlarIndex) {
+                    ENGINE_drawInt(115, 46, aAmmo, 'R', 1);
+                    ENGINE_drawChar(115, 46, '%', 1);
+                }
+            } else {
+                if (aItemIndex < lWeaponsCount) {
+                    ENGINE_drawChar(88, 46, '-', 1);
+                    ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
+                    ENGINE_drawChar(103 + 10 + 1, 46, '-', 1);
+                } else if (aItemIndex == lcKevlarIndex) {
+                    ENGINE_drawChar(105, 46, '-', 1);
+                }
             }
         }
 
         switch (aItemState) {
         case itemBlocked:
-            ENGINE_drawBitmap(10, 0, Basket.width, Basket.height, Basket.data);
-            ENGINE_drawLine(9, 11, 30, 2, 1);
-            ENGINE_drawLine(9, 12, 30, 3, 1);
+            ENGINE_drawBitmap(5, 0, Basket.width, Basket.height, Basket.data);
+            ENGINE_drawLine(4, 11, 30, 2, 1);
+            ENGINE_drawLine(4, 12, 30, 3, 1);
 
             break;
         case itemAvailable:
-            ENGINE_drawBitmap(10, 0, Basket.width, Basket.height, Basket.data);
+            ENGINE_drawBitmap(5, 0, Basket.width, Basket.height, Basket.data);
             break;
         case itemBought:
             break;
         case itemAmmo:
-            ENGINE_drawBitmap(8, 0, bullets.width, bullets.height, bullets.data);
+            ENGINE_drawBitmap(3, 0, bullets.width, bullets.height, bullets.data);
             break;
         default:
             break;
         }
 
-        ENGINE_drawBitmap(lX1, lY1, lItem1->width, lItem1->height, lItem1->data);
-        ENGINE_drawBitmap(lX2, lY2, lItem2->width, lItem2->height, lItem2->data);
-        ENGINE_drawBitmap(lX3, lY3, lItem3->width, lItem3->height, lItem3->data);
+        ENGINE_drawBitmap(lX1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
+        ENGINE_drawBitmap(lX2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
+        ENGINE_drawBitmap(lX3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
     } else {
 
         if (aSwipe < lcPixels) {
@@ -2069,23 +2168,21 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
             lX1 = DISPLAY_WIDTH;
         } else {
             lDist1 = aSwipe - 100 + lcPixels;
-            lItem1 = lItemList[(aItemIndex + 2) % lItemCount];
+            lpItem1 = lpItemList[(aItemIndex + 2) % lItemCount];
             lX1 = DISPLAY_WIDTH;
         }
 
-        lDist2 = (lX2 + lItem2->width - lcPixels) * aSwipe / 100;
-        lDist3 = (lX3 + lItem3->width / 2 - lcMiddleX) * aSwipe / 100;
+        lDist2 = (lX2 + lpItem2->width - lcPixels) * aSwipe / 100;
+        lDist3 = (lX3 + lpItem3->width / 2 - lcMiddleX) * aSwipe / 100;
 
         /*lDist1 = aSwipe;
         lDist2 = aSwipe;
         lDist3 = aSwipe;*/
 
-        ENGINE_drawBitmap(lX1 - lDist1, lY1, lItem1->width, lItem1->height, lItem1->data);
-        ENGINE_drawBitmap(lX2 - lDist2, lY2, lItem2->width, lItem2->height, lItem2->data);
-        ENGINE_drawBitmap(lX3 - lDist3, lY3, lItem3->width, lItem3->height, lItem3->data);
+        ENGINE_drawBitmap(lX1 - lDist1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
+        ENGINE_drawBitmap(lX2 - lDist2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
+        ENGINE_drawBitmap(lX3 - lDist3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
     }
-
-    ENGINE_drawLine(0, 15, aTimeBuying * 128 / 1000, 15, 1);
 }
 
 void DISPLAY_drawBomb(uint8_t aX, uint8_t aY) {
@@ -2133,7 +2230,12 @@ void DISPLAY_drawPlayers(uint8_t aX, uint8_t aY, uint8_t aTeam, uint8_t aPlayers
     }
 }
 
-void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aSilencerBurstState) {
+/* aOptions - for additional info to show with weapon
+ *   - silencer
+ *   - burst mode
+ *   - shield with weapon
+ */
+void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aOptions) {
     typedef enum {
         weaponKnife,
         weaponUSP,
@@ -2146,6 +2248,7 @@ void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aSilenc
         weaponAUG,
         weaponSG552,
         weaponAWP,
+        weaponShield,
         weaponNone = 255
     } weaponListType;
 
@@ -2160,7 +2263,7 @@ void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aSilenc
         break;
     case weaponGlock:
         ENGINE_drawBitmap(aX + 12, aY + 3, pistol_small.width, pistol_small.height, pistol_small.data);
-        aSilencerBurstState = aSilencerBurstState * 2;
+        aOptions = aOptions * 2;
         break;
     case weaponDeagle:
         ENGINE_drawBitmap(aX + 15, aY + 3, Deagle.width, Deagle.height, Deagle.data);
@@ -2186,13 +2289,84 @@ void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aSilenc
     case weaponAWP:
         ENGINE_drawBitmap(aX, aY + 5, awp.width, awp.height, awp.data);
         break;
+    case weaponShield:
+        if (aOptions == 0) {
+            ENGINE_drawBitmap(aX + 22, aY + 2, tactical_shield.width, tactical_shield.height, tactical_shield.data);
+        } else {
+            ENGINE_drawBitmap(aX + 5, aY + 2, tactical_shield.width, tactical_shield.height, tactical_shield.data);
+            switch (aOptions & 0x0F) {
+            case weaponUSP:
+                ENGINE_drawBitmap(aX + 27, aY + 3, usp.width, usp.height, usp.data);
+                break;
+            case weaponGlock:
+                ENGINE_drawBitmap(aX + 26, aY + 3, pistol_small.width, pistol_small.height, pistol_small.data);
+                break;
+            case weaponDeagle:
+                ENGINE_drawBitmap(aX + 23, aY + 3, Deagle.width, Deagle.height, Deagle.data);
+                break;
+            default:
+                break;
+            }
+        }
+        break;
     }
 
-    if (aSilencerBurstState == 1) {
+    if (aOptions == 1) {
         ENGINE_drawBitmap(aX + 41, aY + 20, silencer.width, silencer.height, silencer.data);
-    } else if (aSilencerBurstState == 2) {
+    } else if (aOptions == 2) {
         ENGINE_drawBitmap(aX + 43, aY + 16, burst_mode2.width, burst_mode2.height, burst_mode2.data);
     }
+}
+
+void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazine) {
+    tImage *lpItemList[CS_WEAPONS_ALL_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield}; // 10 weapons, knife, kevlar, ammo, defuse
+    uint8_t *lpItemNameList[CS_WEAPONS_ALL_NMBR] = {
+        "Knife",
+        "USP",
+        "Glock",
+        "Deagle",
+        "MP5",
+        "P90",
+        "M4",
+        "AK47",
+        "AUG",
+        "SG552",
+        "AWP",
+        "Shield"};
+    uint8_t lItemNameLength = 0;
+    uint8_t lXName = 0;
+    uint8_t lXNameLength = 0;
+    int16_t lX;
+    uint8_t lY;
+    int16_t lDist1, lDist2, lDist3;
+    uint8_t lItemIsShield = 0;
+    const uint8_t lcPixels = 10;
+    const uint8_t lcMiddleX = 64;
+    const uint8_t lcMiddleY = 28;
+    const uint8_t lcShieldIndex = 11;
+
+    lX = lcMiddleX - lpItemList[aWeapon]->width / 2;
+    lY = lcMiddleY - lpItemList[aWeapon]->height / 2;
+
+    while (lpItemNameList[aWeapon][lItemNameLength] != 0 && lItemNameLength < 6) {
+        lItemNameLength++;
+    }
+
+    if (aWeapon == lcShieldIndex) {
+        lItemIsShield = 1;
+    }
+
+    lXNameLength = lItemNameLength * 6 + 10; // 6 is char size on display and 10 is space between anme and price
+    lXName = 68 - lXNameLength / 2;
+    ENGINE_drawString(lXName, 5, lpItemNameList[aWeapon], 0);
+
+    if (lItemIsShield == 0) {
+        ENGINE_drawInt(103 - 2, 46, aAmmo, 'R', 1);
+        ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
+        ENGINE_drawInt(103 + 10 + 1, 46, aMagazine, 'L', 1);
+    }
+
+    ENGINE_drawBitmap(lX, lY, lpItemList[aWeapon]->width, lpItemList[aWeapon]->height, lpItemList[aWeapon]->data);
 }
 
 void DISPLAY_drawBarSegmented(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
@@ -2240,7 +2414,18 @@ void DISPLAY_drawBarSegmentedExpert(uint8_t aX, uint8_t aY, uint8_t aPercentage,
     }
 }
 
-void DISPLAY_info_cs(uint8_t aTeam, uint8_t aWhoWins, uint8_t aWinsCT, uint8_t aWinsTerr, uint16_t aKills, uint16_t aDeaths, uint16_t aMoney, uint8_t aAnimation, uint8_t aPlayersCountCT, uint8_t aPlayersCountTerr) {
+void DISPLAY_info_cs(uint8_t aTeam,
+                     uint8_t aWhoWins,
+                     uint8_t aWinsCT,
+                     uint8_t aWinsTerr,
+                     uint16_t aKills,
+                     uint16_t aDeaths,
+                     uint16_t aMoney,
+                     uint8_t aAnimation,
+                     uint8_t aPlayersCountCT,
+                     uint8_t aPlayersCountTerr,
+                     uint16_t aDamageTotal,
+                     uint16_t aDamageInRound) {
     if (aWhoWins < 250) {
         /*show who wins on whole screen*/
         ENGINE_drawBitmap(5, 2, trophy.width, trophy.height, trophy.data);
@@ -2262,15 +2447,24 @@ void DISPLAY_info_cs(uint8_t aTeam, uint8_t aWhoWins, uint8_t aWinsCT, uint8_t a
         ENGINE_drawInt(21, 18, aWinsCT, 'C', 0);
         ENGINE_drawInt(40, 18, aWinsTerr, 'C', 0);
 
-        /*kills and deaths*/
-        ENGINE_drawBitmap(78, 4, pistol_cs.width, pistol_cs.height, pistol_cs.data);
-        ENGINE_drawBitmap(107, 4, skull_cs.width, skull_cs.height, skull_cs.data);
-        ENGINE_drawInt(87, 18, aKills, 'C', 0);
-        ENGINE_drawInt(112, 18, aDeaths, 'C', 0);
-        /*ENGINE_drawBitmap(72, 7, pistol_cs.width, pistol_cs.height, pistol_cs.data);
-        ENGINE_drawBitmap(100, 8, skull_cs.width, skull_cs.height, skull_cs.data);
-        ENGINE_drawInt(95, 10, aKills, 'L', 0);
-        ENGINE_drawInt(115, 10, aDeaths, 'L', 0);*/
+        /*kills and deaths && damage*/
+        if ((aAnimation & 0xF0) == 0) {
+            ENGINE_drawBitmap(78, 4, pistol_cs.width, pistol_cs.height, pistol_cs.data);
+            ENGINE_drawBitmap(107, 4, skull_cs.width, skull_cs.height, skull_cs.data);
+            ENGINE_drawInt(87, 18, aKills, 'C', 0);
+            ENGINE_drawInt(112, 18, aDeaths, 'C', 0);
+        } else {
+            uint8_t lX = 115;
+            if (aDamageTotal >= 1000) {
+                lX += 10;
+            } else if (aDamageTotal >= 100) {
+                lX += 5;
+            }
+            ENGINE_drawBitmap(86, 6, lightning_cs.width, lightning_cs.height, lightning_cs.data);
+            ENGINE_drawBitmap(85, 17, sum.width, sum.height, sum.data);
+            ENGINE_drawInt(lX, 7, aDamageInRound, 'R', 0);
+            ENGINE_drawInt(lX, 18, aDamageTotal, 'R', 0);
+        }
 
         /*money*/
         ENGINE_drawInt(32, 45, aMoney, 'C', 0);
@@ -2289,7 +2483,7 @@ void DISPLAY_info_cs(uint8_t aTeam, uint8_t aWhoWins, uint8_t aWinsCT, uint8_t a
             DISPLAY_drawPlayers(80, 42, aTeam, aPlayersCountCT, aPlayersCountTerr);
         } else {
             ENGINE_drawBitmap(100, 36, base.width, base.height, base.data);
-            switch (aAnimation) {
+            switch (aAnimation & 0x0F) {
             case 0:
                 break;
             case 3:
@@ -2303,5 +2497,34 @@ void DISPLAY_info_cs(uint8_t aTeam, uint8_t aWhoWins, uint8_t aWinsCT, uint8_t a
                 break;
             }
         }
+    }
+}
+
+void DISPLAY_info_gg(uint16_t aKills, uint16_t aDeaths) {
+    /*kills and deaths*/
+    ENGINE_fillRectangle(3, 35, 59, 27, 0);
+    ENGINE_drawBitmap(14, 36, pistol_cs.width, pistol_cs.height, pistol_cs.data);
+    ENGINE_drawBitmap(43, 36, skull_cs.width, skull_cs.height, skull_cs.data);
+    ENGINE_drawInt(23, 50, aKills, 'C', 0);
+    ENGINE_drawInt(48, 50, aDeaths, 'C', 0);
+}
+
+void DISPLAY_spawn_animation(uint8_t aAnimation) {
+
+    ENGINE_fillRectangle(67, 35, 59, 27, 0);
+
+    ENGINE_drawBitmap(100, 36, base.width, base.height, base.data);
+    switch (aAnimation) {
+    case 0:
+        break;
+    case 3:
+        ENGINE_drawBitmap(92, 40, arrow2.width, arrow2.height, arrow2.data);
+    case 2:
+        ENGINE_drawBitmap(85, 40, arrow2.width, arrow2.height, arrow2.data);
+    case 1:
+        ENGINE_drawBitmap(78, 40, arrow2.width, arrow2.height, arrow2.data);
+        break;
+    default:
+        break;
     }
 }

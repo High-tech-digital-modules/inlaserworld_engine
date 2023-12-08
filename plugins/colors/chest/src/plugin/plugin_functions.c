@@ -85,6 +85,94 @@ volatile uint8_t gvGameStarted = 0;
 volatile uint8_t gvColorIndex = 255;
 volatile uint8_t gvAlreadyDead = 0;
 volatile uint8_t gvTeamsCount = 0;
+volatile uint8_t gvRoundEndProcess = 0;
+
+void colorRainbowSet(void) {
+    colors_t lColor1;
+    colors_t lColor2;
+    lColor1.red = 0xFF;
+    lColor1.green = 0x00;
+    lColor1.blue = 0x00;
+    lColor2.red = 0x00;
+    lColor2.green = 0xFF;
+    lColor2.blue = 0x00;
+    ENGINE_setModuleColor(0, 1, lColor1);
+    ENGINE_setModuleColor(0, 2, lColor2);
+
+    lColor1.red = 0xFF;
+    lColor1.green = 0xA5;
+    lColor1.blue = 0x00;
+    lColor2.red = 0x00;
+    lColor2.green = 0x00;
+    lColor2.blue = 0xFF;
+    ENGINE_setModuleColor(1, 1, lColor1);
+    ENGINE_setModuleColor(1, 2, lColor2);
+
+    lColor1.red = 0xFF;
+    lColor1.green = 0xFF;
+    lColor1.blue = 0x00;
+    lColor2.red = 0xFF;
+    lColor2.green = 0x00;
+    lColor2.blue = 0xFF;
+    ENGINE_setModuleColor(2, 1, lColor1);
+    ENGINE_setModuleColor(2, 2, lColor2);
+
+    lColor1.red = 0xEE;
+    lColor1.green = 0x82;
+    lColor1.blue = 0xEE;
+    lColor2.red = 0x00;
+    lColor2.green = 0xA5;
+    lColor2.blue = 0xFF;
+    ENGINE_setModuleColor(3, 1, lColor1);
+    ENGINE_setModuleColor(3, 2, lColor2);
+
+    lColor1.red = 0xCC;
+    lColor1.green = 0xCC;
+    lColor1.blue = 0xCC;
+    lColor2.red = 0x00;
+    lColor2.green = 0xFF;
+    lColor2.blue = 0x55;
+    ENGINE_setModuleColor(4, 1, lColor1);
+    ENGINE_setModuleColor(4, 2, lColor2);
+
+    lColor1.red = 0x55;
+    lColor1.green = 0xFF;
+    lColor1.blue = 0x00;
+    lColor2.red = 0xFF;
+    lColor2.green = 0x00;
+    lColor2.blue = 0x55;
+    ENGINE_setModuleColor(5, 1, lColor1);
+    ENGINE_setModuleColor(5, 2, lColor2);
+
+    lColor1.red = 0xFF;
+    lColor1.green = 0x00;
+    lColor1.blue = 0x00;
+    lColor2.red = 0x00;
+    lColor2.green = 0xFF;
+    lColor2.blue = 0x00;
+    ENGINE_setModuleColor(6, 1, lColor1);
+    ENGINE_setModuleColor(6, 2, lColor2);
+
+    lColor1.red = 0xFF;
+    lColor1.green = 0xFF;
+    lColor1.blue = 0x00;
+    lColor2.red = 0x00;
+    lColor2.green = 0x00;
+    lColor2.blue = 0xFF;
+    ENGINE_setModuleColor(7, 1, lColor1);
+    ENGINE_setModuleColor(7, 2, lColor2);
+
+    lColor1.red = 0xFF;
+    lColor1.green = 0xFF;
+    lColor1.blue = 0xFF;
+    lColor2.red = 0xFF;
+    lColor2.green = 0xFF;
+    lColor2.blue = 0x00;
+    ENGINE_setModuleColor(8, 1, lColor1);
+    ENGINE_setModuleColor(8, 2, lColor2);
+
+    ENGINE_setAllModulesState(led_basic, led_special, 0);
+}
 
 void bonusMachineGunStop(void) {
     if (gvActualBonus == bonusMachineGun) {
@@ -212,6 +300,22 @@ void PLUGIN_mainLoop(void) {
  * part in timer interrupt with period 10 ms
  */
 void PLUGIN_timer10ms(void) {
+    /*process round end*/
+    if (gvRoundEndProcess == 1) {
+        gvRoundEndProcess = 2;
+        if (ENGINE_getGameState() == game_state_dead) {
+            gvTimeDeathCounter = 0;
+        }
+        ENGINE_setGameState(game_state_dead);
+        gvTimeDeath = 1;
+        colorRainbowSet();
+        if(gvTimeBonus == 1){
+            gvTimeBonusCounter = gvLengthBonus;
+        }
+        gvTimeBlinking = 0;
+        gvTimeRevival = 0;
+    }
+
     /*blinking every 200 ms*/
     if (gvTimeBlinking == 1) {
         if (gvTimeBlinkingCounter < gvLengthBlinking)
@@ -448,12 +552,22 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     uint8_t i = 0;
 
     if (aState == state_game) {
-        if ((aGameState == game_state_starting) && (gvTimeBlinkingLed == 1)) {
+        if ((aGameState == game_state_starting)) {
             uint16_t lTimeTemp = ENGINE_getDisplayTime();
-            if (lTimeTemp > 5)
-                lMessageTemp = LED1(led_special) | LED2(led_special);
-            else
-                lMessageTemp = LED1(led_basic) | LED2(led_basic);
+            if (lTimeTemp <= 5 && gvGameStarted == 0) {
+                gvGameStarted = 1;
+                for (i = 0; i < MODULES_NUMBER; i++) {
+                    apModulesColor1[i] = gvColorsTable[gvColorIndex];
+                    apModulesColor2[i] = gcColorWhite;
+                }
+            }
+            if (gvTimeBlinkingLed == 1) {
+                if (lTimeTemp > 5) {
+                    lMessageTemp = LED1(led_basic) | LED2(led_special);
+                } else {
+                    lMessageTemp = LED1(led_basic) | LED2(led_basic);
+                }
+            }
         } else if (aGameState == game_state_alive) {
             lMessageTemp = LED1(led_basic) | LED2(led_basic);
         } else if (aGameState == game_state_revival) {
@@ -461,6 +575,10 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
                 lMessageTemp = LED1(led_basic) | LED2(led_special);
             else
                 lMessageTemp = LED1(led_basic) | LED2(led_basic);
+        } else if (aGameState == game_state_dead) {
+            if (gvRoundEndProcess == 2) {
+                lMessageTemp = LED1(led_basic) | LED2(led_special);
+            }
         }
     } else {
     }
@@ -469,7 +587,23 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
         for (i = 0; i < MODULES_NUMBER; i++)
             apModulesState[i] = lMessageTemp;
     } else {
-        ENGINE_setColorEffectFade(0xFF); /*set according to the Health*/
+        if (gvActualBonus == bonusInvisibility) {
+            for (i = 0; i < MODULES_NUMBER; i++)
+                apModulesState[i] = 0;
+        } else if (gvActualBonus == bonusImmortality) {
+            for (i = 0; i < MODULES_NUMBER; i++) {
+                apModulesState[i] = lMessageTemp;
+                apModulesDim1[i] = gvTimePulseCounter;
+                apModulesDim2[i] = gvTimePulseCounter;
+            }
+        } else {
+            ENGINE_setColorEffectFade(0xFF); /*set according to the Health*/
+        }
+    }
+
+    if (gvBonusObtained == 1) {
+        gvBonusObtained = 0;
+        apModulesState[8] |= VIBRATION(VIBRATION_ON);
     }
 
     if (aHitFlag != 0 && gvAlreadyDead == 0) { /* && (game_state == game_state_dead))*/
@@ -561,6 +695,10 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
         gvDisplayIndex |= DI_SWITCH_BASIC;
     }
     gvDisplayIndex |= DI_HEALTH;
+
+    ENGINE_setAllModulesColor(1, gvColorsTable[gvColorIndex]);
+    ENGINE_setAllModulesColor(2, gcColorWhite);
+    gvRoundEndProcess = 0;
 }
 
 /*
@@ -568,7 +706,6 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
  */
 void PLUGIN_changedGameStateToStarting(uint8_t aGameStateLast) {
     gvTimeBlinking = 1;
-    gvGameStarted = 1;
 }
 
 /*
@@ -594,29 +731,23 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
     /*receive selected color by its index*/
     if ((apData[0] == 'I') && (aDevice == 0x00)) {
         gvColorIndex = apData[1];
-        ENGINE_setAllModulesColor(1, gvColorsTable[gvColorIndex]);
-        ENGINE_setAllModulesColor(2, gcColorWhite);
         ENGINE_setPeriodicInfoByte(gvColorIndex, 0);
-    }
-
-    /*receive all color*/
-    if ((apData[0] == 'C') && (aDevice == 0x00)) {
-        gvTeamsCount = (aLength - 1) / 3;
-        for (uint8_t i = 0; i < gvTeamsCount; i++) {
-            gvColorsTable[i].red = apData[i * 3 + 1];
-            gvColorsTable[i].green = apData[i * 3 + 2];
-            gvColorsTable[i].blue = apData[i * 3 + 3];
-        }
     }
 
     /*dead after round*/
     if ((apData[0] == 'D') && (aDevice == 0x00)) {
-        if (ENGINE_getGameState() == game_state_dead) {
-            gvTimeDeathCounter = 0;
-        }
-        ENGINE_setGameState(game_state_dead);
-        gvTimeDeath = 1;
+        gvRoundEndProcess = 1;
     }
+
+    /*bonus process*/
+    if (bonusEnabled == 1) {
+        if ((apData[0] == (uint8_t)'b') && (aLength == 2)) {
+            bonusObtained(apData[1]);
+        }
+    }
+
+    /*achievements*/
+    ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
 }
 
 /*
@@ -640,70 +771,22 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
     ENGINE_controlDisplayFromPlugin();
 
     ENGINE_setAllModulesDim(100, 100);
-    apModulesColor1[0].red = 0xFF;
-    apModulesColor1[0].green = 0x00;
-    apModulesColor1[0].blue = 0x00;
-    apModulesColor2[0].red = 0x00;
-    apModulesColor2[0].green = 0xFF;
-    apModulesColor2[0].blue = 0x00;
+    colorRainbowSet();
 
-    apModulesColor1[1].red = 0xFF;
-    apModulesColor1[1].green = 0xA5;
-    apModulesColor1[1].blue = 0x00;
-    apModulesColor2[1].red = 0x00;
-    apModulesColor2[1].green = 0x00;
-    apModulesColor2[1].blue = 0xFF;
-
-    apModulesColor1[2].red = 0xFF;
-    apModulesColor1[2].green = 0xFF;
-    apModulesColor1[2].blue = 0x00;
-    apModulesColor2[2].red = 0xFF;
-    apModulesColor2[2].green = 0x00;
-    apModulesColor2[2].blue = 0xFF;
-
-    apModulesColor1[3].red = 0xEE;
-    apModulesColor1[3].green = 0x82;
-    apModulesColor1[3].blue = 0xEE;
-    apModulesColor2[3].red = 0x00;
-    apModulesColor2[3].green = 0xA5;
-    apModulesColor2[3].blue = 0xFF;
-
-    apModulesColor1[4].red = 0xCC;
-    apModulesColor1[4].green = 0xCC;
-    apModulesColor1[4].blue = 0xCC;
-    apModulesColor2[4].red = 0x00;
-    apModulesColor2[4].green = 0xFF;
-    apModulesColor2[4].blue = 0x55;
-
-    apModulesColor1[5].red = 0x55;
-    apModulesColor1[5].green = 0xFF;
-    apModulesColor1[5].blue = 0x00;
-    apModulesColor2[5].red = 0xFF;
-    apModulesColor2[5].green = 0x00;
-    apModulesColor2[5].blue = 0x55;
-
-    apModulesColor1[6].red = 0xFF;
-    apModulesColor1[6].green = 0x00;
-    apModulesColor1[6].blue = 0x00;
-    apModulesColor2[6].red = 0x00;
-    apModulesColor2[6].green = 0xFF;
-    apModulesColor2[6].blue = 0x00;
-
-    apModulesColor1[7].red = 0xFF;
-    apModulesColor1[7].green = 0xFF;
-    apModulesColor1[7].blue = 0x00;
-    apModulesColor2[7].red = 0x00;
-    apModulesColor2[7].green = 0x00;
-    apModulesColor2[7].blue = 0xFF;
-
-    apModulesColor1[8].red = 0xFF;
-    apModulesColor1[8].green = 0xFF;
-    apModulesColor1[8].blue = 0xFF;
-    apModulesColor2[8].red = 0xFF;
-    apModulesColor2[8].green = 0xFF;
-    apModulesColor2[8].blue = 0x00;
-
-    for (uint8_t i = 0; i < MODULES_NUMBER; i++) {
-        apModulesState[i] = LED1(led_basic) | LED2(led_special);
-    }
+    gvColorsTable[0] = color1;
+    gvColorsTable[1] = color2;
+    gvColorsTable[2] = color3;
+    gvColorsTable[3] = color4;
+    gvColorsTable[4] = color5;
+    gvColorsTable[5] = color6;
+    gvColorsTable[6] = color7;
+    gvColorsTable[7] = color8;
+    gvColorsTable[8] = color9;
+    gvColorsTable[9] = color10;
+    gvColorsTable[10] = color11;
+    gvColorsTable[11] = color12;
+    gvColorsTable[12] = color13;
+    gvColorsTable[13] = color14;
+    gvColorsTable[14] = color15;
+    gvColorsTable[15] = color16;
 }

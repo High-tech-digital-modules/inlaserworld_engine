@@ -152,6 +152,158 @@
     "label": "Sound for mine explosion",
     "target": 8,
     "inlaserworldId": 25
-  }
-  
+  },
+  {
+    "id": "a79ff273-3c6c-491d-97b2-63c24464271a",
+    "name": "singlePlayerTeams",
+    "type": "boolean",
+    "value": false,
+    "label": "Force one player teams",
+    "target": 8,
+    "inGameMenu": true
+  },
+  {
+    "id": "9dd618a6-b532-4ef1-aa03-4d0a1b7a733b",
+    "name": "color1",
+    "type": "color",
+    "value": "#FF0000",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "6434ef26-968e-4a1e-9374-7081d492397b",
+    "name": "color2",
+    "type": "color",
+    "value": "#00FF00",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "7496a4da-756a-4be5-b404-83d417853f43",
+    "name": "color3",
+    "type": "color",
+    "value": "#0000FF",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "1fedd67a-b7f5-4c0d-8b4a-f74591e636fe",
+    "name": "color4",
+    "type": "color",
+    "value": "#FFFF00",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "3bc2dcbc-c039-40a7-8593-b9577b27a152",
+    "name": "color5",
+    "type": "color",
+    "value": "#FF00FF",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "ff603e91-7bd3-42cb-b5cf-ac3a118d84e7",
+    "name": "color6",
+    "type": "color",
+    "value": "#00FFFF",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "00433676-797d-4ae3-98d7-2e727b461569",
+    "name": "color7",
+    "type": "color",
+    "value": "#707070",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "326df249-bb80-406b-a01d-93b6de0abd09",
+    "name": "color8",
+    "type": "color",
+    "value": "#FF8800",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "496cfb24-21ac-49a7-856c-ab73fbdaf262",
+    "name": "color9",
+    "type": "color",
+    "value": "#FF0088",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "e6343446-cc09-432d-b341-139e87ca50da",
+    "name": "color10",
+    "type": "color",
+    "value": "#00FF88",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "60bb0b8a-ebab-4419-8286-9c5e567261c5",
+    "name": "color11",
+    "type": "color",
+    "value": "#88FF00",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "4074e09a-b531-4c6d-b138-8fa1cf7e2139",
+    "name": "color12",
+    "type": "color",
+    "value": "#0088FF",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "76202cb5-b90a-44c1-a9cf-68b3ee4303e7",
+    "name": "color13",
+    "type": "color",
+    "value": "#8800FF",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "857656c8-6d9f-4203-b74a-e1504f53dca7",
+    "name": "color14",
+    "type": "color",
+    "value": "#308000",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "cc83cfe2-57f4-4575-af0d-8cd1b75d76f8",
+    "name": "color15",
+    "type": "color",
+    "value": "#003080",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  },
+  {
+    "id": "7a94fac6-623e-40a9-84da-96df7ea980fd",
+    "name": "color16",
+    "type": "color",
+    "value": "#800030",
+    "label": "",
+    "target": 12,
+    "inGameMenu": false
+  }  
 ]

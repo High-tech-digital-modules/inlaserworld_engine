@@ -19,7 +19,10 @@ int gPlayersScore[100];
 uint32_t gPlayersFriendlyHits[100];
 uint8_t gTeamsCount = 0;
 uint8_t gErrorState = 0;
-uint8_t gAllPlayersSameTeam = 0;
+uint8_t gAllPlayersTheSameColor = 0;
+uint8_t gPlayersInTeam = 0;
+uint8_t gPlayersCount = 0;
+uint8_t gLeadingTeamIndex = 0;
 
 typedef struct {
     uint8_t teamIndex;
@@ -32,6 +35,7 @@ volatile uint8_t gvBonusShotCode = 0;
 volatile uint8_t gvBonusNonactive = 1;
 volatile uint8_t gvMineNonactive = 1;
 volatile uint8_t gvSingleModule = 0; // info if there is only one smart module in arena
+ColorT gvColorsTable[MAX_TEAMS] = {0};
 
 int gTimerBonusDeactive = 0;
 int gTimerBonusActivate = 0;
@@ -52,6 +56,8 @@ std::string gMineModule;
 void selectNewBonus(void);
 void selectBonusActivateTime(void);
 void selectMineActivateTime(void);
+void mineEffectInit(void);
+void bonusEffectInit(void);
 
 void handlerBonusDeactivate() {
     // printf("Bonus deactivated\n");
@@ -63,6 +69,8 @@ void handlerBonusDeactivate() {
     ENGINE_clearTimer(gTimerBonusDeactive);
     selectBonusActivateTime();
     gvBonusNonactive = 1;
+    ENGINE_lightLock(gBonusModule, 0x00);
+    ENGINE_lightSetColors(gBonusModule, gvColorsTable[gLeadingTeamIndex], gColorBlack, gColorBlack, 1);
 }
 
 void handlerBonusActivate() {
@@ -89,11 +97,14 @@ void handlerBonusActivate() {
         ENGINE_playSoundFromSoundSet(BonusActivated);
         gBonusModule = lBonusNewAddress;
 
+        bonusEffectInit();
+
         // start yellow light at bonus and near lights
         ENGINE_lightSetColors(gBonusModule, gColorBonus, gColorBonus, gColorBonus, 1);
         ENGINE_clearTimer(gTimerBonusActivate);
         gTimerBonusDeactive = ENGINE_setTimer(handlerBonusDeactivate, 15000U);
         gvBonusNonactive = 0;
+        ENGINE_lightLock(gBonusModule, 0x07);
     }
 }
 
@@ -103,6 +114,8 @@ void handlerMineDeactivate() {
     ENGINE_clearTimer(gTimerMineDeactive);
     selectMineActivateTime();
     gvMineNonactive = 1;
+    ENGINE_lightLock(gMineModule, 0x00);
+    ENGINE_lightSetColors(gMineModule, gvColorsTable[gLeadingTeamIndex], gColorBlack, gColorBlack, 1);
 }
 
 void handlerMineShoot() {
@@ -137,6 +150,8 @@ void handlerMineActivate() {
 
         gMineModule = lMineNewAddress;
 
+        mineEffectInit();
+
         ENGINE_lightStartSequence(gMineModule, 0x5550); // stop all operations
         usleep(40000);
         ENGINE_lightStartSequence(gMineModule, 0x9990); // switch to buffer 2
@@ -148,6 +163,7 @@ void handlerMineActivate() {
         gTimerMineShoot = ENGINE_setTimer(handlerMineShoot, 2900);
         gTimerMineDeactive = ENGINE_setTimer(handlerMineDeactivate, 3500);
         gvMineNonactive = 0;
+        ENGINE_lightLock(gMineModule, 0x07);
     }
 }
 
@@ -167,65 +183,159 @@ void selectMineActivateTime(void) {
 void roundInitTeams(void) {
     uint8_t lTeamsFreeSpaces[MAX_TEAMS] = {0};
     uint8_t i = 0;
-    uint8_t lPlayersCount = ENGINE_getPlayersLength();
-    uint8_t lPlayersInTeam = lPlayersCount / gTeamsCount;
-    uint8_t lPlayersLeftCount = lPlayersCount - lPlayersInTeam * gTeamsCount;
     uint8_t lMsg[2] = {'I', 0};
 
     /*clean old setup*/
-    for (i = 0; i < lPlayersCount; i++) {
+    for (i = 0; i < gPlayersCount; i++) {
         gPlayerData[i].teamIndex = 255;
     }
 
     /*select how many players will be in each team*/
     for (i = 0; i < gTeamsCount; i++) {
-        lTeamsFreeSpaces[i] = lPlayersInTeam;
-    }
-    for (i = 0; i < lPlayersLeftCount; i++) {
-        uint8_t lTeamIndex;
-        do {
-            lTeamIndex = rand() % gTeamsCount;
-        } while (lTeamsFreeSpaces[lTeamIndex] != lPlayersInTeam);
-        lTeamsFreeSpaces[lTeamIndex]++;
+        lTeamsFreeSpaces[i] = gPlayersInTeam;
     }
 
     /*for each player, choose randomly team index, check if there is free space in team*/
-    for (i = 0; i < lPlayersCount; i++) {
+    for (i = 0; i < gPlayersCount; i++) {
         uint8_t lTeamIndex;
         do {
             lTeamIndex = rand() % gTeamsCount;
         } while (lTeamsFreeSpaces[lTeamIndex] == 0);
         lTeamsFreeSpaces[lTeamIndex]--;
         gPlayerData[i].teamIndex = lTeamIndex;
+#ifdef SIMULATION_PLUGIN
+        printf("player %d into team %d\n", i, lTeamIndex);
+#endif
     }
 
     /*send new team setup to players*/
-    for (uint8_t i = 0; i < lPlayersCount; i++) {
+    for (uint8_t i = 0; i < gPlayersCount; i++) {
         lMsg[1] = gPlayerData[i].teamIndex;
         ENGINE_sendCustomMessage(lMsg, 2, i);
     }
 }
 
-void PLUGIN_setup() {
-    uint8_t lTeamsCount = ENGINE_getTeamsLength();
-    printf("teams count %d\n", lTeamsCount);
-    if (lTeamsCount > MAX_TEAMS) {
-        gErrorState = 1;
-    } else {
-        for (uint8_t i = 0; i < lTeamsCount; i++) {
-            Team *lpTeam = ENGINE_getTeamByIndex(i);
-            if (lpTeam->name != "") {
-                gTeamsCount++;
-                gColorArray[i].red = (lpTeam->color >> 16) & 0xFF;
-                gColorArray[i].green = (lpTeam->color >> 8) & 0xFF;
-                gColorArray[i].blue = (lpTeam->color) & 0xFF;
-
-                printf("team %d %s\n", gTeamsCount, lpTeam->name);
+void arenaColorProcess(void) {
+    uint8_t lPlayersInTeams[MAX_TEAMS] = {0};
+    uint8_t lColorChangeFlag = 0;
+    uint8_t lLeadingTeamIndexTmp = gLeadingTeamIndex;
+    for (uint8_t i = 0; i < gPlayersCount; i++) {
+        uint8_t lTeamIndex = gPlayerData[i].teamIndex;
+        lPlayersInTeams[lTeamIndex]++;
+    }
+    printf("in color new leader %d\n", gLeadingTeamIndex);
+    for (uint8_t i = 0; i < gTeamsCount; i++) {
+        printf("t %d %d, ", i, lPlayersInTeams[i]);
+        if (lPlayersInTeams[i] > lPlayersInTeams[gLeadingTeamIndex]) {
+            gLeadingTeamIndex = i;
+            lColorChangeFlag = 1;
+            printf("color change by new leader\n");
+        }
+    }
+    printf("\n");
+    if (lColorChangeFlag == 0) {
+        printf("in color the same\n");
+        uint8_t lCounter = 1;
+        while (lCounter < gTeamsCount) {
+            uint8_t lIndex = (lCounter + gLeadingTeamIndex) % gTeamsCount;
+            printf("indx %d\n", lIndex);
+            if (lPlayersInTeams[lIndex] == lPlayersInTeams[gLeadingTeamIndex]) {
+                gLeadingTeamIndex = lIndex;
+                lCounter = gTeamsCount;
+                lColorChangeFlag = 1;
+                printf("color change the same number\n");
             }
-            printf("no team %d\n",i);
+            lCounter++;
         }
     }
 
+    if (lColorChangeFlag == 1) {
+        printf("in color change %d\n", gLeadingTeamIndex);
+        ColorT lColor = gvColorsTable[gLeadingTeamIndex];
+
+        printf("color change 0x%02X, 0x%02X, 0x%02X\n", lColor.red, lColor.green, lColor.blue);
+        /*set fade effect, one operation, going to new color*/
+        usleep(40000);
+        ENGINE_lightClearOperationBuffer(pgLightBroadcastAddress);
+        ENGINE_lightClearSequenceBuffer(pgLightBroadcastAddress, 0b00111111);
+        ENGINE_lightAddOperation(pgLightBroadcastAddress, {1, lColor.red, lColor.green, lColor.blue, 50, 0}); // pulsing, team color, only increase
+        usleep(80000);
+        ENGINE_lightSyncOperationBuffer(pgLightBroadcastAddress);
+        ENGINE_lightAddSequence(pgLightBroadcastAddress, {0, 1}, 0b00111111); //{index, repeat}
+        usleep(80000);
+        ENGINE_lightSyncSequenceBuffer(pgLightBroadcastAddress, 0b00111111);
+        usleep(80000);
+        std::vector<DeviceT> lBonusModules = ENGINE_getBonusModules();
+        for (DeviceT lModule : lBonusModules) {
+            ENGINE_lightClearSequenceBuffer(lModule.address, 0b00111111);
+            ENGINE_lightAddSequence(lModule.address, {0, 1}, 0b00000011); //{index, repeat}
+            ENGINE_lightSyncSequenceBuffer(lModule.address, 0b00111111);
+        }
+        usleep(80000);
+        ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x7770);
+        usleep(40000);
+        ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x3330);
+    }
+}
+
+void mineEffectInit(void) {
+    usleep(40000);
+    ENGINE_lightClearOperationBuffer(gMineModule);
+    ENGINE_lightClearSequenceBuffer(gMineModule, 0b00111111);
+
+    // 0 blinking, white, fast
+    ENGINE_lightAddOperation(gMineModule, {0, 0xFF, 0xFF, 0xFF, 5, 5});
+
+    // 1 pulsing, red, slow
+    ENGINE_lightAddOperation(gMineModule, {1, 0xFF, 0x00, 0x00, 40, 40});
+    // 2 pulsing, red, medium slow
+    ENGINE_lightAddOperation(gMineModule, {1, 0xFF, 0x00, 0x00, 30, 30});
+    // 3 pulsing, red, medium
+    ENGINE_lightAddOperation(gMineModule, {1, 0xFF, 0x00, 0x00, 20, 20});
+    // 4 pulsing, red, medium fast
+    ENGINE_lightAddOperation(gMineModule, {1, 0xFF, 0x00, 0x00, 10, 10});
+    // 5 pulsing, red, fast
+    ENGINE_lightAddOperation(gMineModule, {1, 0xFF, 0x00, 0x00, 5, 5});
+
+    // red pulsing for mine + white boom, to circuit 2 and 3, buffer 2 for both
+    // length is 3,35 s
+    ENGINE_lightAddSequence(gMineModule, {1, 1}, 0b00101010); //{index, repeat}
+    ENGINE_lightAddSequence(gMineModule, {2, 1}, 0b00101010); //{index, repeat}
+    ENGINE_lightAddSequence(gMineModule, {3, 1}, 0b00101010); //{index, repeat}
+    ENGINE_lightAddSequence(gMineModule, {4, 1}, 0b00101010); //{index, repeat}
+    ENGINE_lightAddSequence(gMineModule, {5, 4}, 0b00101010); //{index, repeat}
+    ENGINE_lightAddSequence(gMineModule, {0, 3}, 0b00101010); //{index, repeat}
+
+    usleep(40000);
+    ENGINE_lightSyncOperationBuffer(gMineModule);
+    usleep(40000);
+    ENGINE_lightSyncSequenceBuffer(gMineModule, 0b00111111);
+    usleep(40000);
+    ENGINE_lightStartSequence(gMineModule, 0x0770);
+    usleep(40000);
+}
+
+void bonusEffectInit(void) {
+    usleep(40000);
+    ENGINE_lightClearOperationBuffer(gBonusModule);
+    ENGINE_lightClearSequenceBuffer(gBonusModule, 0b00111111);
+
+    // 0 blinking, white, fast
+    ENGINE_lightAddOperation(gBonusModule, {0, 0xFF, 0xFF, 0xFF, 5, 5});
+
+    // white blinking to circuit 2 and 3, buffer 1 for both
+    ENGINE_lightAddSequence(gBonusModule, {0, 2}, 0b00010100); //{index, repeat}
+
+    usleep(40000);
+    ENGINE_lightSyncOperationBuffer(gBonusModule);
+    usleep(40000);
+    ENGINE_lightSyncSequenceBuffer(gBonusModule, 0b00111111);
+    usleep(40000);
+    ENGINE_lightStartSequence(gBonusModule, 0x0770);
+    usleep(40000);
+}
+
+void PLUGIN_setup() {
     LIGHT_switchOffAllModules();
     LIGHT_setArenaLightsColor(gColorGray, 1);
 
@@ -301,27 +411,49 @@ void PLUGIN_destroyed() {
     LIGHT_setColorStandby();
 }
 
-void PLUGIN_deviceIsReady(uint8_t aPlayerIndex) {
-    uint8_t lMsg[50] = {0};
-    Player *lpPlayer = ENGINE_getPlayerByIndex(aPlayerIndex);
-    Team *lpTeam;
-
-    lMsg[0] = 'C';
-    for (uint8_t i = 0; i < gTeamsCount; i++) {
-        lMsg[i * 3 + 1] = gColorArray[i].red;
-        lMsg[i * 3 + 2] = gColorArray[i].green;
-        lMsg[i * 3 + 3] = gColorArray[i].blue;
-
-        lpTeam = ENGINE_getTeamByIndex(i);
-        if (lpTeam->name == lpPlayer->nameOfTeam) {
-            gPlayerData[aPlayerIndex].teamIndex = i;
+void PLUGIN_gameLoaded() {
+    gPlayersCount = ENGINE_getPlayersLength();
+    if (singlePlayerTeams == 1 && gPlayersCount <= MAX_TEAMS) {
+        gPlayersInTeam = 1;
+    } else if (gPlayersCount < 5) {
+        gPlayersInTeam = 1;
+    } else {
+        gPlayersInTeam = (gPlayersCount - 1) / 8 + 1; /*we want to use only 8 basic teams colors*/
+        if (gPlayersInTeam < 2) {
+            gPlayersInTeam = 2;
         }
     }
-    ENGINE_sendCustomMessage(lMsg, gTeamsCount * 3 + 1, aPlayerIndex);
+    gTeamsCount = gPlayersCount / gPlayersInTeam;
+    if (gTeamsCount * gPlayersInTeam < gPlayersCount) {
+        gTeamsCount++;
+    }
 
-    lMsg[0] = 'I';
-    lMsg[1] = gPlayerData[aPlayerIndex].teamIndex;
-    ENGINE_sendCustomMessage(lMsg, 2, aPlayerIndex);
+    gvColorsTable[0] = color1;
+    gvColorsTable[1] = color2;
+    gvColorsTable[2] = color3;
+    gvColorsTable[3] = color4;
+    gvColorsTable[4] = color5;
+    gvColorsTable[5] = color6;
+    gvColorsTable[6] = color7;
+    gvColorsTable[7] = color8;
+    gvColorsTable[8] = color9;
+    gvColorsTable[9] = color10;
+    gvColorsTable[10] = color11;
+    gvColorsTable[11] = color12;
+    gvColorsTable[12] = color13;
+    gvColorsTable[13] = color14;
+    gvColorsTable[14] = color15;
+    gvColorsTable[15] = color16;
+
+#ifdef SIMULATION_PLUGIN
+    for (uint8_t i = 0; i < MAX_TEAMS; i++) {
+        printf("color %d: 0x%02X, 0x%02X, 0x%02X\n", i, gvColorsTable[i].red, gvColorsTable[i].green, gvColorsTable[i].blue);
+    }
+    printf("players %d, teams %d, players in team %d\n", gPlayersCount, gTeamsCount, gPlayersInTeam);
+#endif
+}
+
+void PLUGIN_deviceIsReady(uint8_t aPlayerIndex) {
 }
 
 void PLUGIN_newLeader(const Player *apPLayer) {
@@ -334,7 +466,6 @@ void PLUGIN_newLeader(const Player *apPLayer) {
 void PLUGIN_main() {
     int32_t time = ENGINE_getRemainingTime();
     uint8_t state = ENGINE_getPreviousGameState();
-    uint8_t lPlayerCount = ENGINE_getPlayersLength();
 
     switch (time) {
     case 5:
@@ -363,7 +494,7 @@ void PLUGIN_main() {
 
     if (state != 0x03) {
         uint8_t lResultTheSameTeam = 1;
-        for (uint8_t i = 0; i < lPlayerCount; i++) {
+        for (uint8_t i = 0; i < gPlayersCount; i++) {
             if (gPlayerData[0].teamIndex != gPlayerData[i].teamIndex) {
                 lResultTheSameTeam = 0;
             }
@@ -379,15 +510,17 @@ void PLUGIN_main() {
             p->score = score;
         }
         if (lResultTheSameTeam == 1) {
-            if (gAllPlayersSameTeam < 3) {
-                gAllPlayersSameTeam++;
+            if (gAllPlayersTheSameColor < 2) {
+                gAllPlayersTheSameColor++;
             } else {
+#ifdef SIMULATION_PLUGIN
                 printf("round restart\n");
+#endif
                 /*TODO round restart*/
                 // ENGINE_playSoundFromSoundSet(roundEnd);
                 /*send Dead message*/
                 uint8_t lMsg[2] = {'D', 0};
-                for (uint8_t i = 0; i < lPlayerCount; i++) {
+                for (uint8_t i = 0; i < gPlayersCount; i++) {
                     ENGINE_sendCustomMessage(lMsg, 2, i);
                 }
                 /*send new I message, randomly*/
@@ -395,15 +528,18 @@ void PLUGIN_main() {
                 /*light of arena restart*/
             }
         } else {
-            gAllPlayersSameTeam = 0;
+            gAllPlayersTheSameColor = 0;
         }
     }
 
     /*leader team arena color*/
+    arenaColorProcess();
 }
 
 void PLUGIN_gameStateChanged(uint8_t aState) {
+#ifdef SIMULATION_PLUGIN
     printf("New state: %d\n", aState);
+#endif
     if (aState == 0x01 && ENGINE_getPreviousGameState() == 0x03) {
         std::vector<DeviceT> lBonusModules = ENGINE_getBonusModules();
         if (lBonusModules.size() > 0) {
@@ -413,6 +549,14 @@ void PLUGIN_gameStateChanged(uint8_t aState) {
             if (mineEnabled) {
                 selectMineActivateTime();
             }
+        }
+    } else if (aState == 0x03) {
+        roundInitTeams();
+        for (uint8_t i = 0; i < ENGINE_getPlayersLength(); i++) {
+            uint8_t lMsg[2] = {'I', 0};
+
+            lMsg[1] = gPlayerData[i].teamIndex;
+            ENGINE_sendCustomMessage(lMsg, 2, i);
         }
     }
 }
@@ -450,11 +594,15 @@ void PLUGIN_playerGetKilled(uint8_t aPlayerIndex, uint8_t aWhoPlayerIndex) {
             gPlayersScore[aWhoPlayerIndex] += pointsFriendlyFire;
         }
         */
+#ifdef SIMULATION_PLUGIN
     printf("aPlayerIndex: %d, aWhoPlayerIndex: %d\n", playerIndexes[aPlayerIndex], playerIndexes[aWhoPlayerIndex]);
+#endif
 }
 
 void PLUGIN_receivedCustomBackupData(uint8_t *apData, uint8_t aLen, uint8_t aPlayerIndex) {
-    printf("data %d\n", aPlayerIndex);
+#ifdef SIMULATION_PLUGIN
+    // printf("data %d\n", aPlayerIndex);
+#endif
     gPlayerData[aPlayerIndex].teamIndex = apData[0];
 
     /*
@@ -480,6 +628,9 @@ void PLUGIN_receivedCustomBackupData(uint8_t *apData, uint8_t aLen, uint8_t aPla
 
 void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
     Player *p = ENGINE_getPlayerByCode(aCode);
+#ifdef SIMULATION_PLUGIN
+    printf("light hit %d, %s, %s\n", aCode, aAddress.c_str(), gBonusModule.c_str());
+#endif
 
     if (bonusEnabled == true && (strcmp(aAddress.c_str(), gBonusModule.c_str()) == 0) && gvBonusNonactive == 0) {
         ENGINE_playSoundFromSoundSet(BonusTaken);

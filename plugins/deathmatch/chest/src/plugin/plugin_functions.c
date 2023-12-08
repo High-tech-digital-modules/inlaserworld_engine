@@ -500,7 +500,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     }
 
     if ((aState == state_game) || (aState == state_ending)) {
-        apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_special));
+        apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_stroboscope));
         uint8_t lOptionTouchEnabled = ENGINE_getOptionsTouchEnabled();
         if (((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) {
             apModulesState[MODULE_MAIN_BOARD] |= LED2(led_special);

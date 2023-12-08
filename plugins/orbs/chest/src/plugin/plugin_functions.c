@@ -175,7 +175,7 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
             ENGINE_processDeath(aHitCode, aHitFlag);
             ENGINE_sendCustomMessage((uint8_t *)"H", 1, aHitCode);
             if (gvOrbs != 0) {
-                //gvSendOrbMsg = 0xFF;
+                // gvSendOrbMsg = 0xFF;
                 gvOrbsTmp = gvOrbs;
                 gvLengthMsgTimeout = 10;
                 gvTimeMsgTimeout = 1;
@@ -402,7 +402,7 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
     gvBaseColor.red = apModulesColor1[0].red;
     gvBaseColor.green = apModulesColor1[0].green;
     gvBaseColor.blue = apModulesColor1[0].blue;
-    for(uint8_t i = 0; i < MODULES_NUMBER; i++){
+    for (uint8_t i = 0; i < MODULES_NUMBER; i++) {
         apModulesColor1[i].red = gvBaseColor.red;
         apModulesColor1[i].green = gvBaseColor.green;
         apModulesColor1[i].blue = gvBaseColor.blue;
@@ -411,9 +411,9 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
         apModulesColor2[i].blue = gvBaseColor.blue;
         apModulesState[i] = LED1(led_basic) | LED2(led_basic);
     }
-    //ENGINE_setAllModulesColor(1, gvBaseColor);
-    //ENGINE_setAllModulesColor(2, gvBaseColor);
-    //ENGINE_setAllModulesState(1, 1, 0);
+    // ENGINE_setAllModulesColor(1, gvBaseColor);
+    // ENGINE_setAllModulesColor(2, gvBaseColor);
+    // ENGINE_setAllModulesState(1, 1, 0);
     ENGINE_playSoundFromSoundSet(loaded);
     ENGINE_setPeriodicInfoLength(1);
 }
