@@ -25,6 +25,12 @@ void LIGHT_setColorStandby(void) {
       usleep(40000);
       ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x4440 );*/
 
+    std::vector<DeviceT> lBonusModules = ENGINE_getBonusModules();
+    for (DeviceT lModule : lBonusModules) {
+        ENGINE_lightLock(lModule.address, 0x00);
+        usleep(40000);
+    }
+
     ENGINE_lightSetColors(pgLightBroadcastAddress, gLightColorStandby, gLightColorStandby, gLightColorStandby, 0);
 }
 
