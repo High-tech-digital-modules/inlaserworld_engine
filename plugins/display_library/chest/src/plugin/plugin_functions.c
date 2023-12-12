@@ -1744,6 +1744,12 @@ void DISPLAY_rank(uint8_t aX, uint8_t aY, uint8_t aCell) {
     }
 }
 
+void DISPLAY_playersCount(uint8_t aX, uint8_t aY, uint8_t aCount) {    
+    ENGINE_drawBitmap(aX, aY, stickman.width, stickman.height, stickman.data);
+    ENGINE_fillRectangle(aX + stickman.width + 10, aY, 22, 14, 0); // clean space for count number
+    ENGINE_drawInt(aX + stickman.width + 10 + 11, aY, aCount, 'C', 1);
+}
+
 void DISPLAY_drawRank_gg(uint8_t aX, uint8_t aY, uint8_t aRank, uint8_t aKills) {
     ENGINE_fillRectangle(aX, aY, 59, 27, 0);
     if (aKills == 255) {

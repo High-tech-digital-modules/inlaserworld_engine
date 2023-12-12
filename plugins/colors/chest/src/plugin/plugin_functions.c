@@ -227,9 +227,18 @@ void PLUGIN_mainLoop(void) {
             gvDisplayIndex &= ~DI_RANK;
             ENGINE_selectDisplayBuffer(1);
             if (shootPower == 100) {
-                DISPLAY_rank(37, 18, 1);
-            } else {
                 DISPLAY_rank(37, 2, 1);
+            } else {
+                DISPLAY_rank(5, 2, 1);
+            }
+            lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
+        } else if ((gvDisplayIndex & DI_PLAYERS_COUNT) != 0) {
+            gvDisplayIndex &= ~DI_PLAYERS_COUNT;
+            ENGINE_selectDisplayBuffer(1);
+            if (shootPower == 100) {
+                DISPLAY_playersCount(46, 42, gvPlayersInTeam);
+            } else {
+                DISPLAY_playersCount(80, 9, gvPlayersInTeam);
             }
             lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
         } else if ((gvDisplayIndex & DI_HEALTH) != 0) {
@@ -285,12 +294,13 @@ void PLUGIN_mainLoop(void) {
             ENGINE_selectDisplayBuffer(1);
             ENGINE_clearDisplayBuffer();
             if (shootPower == 100) {
-                DISPLAY_initLayout(1);
-            } else {
                 DISPLAY_initLayout(2);
+            } else {
+                DISPLAY_initLayout(3);
                 gvDisplayIndex |= DI_HEALTH;
             }
             gvDisplayIndex |= DI_RANK;
+            gvDisplayIndex |= DI_PLAYERS_COUNT;
         }
         if (lDisplayDraw == 1) {
             ENGINE_drawBufferToDisplay(0);

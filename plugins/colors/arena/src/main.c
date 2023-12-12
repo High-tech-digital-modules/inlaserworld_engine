@@ -66,12 +66,32 @@ void handlerBonusDeactivate() {
         ENGINE_playSoundFromSoundSet(BonusDeactivated);
     } else {
     }
-    ENGINE_lightSetColors(gBonusModule, gColorArena, gColorBlack, gColorBlack, 1);
-    ENGINE_clearTimer(gTimerBonusDeactive);
-    selectBonusActivateTime();
-    gvBonusNonactive = 1;
-    ENGINE_lightLock(gBonusModule, 0x00);
-    ENGINE_lightSetColors(gBonusModule, gvColorsTable[gLeadingTeamIndex], gColorBlack, gColorBlack, 1);
+    if (gvBonusNonactive == 2) {
+        ENGINE_clearTimer(gTimerBonusDeactive);
+        gvBonusNonactive = 3;
+        gTimerBonusDeactive = ENGINE_setTimer(handlerBonusDeactivate, 700U);
+
+        // blink to show hitted, once the sequence
+        ENGINE_lightStartSequence(gBonusModule, 0x0550); // stop all operations
+        usleep(40000);
+        ENGINE_lightStartSequence(gBonusModule, 0x0770); // switch to buffer 1
+        usleep(40000);
+        ENGINE_lightStartSequence(gBonusModule, 0x0330); // do sequence once
+        usleep(40000);
+    } else {
+        ENGINE_lightSetColors(gBonusModule, gColorArena, gColorBlack, gColorBlack, 1);
+        ENGINE_clearTimer(gTimerBonusDeactive);
+        selectBonusActivateTime();
+        gvBonusNonactive = 1;
+        usleep(80000);
+        ENGINE_lightLock(gBonusModule, 0x00);
+        usleep(80000);
+        // ENGINE_lightStartSequence(gBonusModule, 0x5550); // stop all operations
+        // usleep(80000);
+        ENGINE_lightSetColors(gBonusModule, gvColorsTable[gLeadingTeamIndex], gColorBlack, gColorBlack, 1);
+        usleep(80000);
+        // ENGINE_lightLock(gBonusModule, 0x06);
+    }
 }
 
 void handlerBonusActivate() {
@@ -98,6 +118,9 @@ void handlerBonusActivate() {
         ENGINE_playSoundFromSoundSet(BonusActivated);
         gBonusModule = lBonusNewAddress;
 
+        ENGINE_lightStartSequence(gBonusModule, 0x5550); // stop all operations
+        usleep(40000);
+
         bonusEffectInit();
 
         // start yellow light at bonus and near lights
@@ -105,18 +128,26 @@ void handlerBonusActivate() {
         ENGINE_clearTimer(gTimerBonusActivate);
         gTimerBonusDeactive = ENGINE_setTimer(handlerBonusDeactivate, 15000U);
         gvBonusNonactive = 0;
+        usleep(40000);
         ENGINE_lightLock(gBonusModule, 0x07);
+        usleep(40000);
     }
 }
 
 void handlerMineDeactivate() {
     // printf("Mine deactivated\n");
-    ENGINE_lightSetColors(gMineModule, gColorArena, gColorBlack, gColorBlack, 1);
+    // ENGINE_lightSetColors(gMineModule, gColorArena, gColorBlack, gColorBlack, 1);
     ENGINE_clearTimer(gTimerMineDeactive);
     selectMineActivateTime();
     gvMineNonactive = 1;
+    usleep(80000);
     ENGINE_lightLock(gMineModule, 0x00);
+    usleep(80000);
+    ENGINE_lightStartSequence(gMineModule, 0x5550); // stop all operations
+    usleep(80000);
     ENGINE_lightSetColors(gMineModule, gvColorsTable[gLeadingTeamIndex], gColorBlack, gColorBlack, 1);
+    usleep(80000);
+    // ENGINE_lightLock(gMineModule, 0x06);
 }
 
 void handlerMineShoot() {
@@ -151,6 +182,9 @@ void handlerMineActivate() {
 
         gMineModule = lMineNewAddress;
 
+        ENGINE_lightStartSequence(gMineModule, 0x5550); // stop all operations
+        usleep(40000);
+
         mineEffectInit();
 
         ENGINE_lightStartSequence(gMineModule, 0x5550); // stop all operations
@@ -165,6 +199,7 @@ void handlerMineActivate() {
         gTimerMineDeactive = ENGINE_setTimer(handlerMineDeactivate, 3500);
         gvMineNonactive = 0;
         ENGINE_lightLock(gMineModule, 0x07);
+        usleep(40000);
     }
 }
 
@@ -174,11 +209,21 @@ void selectNewBonus(void) {
 }
 
 void selectBonusActivateTime(void) {
-    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 5000 + rand() % 5000); // 15000 + rand() % 15000
+    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 25000 + rand() % 5000); // 5000 + rand() % 5000
 }
 
 void selectMineActivateTime(void) {
-    gTimerMineActivate = ENGINE_setTimer(handlerMineActivate, 10000 + rand() % 10000);
+    gTimerMineActivate = ENGINE_setTimer(handlerMineActivate, 25000 + rand() % 10000); // 10000 + rand() % 10000
+}
+
+void playersInTeamsCount(void) {
+    for (uint8_t i = 0; i < MAX_TEAMS; i++) {
+        gPlayersInTeams[i] = 0;
+    }
+    for (uint8_t i = 0; i < gPlayersCount; i++) {
+        uint8_t lTeamIndex = gPlayerData[i].teamIndex;
+        gPlayersInTeams[lTeamIndex]++;
+    }
 }
 
 void roundInitTeams(void) {
@@ -217,19 +262,10 @@ void roundInitTeams(void) {
 
     playersInTeamsCount();
     lMsg[0] = 'C';
+    printf("send C message\n");
     for (uint8_t i = 0; i < gPlayersCount; i++) {
         lMsg[1] = gPlayersInTeams[gPlayerData[i].teamIndex];
         ENGINE_sendCustomMessage(lMsg, 2, i);
-    }
-}
-
-void playersInTeamsCount(void) {
-    for (uint8_t i = 0; i < MAX_TEAMS; i++) {
-        gPlayersInTeams[i] = 0;
-    }
-    for (uint8_t i = 0; i < gPlayersCount; i++) {
-        uint8_t lTeamIndex = gPlayerData[i].teamIndex;
-        gPlayersInTeams[lTeamIndex]++;
     }
 }
 
@@ -281,9 +317,12 @@ void arenaColorProcess(void) {
         usleep(80000);
         std::vector<DeviceT> lBonusModules = ENGINE_getBonusModules();
         for (DeviceT lModule : lBonusModules) {
-            ENGINE_lightClearSequenceBuffer(lModule.address, 0b00111111);
-            ENGINE_lightAddSequence(lModule.address, {0, 1}, 0b00000011); //{index, repeat}
-            ENGINE_lightSyncSequenceBuffer(lModule.address, 0b00111111);
+            if ((gvMineNonactive == 1 || gMineModule != lModule.address) && (gvBonusNonactive == 1 || gBonusModule != lModule.address)) {
+                ENGINE_lightClearSequenceBuffer(lModule.address, 0b00111111);
+                ENGINE_lightAddSequence(lModule.address, {0, 1}, 0b00000011); //{index, repeat}
+                ENGINE_lightSyncSequenceBuffer(lModule.address, 0b00111111);
+                usleep(40000);
+            }
         }
         usleep(80000);
         ENGINE_lightStartSequence(pgLightBroadcastAddress, 0x7770);
@@ -325,8 +364,8 @@ void mineEffectInit(void) {
     usleep(40000);
     ENGINE_lightSyncSequenceBuffer(gMineModule, 0b00111111);
     usleep(40000);
-    ENGINE_lightStartSequence(gMineModule, 0x0770);
-    usleep(40000);
+    /*ENGINE_lightStartSequence(gMineModule, 0x0770);
+    usleep(40000);*/
 }
 
 void bonusEffectInit(void) {
@@ -345,8 +384,8 @@ void bonusEffectInit(void) {
     usleep(40000);
     ENGINE_lightSyncSequenceBuffer(gBonusModule, 0b00111111);
     usleep(40000);
-    ENGINE_lightStartSequence(gBonusModule, 0x0770);
-    usleep(40000);
+    /*ENGINE_lightStartSequence(gBonusModule, 0x0770);
+    usleep(40000);*/
 }
 
 void PLUGIN_setup() {
@@ -565,7 +604,7 @@ void PLUGIN_gameStateChanged(uint8_t aState) {
             }
         }
     } else if (aState == 0x03) {
-        roundInitTeams();        
+        roundInitTeams();
     }
 }
 
@@ -618,9 +657,11 @@ void PLUGIN_receivedCustomBackupData(uint8_t *apData, uint8_t aLen, uint8_t aPla
         /*calculate players in teams*/
         playersInTeamsCount();
         /*send message for each player*/
+        printf("send C message teams %d %d\n", lTeamIndex1, lTeamIndex2);
         uint8_t lMsg[2] = {'C', 0};
         for (uint8_t i = 0; i < gPlayersCount; i++) {
             if (gPlayerData[i].teamIndex == lTeamIndex1 || gPlayerData[i].teamIndex == lTeamIndex2) {
+                printf("C for player %d\n", i);
                 lMsg[1] = gPlayersInTeams[gPlayerData[i].teamIndex];
                 ENGINE_sendCustomMessage(lMsg, 2, i);
             }
@@ -659,14 +700,6 @@ void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
         ENGINE_clearTimer(gTimerBonusDeactive);
         gvBonusNonactive = 2;
         handlerBonusDeactivate();
-
-        // blink to show hitted, once the sequence
-        ENGINE_lightStartSequence(gBonusModule, 0x0550); // stop all operations
-        usleep(40000);
-        ENGINE_lightStartSequence(gBonusModule, 0x0770); // switch to buffer 1
-        usleep(40000);
-        ENGINE_lightStartSequence(gBonusModule, 0x0330); // do sequence once
-        usleep(40000);
 
         if (bonusSendByXbee == true) {
             uint8_t lData2[2] = {'b', gvBonusIndex};
