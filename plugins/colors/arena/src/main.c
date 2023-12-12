@@ -209,11 +209,11 @@ void selectNewBonus(void) {
 }
 
 void selectBonusActivateTime(void) {
-    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 25000 + rand() % 5000); // 5000 + rand() % 5000
+    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 5000 + rand() % 5000); // 15000 + rand() % 15000
 }
 
 void selectMineActivateTime(void) {
-    gTimerMineActivate = ENGINE_setTimer(handlerMineActivate, 25000 + rand() % 10000); // 10000 + rand() % 10000
+    gTimerMineActivate = ENGINE_setTimer(handlerMineActivate, 10000 + rand() % 10000);
 }
 
 void playersInTeamsCount(void) {

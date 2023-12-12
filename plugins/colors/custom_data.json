@@ -104,10 +104,10 @@
     "id": "5ffb01d2-133d-469c-bb65-fd49cb9b83bf",
     "name": "bonusEnabled",
     "type": "boolean",
-    "value": true,
+    "value": false,
     "label": "Bonus feature enable",
     "target": 12,
-    "inGameMenu": true
+    "inGameMenu": false
   },
   {
     "id": "ef2b66df-f46d-4ffb-93df-e3f520070161",
@@ -133,16 +133,16 @@
     "value": true,
     "label": "Bonus only for the player who shot it",
     "target": 8,
-    "inGameMenu": true
+    "inGameMenu": false
   },
   {
     "id": "c009a408-90b9-4cdd-89f3-3e15079f319d",
     "name": "mineEnabled",
     "type": "boolean",
-    "value": true,
+    "value": false,
     "label": "Mine feature enabled",
     "target": 12,
-    "inGameMenu": true
+    "inGameMenu": false
   },
   {
     "id": "c81ecffd-d18e-4736-9cf6-21c04e727528",
