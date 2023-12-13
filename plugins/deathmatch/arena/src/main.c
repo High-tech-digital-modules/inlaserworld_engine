@@ -7,7 +7,13 @@
 #include "engine_functions.h"
 #include "sound_set_map.h"
 #include "submodules.h"
+#include "fmod.hpp"
 #endif
+
+FMOD::Channel *gpMainChannel = nullptr;
+FMOD::Channel *gpSoundChannel = nullptr;
+FMOD::Channel *gpMineChannel = nullptr;
+FMOD::Sound *gpMainMusicPlayer = nullptr;
 
 volatile uint8_t gvBonusIndex = 1;
 // volatile DeviceT gvBonusDevice;
@@ -40,11 +46,32 @@ std::string gMineModule;
 void selectNewBonus(void);
 void selectBonusActivateTime(void);
 void selectMineActivateTime(void);
+void playSoundFromSet(uint32_t aIndex);
+void playSound(uint32_t aMediaId);
+
+void stopMainChannel() {
+    if(gpMainMusicPlayer != nullptr) {
+        gpMainMusicPlayer->release();
+    }
+}
+
+bool playMusicOnMainChannel(const std::string& aUrl) {
+    if (aUrl.empty()) {
+        return false;
+    }
+    if(gpMainMusicPlayer != nullptr) {
+        gpMainMusicPlayer->release();
+    }
+    ENGINE_getAudioEngine()->createStream(
+            (aUrl).data(), FMOD_LOOP_NORMAL | FMOD_2D, nullptr, &gpMainMusicPlayer);
+    ENGINE_getAudioEngine()->playSound(gpMainMusicPlayer, nullptr, false, &gpMainChannel);
+    return true;
+}
 
 void handlerBonusDeactivate() {
     // printf("Bonus deactivated\n");
     if (gvBonusNonactive == 0) {
-        ENGINE_playSoundFromSoundSet(BonusDeactivated);
+        playSoundFromSet(BonusDeactivated);
     } else {
     }
     ENGINE_lightSetColors(gBonusModule, gColorArena, gColorBlack, gColorBlack, 1);
@@ -74,7 +101,7 @@ void handlerBonusActivate() {
     }
 
     if (lBonusNewAddress != "none") {
-        ENGINE_playSoundFromSoundSet(BonusActivated);
+        playSoundFromSet(BonusActivated);
         gBonusModule = lBonusNewAddress;
 
         // start yellow light at bonus and near lights
@@ -94,7 +121,7 @@ void handlerMineDeactivate() {
 }
 
 void handlerMineShoot() {
-    ENGINE_playSoundId(sfxMineExplosion);
+    playSound(sfxMineExplosion);
     ENGINE_clearTimer(gTimerMineShoot);
     ENGINE_lightSetShooting(gMineModule, 0x00, 0x05, 2); // info, shooting periode*100ms, number of shots
     usleep(40000);
@@ -121,7 +148,7 @@ void handlerMineActivate() {
     }
 
     if (lMineNewAddress != "none") {
-        ENGINE_playSoundFromSoundSet(MineActivated);
+        playSoundFromSet(MineActivated);
 
         gMineModule = lMineNewAddress;
 
@@ -161,11 +188,20 @@ void PLUGIN_playerAmmoChanged(uint8_t aPlayerIndex,
 void PLUGIN_newLeader(const Player *apPLayer) {
     uint8_t lPrevState = ENGINE_getPreviousGameState();
     if (lPrevState != 0x03 && lPrevState != 0xFF) {
-        ENGINE_playSoundFromSoundSet(arenaLeaderChange);
+        playSoundFromSet(arenaLeaderChange);
     }
 }
 
 void PLUGIN_setup() {
+    ENGINE_customMusicControl();
+    playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
+    gpMainChannel->setCallback([](FMOD_CHANNELCONTROL *channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void *commanddata1, void *commanddata2) -> FMOD_RESULT {
+        if (controltype == FMOD_CHANNELCONTROL_CALLBACK_END) {
+            // the sound has finished playing here
+        }
+        printf("Callback called??\n");
+        return FMOD_OK;  // indicate all went well
+    });
     LIGHT_switchOffAllModules();
     LIGHT_setArenaLightsColor(colorArena, 1);
 
@@ -241,6 +277,51 @@ void PLUGIN_setup() {
 
 void PLUGIN_destroyed() {
     LIGHT_setColorStandby();
+    if (gpMainMusicPlayer != nullptr){
+		gpMainMusicPlayer->release();
+		gpMainMusicPlayer = nullptr;
+	}
+}
+
+FMOD_RESULT F_CALLBACK onSoundFinished(
+    FMOD_CHANNELCONTROL *channelcontrol, 
+    FMOD_CHANNELCONTROL_TYPE controltype, 
+    FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, 
+    void *commanddata1, void *commanddata2) {
+    // @Daniel's Note ... This is probably sheduled from FMOD system
+    // so mutex is not used like if any other PLUGIN function is called
+    // be carefull about using any other ENGINE functions then the one
+    // for controlling sounds
+    if (controltype == FMOD_CHANNELCONTROL_CALLBACK_END) {
+        auto* channel = reinterpret_cast<FMOD::Channel*>(channelcontrol);
+        if (channel) {
+            FMOD::Sound* currentSound;
+            channel->getCurrentSound(&currentSound);
+            if (currentSound) {
+                // Do something with the currentSound...
+                char name[256];
+                currentSound->getName(name, 256);
+                printf("%s\n", name);
+            }
+        }
+    }
+    return FMOD_OK;
+}
+
+void playSoundFromSet(uint32_t aIndex) {
+    FMOD::Sound *lSound = ENGINE_getSoundFromSoundSet(aIndex);
+    if(lSound != nullptr) {
+        ENGINE_getAudioEngine()->playSound(lSound, nullptr, false, &gpSoundChannel);
+        gpSoundChannel->setCallback(onSoundFinished);
+    }   
+}
+
+void playSound(uint32_t aMediaId) {
+    FMOD::Sound *lSound = ENGINE_getSoundFromMediaLibrary(aMediaId);
+    if(lSound != nullptr) {
+        ENGINE_getAudioEngine()->playSound(lSound, nullptr, false, &gpMineChannel);
+        gpMineChannel->setCallback(onSoundFinished);
+    }   
 }
 
 void PLUGIN_main() {
@@ -248,27 +329,27 @@ void PLUGIN_main() {
     uint8_t state = ENGINE_getPreviousGameState();
     switch (time) {
     case 5:
-        ENGINE_playSoundFromSoundSet(five);
+        playSoundFromSet(five);
         break;
     case 4:
-        ENGINE_playSoundFromSoundSet(four);
+        playSoundFromSet(four);
         break;
     case 3:
-        ENGINE_playSoundFromSoundSet(three);
+        playSoundFromSet(three);
         break;
     case 2:
-        ENGINE_playSoundFromSoundSet(two);
+        playSoundFromSet(two);
         break;
     case 1:
-        ENGINE_playSoundFromSoundSet(one);
+        playSoundFromSet(one);
         break;
     }
 
     if (state != 0x03 && time == 300) {
-        ENGINE_playSoundFromSoundSet(Min5Remaining);
+        playSoundFromSet(Min5Remaining);
     }
     if (state != 0x03 && time == 60) {
-        ENGINE_playSoundFromSoundSet(Min1Remaining);
+        playSoundFromSet(Min1Remaining);
     }
 
     for (uint8_t i = 0; i < ENGINE_getPlayersLength(); i++) {
@@ -286,9 +367,17 @@ void PLUGIN_main() {
 }
 
 void PLUGIN_gameStateChanged(uint8_t aState) {
-    printf("New state: %d\n", aState);
+    printf("New state: %d, %d\n", aState, ENGINE_getPreviousGameState());
+    if(aState == 0x03 && ENGINE_getPreviousGameState() == 0xFF) {
+        if(!playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicPrepared))) {
+            stopMainChannel();
+        }
+    }
     if (aState == 0x01 && ENGINE_getPreviousGameState() == 0x03) {
         std::vector<DeviceT> lBonusModules = ENGINE_getBonusModules();
+        if(!playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicMain))) {
+            stopMainChannel();
+        }
         if (lBonusModules.size() > 0) {
             if (bonusEnabled) {
                 selectBonusActivateTime();
@@ -312,7 +401,7 @@ void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
     }
 
     if (bonusEnabled == true && (strcmp(aAddress.c_str(), gBonusModule.c_str()) == 0) && gvBonusNonactive == 0) {
-        ENGINE_playSoundFromSoundSet(BonusTaken);
+        playSoundFromSet(BonusTaken);
         ENGINE_clearTimer(gTimerBonusDeactive);
         gvBonusNonactive = 2;
         handlerBonusDeactivate();

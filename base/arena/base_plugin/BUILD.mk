@@ -32,9 +32,12 @@ LIB_INC =                                                                \
 -I../include                                                             \
 -I../src                                                                 \
 -I$(SDK_ROOT)/raspberry/apps/lasergame/include/engine                    \
+-I$(SDK_ROOT)/raspberry/lib/fmod_common/include          				 \
 -I$(SDK_ROOT)/3rdParty/rapidjson-1.1.0/include
 
 LIB_LIBS =                                                               \
+-L$(SDK_ROOT)/raspberry/lib/fmod_common/$(ODIR)                          \
+-lfmod                                                   				 \
 
 -include ../SUBMODULES.mk
 
