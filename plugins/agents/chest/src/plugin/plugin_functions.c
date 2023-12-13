@@ -13,6 +13,19 @@
 
 #define CODE_LAST_SIZE 4
 
+#define DI_RANK 0x0001
+#define DI_INIT 0x0002
+#define DI_SWITCH_BASIC 0x0004
+#define DI_KILLED 0x0008
+#define DI_HIT 0x0010
+#define DI_AGENT 0x0020
+#define DI_ICON 0x0040
+
+#define DL_NONE 0
+#define DL_KILLED 1
+#define DL_HIT 2
+#define DL_AGENT 3
+
 volatile uint8_t gvTimeBlinking = 0;
 volatile uint16_t gvTimeBlinkingCounter = 0;
 volatile uint8_t gvTimeBlinkingLed = 0;
@@ -26,16 +39,29 @@ volatile uint16_t gvTimeRevivalCounter = 0;
 volatile uint8_t gvTimeAgentReceived = 0;
 volatile uint16_t gvTimeAgentReceivedCounter = 0;
 
+volatile uint8_t gvTimeDisplayHit = 0;
+volatile uint16_t gvTimeDisplayHitCounter = 0;
+
 volatile uint16_t gvLengthBlinking = 20;       // in 0,01*seconds
 volatile uint16_t gvLengthDeath = 0;           // in 0,01*seconds
 volatile uint16_t gvLengthRevival = 0;         // in 0,01*seconds
 volatile uint16_t gvLengthAgentReceived = 200; // in 0,01*seconds
+volatile uint16_t gvLengthDisplayHit = 300;    // in 0,01*seconds
 
 volatile uint8_t gvIsAgent = 0;
 volatile uint8_t gvAgentBuffered = 0;
 volatile uint8_t gvChestCodeLast[CODE_LAST_SIZE] = {0};
 volatile uint8_t gvBackupCodeLast[CODE_LAST_SIZE] = {0};
 volatile uint8_t gvAlreadyDead = 0;
+
+volatile uint16_t gvDisplayIndex = 0;
+volatile uint8_t gvOtherCode = 0;
+volatile uint8_t gvDisplayLock = 0;
+volatile uint8_t gvDisplayLockLast = 0;
+const colors_t gcColorWhite = {0x80, 0x80, 0x80};
+const colors_t gcColorGreen = {0x00, 0xF0, 0x00};
+const colors_t gcColorRed = {0xF0, 0x00, 0x00};
+const colors_t gcColorYellow = {0xF0, 0xF0, 0x00};
 
 void clearCodeLastArray(uint8_t *apCodeArray) {
     uint8_t i;
@@ -65,10 +91,90 @@ uint8_t checkCodeLastArray(uint8_t *apCodeArray, uint8_t aCode) {
     return 0;
 }
 
+void PLUGIN_changedRank(uint8_t aRank, uint8_t aRankLast) {
+    gvDisplayIndex |= DI_RANK;
+}
+
 /*
  * part in while loop in main
  */
 void PLUGIN_mainLoop(void) {
+    if (gvDisplayIndex != 0) {
+        uint8_t lGameState = ENGINE_getGameState();
+        uint8_t lDisplayDraw = 0;
+
+        if ((gvDisplayIndex & DI_RANK) != 0) {
+            gvDisplayIndex &= ~DI_RANK;
+            ENGINE_selectDisplayBuffer(1);
+            if (gvIsAgent == 0) {
+                DISPLAY_rank(37, 18, 1);
+            } else {
+                DISPLAY_rank(8, 18, 1);
+            }
+            lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
+        } else if ((gvDisplayIndex & DI_ICON) != 0) {
+            gvDisplayIndex &= ~DI_ICON;
+            gvDisplayIndex |= DI_RANK;
+            ENGINE_selectDisplayBuffer(1);
+            ENGINE_fillRectangle(3, 3, 122, 58, 0);
+            if (gvIsAgent == 1) {
+                DISPLAY_drawAgent(80, 12);
+            }
+        } else if ((gvDisplayIndex & DI_SWITCH_BASIC) != 0) {
+            gvDisplayIndex &= ~DI_SWITCH_BASIC;
+            if (lGameState != game_state_dead) {
+                ENGINE_selectDisplayBuffer(1);
+                gvDisplayLock = DL_NONE;
+                lDisplayDraw = 1;
+            }
+        } else if ((gvDisplayIndex & DI_KILLED) != 0) {
+            gvDisplayIndex &= ~DI_KILLED;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_killed(gvOtherCode);
+            gvOtherCode = 0;
+            gvDisplayLock = DL_KILLED;
+            lDisplayDraw = 1;
+        } else if ((gvDisplayIndex & DI_HIT) != 0) {
+            gvDisplayIndex &= ~DI_HIT;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_hit(gvOtherCode);
+            gvOtherCode = 0;
+            gvDisplayLock = DL_HIT;
+            lDisplayDraw = 1;
+            if (gvTimeDisplayHit == 1) {
+                gvTimeDisplayHitCounter = 0;
+            } else {
+                gvTimeDisplayHit = 1;
+            }
+        } else if ((gvDisplayIndex & DI_AGENT) != 0) {
+            gvDisplayIndex &= ~DI_AGENT;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_agent(gvAgentBuffered);
+            gvDisplayLock = DL_AGENT;
+            lDisplayDraw = 1;
+            if (gvTimeDisplayHit == 1) {
+                gvTimeDisplayHitCounter = 0;
+            } else {
+                gvTimeDisplayHit = 1;
+            }
+        } else if ((gvDisplayIndex & DI_INIT) != 0) {
+            gvDisplayIndex &= ~DI_INIT;
+            ENGINE_selectDisplayBuffer(1);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_initLayout(1);
+            if (gvIsAgent == 1) {
+                gvDisplayIndex |= DI_ICON;
+            } else {
+                gvDisplayIndex |= DI_RANK;
+            }
+        }
+        if (lDisplayDraw == 1) {
+            ENGINE_drawBufferToDisplay(0);
+        }
+    }
 }
 
 /*
@@ -128,6 +234,19 @@ void PLUGIN_timer10ms(void) {
     } else {
         gvTimeAgentReceivedCounter = 0;
     }
+
+    /*display counter*/
+    if (gvTimeDisplayHit == 1) {
+        if (gvTimeDisplayHitCounter < gvLengthDisplayHit)
+            gvTimeDisplayHitCounter++;
+        else {
+            gvTimeDisplayHitCounter = 0;
+            gvTimeDisplayHit = 0;
+            gvDisplayIndex |= DI_SWITCH_BASIC;
+        }
+    } else {
+        gvTimeDisplayHitCounter = 0;
+    }
 }
 
 /*
@@ -179,14 +298,19 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
             /*process kill*/
             if (ENGINE_getHealth() == 0) {
                 ENGINE_processDeath(aHitCode, aHitFlag);
+                gvDisplayIndex |= DI_KILLED;
+                gvOtherCode = aHitCode;
                 if (gvIsAgent == 1) {
                     if (gvAgentBuffered == 0) {
                         gvIsAgent = 0;
+                        gvDisplayIndex |= DI_ICON;
                     } else {
                         gvAgentBuffered--;
                     }
                     ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
                     ENGINE_sendCustomMessage((uint8_t *)"A", 1, aHitCode);
+                } else {
+                    ENGINE_sendCustomMessage((uint8_t *)"H", 1, aHitCode);
                 }
             }
         }
@@ -212,11 +336,16 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     uint8_t lMessageTemp = 0;
     uint8_t i = 0;
     uint8_t lLedColor;
+    uint8_t lLedDisplay;
+    colors_t lDisplayColor = gcColorWhite;
 
-    if (gvIsAgent == 1)
+    if (gvIsAgent == 1) {
         lLedColor = led_special;
-    else
+        lLedDisplay = led_basic;
+    } else {
         lLedColor = led_basic;
+        lLedDisplay = led_special;
+    }
 
     if (aState == state_game) {
         if (aGameState == game_state_starting) {
@@ -248,13 +377,41 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     gvAlreadyDead = 0;
 
     /*backlight of display*/
+    if (gvDisplayLock != gvDisplayLockLast) {
+        gvDisplayLockLast = gvDisplayLock;
+        switch (gvDisplayLock) {
+        case DL_NONE:
+            lDisplayColor = gcColorWhite;
+            break;
+        case DL_KILLED:
+            lDisplayColor = gcColorRed;
+            break;
+        case DL_HIT:
+            lDisplayColor = gcColorGreen;
+            break;
+        case DL_AGENT:
+            lDisplayColor = gcColorYellow;
+            break;
+        default:
+            break;
+        }
+
+        if (gvIsAgent == 1) {
+            apModulesColor1[MODULE_MAIN_BOARD] = lDisplayColor;
+            apModulesColor2[MODULE_MAIN_BOARD] = agentColor;            
+        } else {
+            apModulesColor1[MODULE_MAIN_BOARD] = normalColor;
+            apModulesColor2[MODULE_MAIN_BOARD] = lDisplayColor;
+        }
+    }
+
     if ((aState == state_game) || (aState == state_ending)) {
         apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_stroboscope));
         uint8_t lOptionTouchEnabled = ENGINE_getOptionsTouchEnabled();
         if (((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) {
-            apModulesState[MODULE_MAIN_BOARD] |= LED2(lLedColor);
+            apModulesState[MODULE_MAIN_BOARD] |= LED2(lLedDisplay);
         } else {
-            apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(lLedColor));
+            apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(lLedDisplay));
         }
     }
 }
@@ -266,6 +423,7 @@ void PLUGIN_changedGameStateToAlive(uint8_t aGameStateLast) {
     gvTimeBlinking = 0;
     if (aGameStateLast == game_state_starting) {
         ENGINE_playSoundFromSoundSet(gameStarting);
+        gvDisplayIndex |= DI_INIT;
     }
 }
 
@@ -288,6 +446,7 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
     if (gvIsAgent == 1) {
         ENGINE_playSoundFromSoundSet(becomeAgent);
     }
+    gvDisplayIndex |= DI_SWITCH_BASIC;
 }
 
 /*
@@ -324,9 +483,13 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
         if (gvIsAgent == 0) {
             ENGINE_playSoundFromSoundSet(becomeAgent);
             gvIsAgent = 1;
+            gvDisplayIndex |= DI_AGENT;
+            gvDisplayIndex |= DI_ICON;
         } else {
             gvAgentBuffered++;
             ENGINE_playSoundFromSoundSet(doubleAgent);
+            gvDisplayIndex |= DI_AGENT;
+            gvDisplayIndex |= DI_ICON;
         }
         // enable timer for checking if the same message is received from chest
         if (gvTimeAgentReceived == 0) {
@@ -350,10 +513,14 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
         if (apData[1] == 1) {
             ENGINE_playSoundFromSoundSet(becomeAgent);
             gvIsAgent = 1;
+            gvDisplayIndex |= DI_AGENT;
+            gvDisplayIndex |= DI_ICON;
         } else {
             gvAgentBuffered = apData[1] - 1;
             gvIsAgent = 1;
             ENGINE_playSoundFromSoundSet(doubleAgent);
+            gvDisplayIndex |= DI_AGENT;
+            gvDisplayIndex |= DI_ICON;
         }
         // enable timer for checking if the same message is received from chest
         if (gvTimeAgentReceived == 0) {
@@ -364,6 +531,13 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
         addCodeLastArray(gvBackupCodeLast, apData[2]);
         // gvBackupCodeLast = apData[2];
         ENGINE_setPeriodicInfoByte(gvAgentBuffered + gvIsAgent, 0);
+    }
+    if (aLength == 1) {
+        if (apData[0] == (uint8_t)'H') {
+            ENGINE_playSound(sfxKillDone);
+            gvDisplayIndex |= DI_HIT;
+            gvOtherCode = aDevice;
+        }
     }
     ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
 }
@@ -386,6 +560,8 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
 
     /*add to B message info about Agent state*/
     ENGINE_setPeriodicInfoLength(1);
+
+    ENGINE_controlDisplayFromPlugin();
 
     ENGINE_loadShot(0, sfxShoot);
     ENGINE_loadShot(1, sfxEmptyShoot);

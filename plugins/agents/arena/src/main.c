@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// #define LOG_ENABLED
+#define LOG_ENABLED
 
 typedef struct {
     int agentPoints;

@@ -42,6 +42,15 @@
     "inlaserworldId": 93
   },
   {
+    "id": "2ce16494-d12a-472b-8801-004335893b7b",
+    "name": "sfxKillDone",
+    "type": "media",
+    "value": 0,
+    "label": "Sound when you kill someone",
+    "target": 4,
+    "inlaserworldId": 68
+  },
+  {
     "id": "ab5b35dc-2f6c-42bb-a9a0-a9d83b86bae3",
     "name": "agentColor",
     "type": "color",
