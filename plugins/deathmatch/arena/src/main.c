@@ -307,6 +307,10 @@ void PLUGIN_playerDidBonusKill(uint8_t aPlayerIndex, uint8_t aBonus) {
 void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
     Player *p = ENGINE_getPlayerByCode(aCode);
 
+    if (p == NULL) {
+        return;
+    }
+
     if (bonusEnabled == true && (strcmp(aAddress.c_str(), gBonusModule.c_str()) == 0) && gvBonusNonactive == 0) {
         ENGINE_playSoundFromSoundSet(BonusTaken);
         ENGINE_clearTimer(gTimerBonusDeactive);
