@@ -155,10 +155,19 @@
   },
   {
     "id": "760d0ed2-271c-4ad2-bbc9-d8ba3d6a9665",
-    "name": "bonusRandomDistribution",
+    "name": "orbsRandomDistribution",
     "type": "boolean",
     "value": true,
-    "label": "random distribution of bonuses on targets",
+    "label": "random distribution of orbs on targets",
+    "target": 8,
+    "inGameMenu": true
+  },
+  {
+    "id": "e905a678-0be5-401f-8641-062c805eddaa",
+    "name": "orbsDelayedActivation",
+    "type": "boolean",
+    "value": true,
+    "label": "delayed activation of orbs",
     "target": 8,
     "inGameMenu": true
   }

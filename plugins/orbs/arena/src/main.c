@@ -18,7 +18,7 @@
 
 // #define LOG_ENABLED
 
-uint8_t gOrbs = 15;
+uint8_t gOrbs = 0;
 uint8_t gOrbsMirror[100];
 uint8_t gOrbsMirrorBackup[100];
 const ColorT gColorBlack = {0x00, 0x00, 0x00};
@@ -26,6 +26,7 @@ volatile int gvTimerBonusSendRepeat[4] = {0};
 volatile uint8_t gvBonusSendRepeatIndex[4] = {255};
 char gBonusAddresses[4][30] = {0};
 FILE *fp;
+volatile uint8_t gElapsedGameTime = 0;
 
 void handlerMachineGun(void) {
     uint8_t lData[2] = {0, IDX_MACHINE_GUN};
@@ -70,7 +71,7 @@ void setOrbColor(std::string aAddress, ColorT aColor) {
     ENGINE_lightSetColors(aAddress, aColor, aColor, aColor, 1);
 }
 
-void distributeBOnusRandomly(void) {
+void distributeOrbsRandomly(void) {
     uint8_t index;
 
     srand(time(NULL)); // seed the random number generator with the current time
@@ -116,18 +117,26 @@ void distributeBOnusRandomly(void) {
     // bonusHealing = gBonusAddresses[0].c_str();
 }
 
-void PLUGIN_setup() {
-    LIGHT_switchOffAllModules();
-    LIGHT_setArenaLightsColor(colorArena, 1);
-
-    if (bonusRandomDistribution == 1) {
-        distributeBOnusRandomly();
-    }
-
+void activateOrbs(void) {
     setOrbColor(bonusMachineGun, colorMachineGun);
     setOrbColor(bonusArmor, colorArmor);
     setOrbColor(bonusSniper, colorSniper);
     setOrbColor(bonusHealing, colorHealing);
+
+    gOrbs = 15;
+}
+
+void PLUGIN_setup() {
+    LIGHT_switchOffAllModules();
+    LIGHT_setArenaLightsColor(colorArena, 1);
+
+    if (orbsRandomDistribution == 1) {
+        distributeOrbsRandomly();
+    }
+
+    if (orbsDelayedActivation == false) {
+        activateOrbs();
+    }
 
 #ifdef LOG_ENABLED
     fp = fopen("/var/www/lasergame/orb_log.txt", "a+");
@@ -189,6 +198,14 @@ void PLUGIN_main() {
     }
     if (state != 0x03 && lTime == 60) {
         ENGINE_playSoundFromSoundSet(Min1Remaining);
+    }
+    if (state != 0x03) {
+        if (gElapsedGameTime == 10) {
+            activateOrbs();
+            gElapsedGameTime++;
+        } else {
+            gElapsedGameTime++;
+        }
     }
 
     for (uint8_t i = 0; i < ENGINE_getPlayersLength(); i++) {
