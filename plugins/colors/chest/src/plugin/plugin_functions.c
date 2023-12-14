@@ -822,4 +822,6 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
     gvColorsTable[13] = color14;
     gvColorsTable[14] = color15;
     gvColorsTable[15] = color16;
+
+    ENGINE_playSoundFromSoundSet(loaded);
 }
