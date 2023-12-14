@@ -1,3 +1,20 @@
+#ifdef VSCODE
+#include "custom_variables_map.h"
+#include "engine_def.h"
+#include "sound_set_map.h"
+#include <stdint.h>
+#endif
+
+#define DI_RANK 0x0001
+#define DI_INIT 0x0002
+#define DI_SWITCH_BASIC 0x0004
+#define DI_KILLED 0x0008
+#define DI_HIT 0x0010
+
+#define DL_NONE 0
+#define DL_KILLED 1
+#define DL_HIT 2
+
 volatile uint8_t gvTimeBlinking = 0;
 volatile uint16_t gvTimeBlinkingCounter = 0;
 volatile uint8_t gvTimeBlinkingLed = 0;
@@ -13,18 +30,81 @@ volatile uint16_t gvTimeDeathCounter = 0;
 volatile uint8_t gvTimeRevival = 0;
 volatile uint16_t gvTimeRevivalCounter = 0;
 
+volatile uint8_t gvTimeDisplayHit = 0;
+volatile uint16_t gvTimeDisplayHitCounter = 0;
+
 volatile uint16_t gvLengthBlinking = 20;    // in 0,01*seconds
 volatile uint16_t gvLengthStroboscope = 10; // in 0,01*seconds
 volatile uint16_t gvLengthDeath = 0;        // in 0,01*seconds
 volatile uint16_t gvLengthRevival = 0;      // in 0,01*seconds
+volatile uint16_t gvLengthDisplayHit = 300; // in 0,01*seconds
 
 volatile uint8_t gvHitCodeLast = 0;
 volatile uint8_t gvAlreadyDead = 0;
+
+volatile uint16_t gvDisplayIndex = 0;
+volatile uint8_t gvOtherCode = 0;
+volatile uint8_t gvDisplayLock = 0;
+volatile uint8_t gvDisplayLockLast = 0;
+const colors_t gcColorWhite = {0x80, 0x80, 0x80};
+const colors_t gcColorGreen = {0x00, 0xF0, 0x00};
+const colors_t gcColorGreenDark = {0x00, 0x32, 0x00};
+const colors_t gcColorRed = {0xF0, 0x00, 0x00};
+const colors_t gcColorRedDark = {0x32, 0x00, 0x00};
+const colors_t gcColorYellow = {0xF0, 0xF0, 0x00};
+
+void PLUGIN_changedRank(uint8_t aRank, uint8_t aRankLast) {
+    gvDisplayIndex |= DI_RANK;
+}
 
 /*
  * part in while loop in main
  */
 void PLUGIN_mainLoop(void) {
+    if (gvDisplayIndex != 0) {
+        uint8_t lGameState = ENGINE_getGameState();
+        uint8_t lDisplayDraw = 0;
+
+        if ((gvDisplayIndex & DI_RANK) != 0) {
+            gvDisplayIndex &= ~DI_RANK;
+            ENGINE_selectDisplayBuffer(1);
+            DISPLAY_rank(37, 18, 1);
+            lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
+        } else if ((gvDisplayIndex & DI_SWITCH_BASIC) != 0) {
+            gvDisplayIndex &= ~DI_SWITCH_BASIC;
+            if (lGameState != game_state_dead) {
+                ENGINE_selectDisplayBuffer(1);
+                gvDisplayLock = DL_NONE;
+                lDisplayDraw = 1;
+            }
+        } else if ((gvDisplayIndex & DI_KILLED) != 0) {
+            gvDisplayIndex &= ~DI_KILLED;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_killed(gvOtherCode);
+            gvOtherCode = 0;
+            gvDisplayLock = DL_KILLED;
+            lDisplayDraw = 1;
+        } else if ((gvDisplayIndex & DI_HIT) != 0) {
+            gvDisplayIndex &= ~DI_HIT;
+            ENGINE_selectDisplayBuffer(2);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_hit(gvOtherCode);
+            gvOtherCode = 0;
+            gvDisplayLock = DL_HIT;
+            lDisplayDraw = 1;
+            gvTimeDisplayHit = 1;
+        } else if ((gvDisplayIndex & DI_INIT) != 0) {
+            gvDisplayIndex &= ~DI_INIT;
+            ENGINE_selectDisplayBuffer(1);
+            ENGINE_clearDisplayBuffer();
+            DISPLAY_initLayout(1);
+            gvDisplayIndex |= DI_RANK;
+        }
+        if (lDisplayDraw == 1) {
+            ENGINE_drawBufferToDisplay(0);
+        }
+    }
 }
 
 /*
@@ -91,6 +171,19 @@ void PLUGIN_timer10ms(void) {
     } else {
         gvTimeRevivalCounter = 0;
     }
+
+    /*display counter*/
+    if (gvTimeDisplayHit == 1) {
+        if (gvTimeDisplayHitCounter < gvLengthDisplayHit)
+            gvTimeDisplayHitCounter++;
+        else {
+            gvTimeDisplayHitCounter = 0;
+            gvTimeDisplayHit = 0;
+            gvDisplayIndex |= DI_SWITCH_BASIC;
+        }
+    } else {
+        gvTimeDisplayHitCounter = 0;
+    }
 }
 
 /*
@@ -151,6 +244,8 @@ void PLUGIN_hitByEnemy(uint8_t aHitCode, uint8_t aHitFlag, uint8_t aHitStrength,
         if (ENGINE_getHealth() == 0) {
             ENGINE_processDeath(aHitCode, aHitFlag);
             ENGINE_sendCustomMessage((uint8_t *)"H", 1, aHitCode);
+            gvDisplayIndex |= DI_KILLED;
+            gvOtherCode = aHitCode;
         }
     } else {
         gvAlreadyDead = 1;
@@ -209,10 +304,27 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     }
 
     /*backlight of display*/
+    if (gvDisplayLock != gvDisplayLockLast) {
+        gvDisplayLockLast = gvDisplayLock;
+        switch (gvDisplayLock) {
+        case DL_NONE:
+            apModulesColor1[MODULE_MAIN_BOARD] = gcColorRedDark;
+            break;
+        case DL_KILLED:
+            apModulesColor1[MODULE_MAIN_BOARD] = gcColorRedDark;
+            break;
+        case DL_HIT:
+            apModulesColor1[MODULE_MAIN_BOARD] = gcColorGreenDark;
+            break;
+        default:
+            break;
+        }
+    }
+
     if ((aState == state_game) || (aState == state_ending)) {
-        apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_special));
+        apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_stroboscope));
         uint8_t lOptionTouchEnabled = ENGINE_getOptionsTouchEnabled();
-        if (((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) {
+        if ((((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) && displayBacklight == 1) {
             apModulesState[MODULE_MAIN_BOARD] |= LED2(led_basic);
         } else {
             apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_basic));
@@ -227,6 +339,7 @@ void PLUGIN_changedGameStateToAlive(uint8_t aGameStateLast) {
     gvTimeBlinking = 0;
     if (aGameStateLast == game_state_starting) {
         ENGINE_playSoundFromSoundSet(gameStarting);
+        gvDisplayIndex |= DI_INIT;
     }
 }
 
@@ -246,6 +359,7 @@ void PLUGIN_changedGameStateToRevival(uint8_t aGameStateLast) {
     gvTimeRevival = 1;
     ENGINE_playSoundFromSoundSet(aliveAgain);
     ENGINE_setHealth(100);
+    gvDisplayIndex |= DI_SWITCH_BASIC;
 }
 
 /*
@@ -273,6 +387,8 @@ void PLUGIN_processCustomMessage(uint8_t *apData, uint16_t aLength,
     if (aLength == 1) {
         if (apData[0] == (uint8_t)'H') {
             ENGINE_playSound(sfxKillDone);
+            gvDisplayIndex |= DI_HIT;
+            gvOtherCode = aDevice;
         }
     }
     ACHIEVEMENTS_customMessageBonusKill(apData, aLength, aDevice);
@@ -298,6 +414,8 @@ void PLUGIN_customInit(volatile colors_t *apModulesColor1,
     ENGINE_setAllModulesColor(1, lBasicColor);
     ENGINE_setAllModulesColor(2, lStroboscopeColor);
     ENGINE_setAllModulesDim(100, 100);
+
+    ENGINE_controlDisplayFromPlugin();
 
     /*set shot strength to max, disable health*/
     ENGINE_setShotStrength(100);

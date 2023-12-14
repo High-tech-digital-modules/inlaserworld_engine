@@ -92,5 +92,14 @@
     "label": "Red light strength in percentage",
     "target": 8,
     "inGameMenu": true
+  },
+  {
+    "id": "6add7fb8-98cf-417f-9f36-b3eb7641cd9f",
+    "name": "displayBacklight",
+    "type": "boolean",
+    "value": true,
+    "label": "Display backlight enable",
+    "target": 4,
+    "inGameMenu": true
   }
 ]
