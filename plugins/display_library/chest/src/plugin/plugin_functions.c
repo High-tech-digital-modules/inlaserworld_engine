@@ -1909,7 +1909,41 @@ static const uint8_t image_data_healing_empty[75] = {
 static const tImage healing_empty = {image_data_healing_empty, 22, 25,
                                      8};
 
-static const tImage *gListOfImages[23] = {&weapon, &trophy, &target, &steps, &shield_big, &shield, &pistol_small, &medaile, &aim, &ak47, &ak47_small_2, &ammo, &arrows, &bomb, &bomb_small, &defuse, &flash, &flash_big, &heart, &heart_big, &invisibility_big, &machinegun_big, &machinegun_small};
+static const tImage *gpListOfImages[23] = {&weapon, &trophy, &target, &steps, &shield_big, &shield, &pistol_small, &medaile, &aim, &ak47, &ak47_small_2, &ammo, &arrows, &bomb, &bomb_small, &defuse, &flash, &flash_big, &heart, &heart_big, &invisibility_big, &machinegun_big, &machinegun_small};
+static const tImage *gpOrbImage[4] = {&machinegun_big, &shield_big, &flash_big, &healing_big};
+static const uint8_t *gpOrbName[4] = {"MACHINEGUN", "ARMOR", "SNIPER", "HEALING"};
+static const tImage *gpWeaponsList[CS_WEAPONS_ALL_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield}; // 10 weapons, knife, kevlar, ammo, defuse
+static const uint8_t *gpWeaponsNameList[CS_WEAPONS_ALL_NMBR] = {
+    "Knife",
+    "USP",
+    "Glock",
+    "Deagle",
+    "MP5",
+    "P90",
+    "M4",
+    "AK47",
+    "AUG",
+    "SG552",
+    "AWP",
+    "Shield"};
+static const tImage *gpItemList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield, &ammo, &Kevlar2, &defuse}; // 10 weapons, knife, kevlar, ammo, defuse
+static const uint8_t *gpItemNameList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {
+    "Knife",
+    "USP",
+    "Glock",
+    "Deagle",
+    "MP5",
+    "P90",
+    "M4",
+    "AK47",
+    "AUG",
+    "SG552",
+    "AWP",
+    "Shield",
+    "Ammo",
+    "Kevlar",
+    "DefKit",
+};
 
 typedef enum {
     teamCT = 0,
@@ -1920,7 +1954,7 @@ typedef enum {
 volatile static tImage *gvpWeaponsAllList[CS_WEAPONS_ALL_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield}; // 10 weapons + knife + shield
 
 void DISPLAY_drawBitmap(uint8_t aX, uint8_t aY, uint8_t aBitmapIndex) {
-    ENGINE_drawBitmap(aX, aY, gListOfImages[aBitmapIndex]->width, gListOfImages[aBitmapIndex]->height, gListOfImages[aBitmapIndex]->data);
+    ENGINE_drawBitmap(aX, aY, gpListOfImages[aBitmapIndex]->width, gpListOfImages[aBitmapIndex]->height, gpListOfImages[aBitmapIndex]->data);
     // ENGINE_drawBitmap(aX, aY, ak47.width, ak47.height, image_data_ak47);
 }
 
@@ -2026,8 +2060,8 @@ void DISPLAY_drawRank_gg(uint8_t aX, uint8_t aY, uint8_t aRank, uint8_t aKills) 
 void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     uint8_t lHealth = ENGINE_getHealth();
     uint8_t lNmbr = lHealth / 25;
-    tImage lHeartFull = heart;
-    tImage lHeartEmpty = heart_empty;
+    tImage *lHeartFull;
+    tImage *lHeartEmpty;
     uint8_t lBitmapPart;
     uint8_t i;
     uint8_t j;
@@ -2037,27 +2071,30 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     uint8_t bytes_per_row;
     uint8_t lSpace = 0;
     if (aSize == 2) {
-        lHeartFull = heart_small;
-        lHeartEmpty = heart_small_empty;
+        lHeartFull = &heart_small;
+        lHeartEmpty = &heart_small_empty;
     } else if (aSize == 3) {
-        lHeartFull = heart_small2;
-        lHeartEmpty = heart_small2_empty;
+        lHeartFull = &heart_small2;
+        lHeartEmpty = &heart_small2_empty;
+    } else {
+        lHeartFull = &heart;
+        lHeartEmpty = &heart_empty;
     }
-    lSpace = lHeartEmpty.width + 1;
-    lBitmapPart = (lHealth % 25) * lHeartFull.width / 25;
-    bytes_per_row = lHeartFull.width / 8;
-    if (lHeartFull.width % 8 != 0) {
+    lSpace = lHeartEmpty->width + 1;
+    lBitmapPart = (lHealth % 25) * lHeartFull->width / 25;
+    bytes_per_row = lHeartFull->width / 8;
+    if (lHeartFull->width % 8 != 0) {
         bytes_per_row++;
     }
 
-    ENGINE_fillRectangle(aX, aY, lHeartFull.width + lSpace * 3, lHeartFull.height, 0);
+    ENGINE_fillRectangle(aX, aY, lHeartFull->width + lSpace * 3, lHeartFull->height, 0);
     for (i = 0; i < lNmbr; i++) {
-        ENGINE_drawBitmap(aX + lSpace * i, aY, lHeartFull.width, lHeartFull.height, lHeartFull.data);
+        ENGINE_drawBitmap(aX + lSpace * i, aY, lHeartFull->width, lHeartFull->height, lHeartFull->data);
     }
 
-    for (h = 0; h < lHeartFull.height; h++) {
+    for (h = 0; h < lHeartFull->height; h++) {
         for (j = 0; j < (lBitmapPart); j += 8) {
-            tmp_byte = lHeartFull.data[h * bytes_per_row + j / 8];
+            tmp_byte = lHeartFull->data[h * bytes_per_row + j / 8];
             for (k = 0; k < 8; k++) {
                 if (j + k == (lBitmapPart)) {
                     k = 8;
@@ -2069,7 +2106,7 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     }
 
     for (; i < 4; i++) {
-        ENGINE_drawBitmap(aX + lSpace * i, aY, lHeartEmpty.width, lHeartEmpty.height, lHeartEmpty.data);
+        ENGINE_drawBitmap(aX + lSpace * i, aY, lHeartEmpty->width, lHeartEmpty->height, lHeartEmpty->data);
     }
 }
 
@@ -2278,24 +2315,8 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
     tImage *lpItem1;
     tImage *lpItem2;
     tImage *lpItem3;
-    tImage *lpItemList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield, &ammo, &Kevlar2, &defuse}; // 10 weapons, knife, kevlar, ammo, defuse
-    uint8_t *lpItemNameList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {
-        "Knife",
-        "USP",
-        "Glock",
-        "Deagle",
-        "MP5",
-        "P90",
-        "M4",
-        "AK47",
-        "AUG",
-        "SG552",
-        "AWP",
-        "Shield",
-        "Ammo",
-        "Kevlar",
-        "DefKit",
-    };
+    uint8_t *lpItemNameList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {0};
+    tImage *lpItemList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NMBR] = {0};
     uint8_t lItemNameLength = 0;
     int16_t lX1, lX2, lX3;
     uint8_t lY1, lY2, lY3;
@@ -2318,12 +2339,12 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
     }
 
     for (i = 0; i < lWeaponsCount; i++) {
-        lpItemList[i] = lpItemList[apWeaponsList[i]];
-        lpItemNameList[i] = lpItemNameList[apWeaponsList[i]];
+        lpItemList[i] = gpItemList[apWeaponsList[i]];
+        lpItemNameList[i] = gpItemNameList[apWeaponsList[i]];
     }
     for (i = 0; i < CS_NONWEAPON_ITEMS_NMBR; i++) {
-        lpItemList[lWeaponsCount + i] = lpItemList[CS_WEAPONS_ALL_NMBR + i];
-        lpItemNameList[lWeaponsCount + i] = lpItemNameList[CS_WEAPONS_ALL_NMBR + i];
+        lpItemList[lWeaponsCount + i] = gpItemList[CS_WEAPONS_ALL_NMBR + i];
+        lpItemNameList[lWeaponsCount + i] = gpItemNameList[CS_WEAPONS_ALL_NMBR + i];
     }
 
     if (aItemIndex < CS_WEAPONS_ALL_NMBR) {
@@ -2586,20 +2607,7 @@ void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aOption
 }
 
 void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazine) {
-    tImage *lpItemList[CS_WEAPONS_ALL_NMBR] = {&knife, &usp, &pistol_small, &Deagle, &mp5, &P90, &m4, &ak47_small_2, &Aug, &sg552, &awp, &tactical_shield}; // 10 weapons, knife, kevlar, ammo, defuse
-    uint8_t *lpItemNameList[CS_WEAPONS_ALL_NMBR] = {
-        "Knife",
-        "USP",
-        "Glock",
-        "Deagle",
-        "MP5",
-        "P90",
-        "M4",
-        "AK47",
-        "AUG",
-        "SG552",
-        "AWP",
-        "Shield"};
+
     uint8_t lItemNameLength = 0;
     uint8_t lXName = 0;
     uint8_t lXNameLength = 0;
@@ -2612,10 +2620,10 @@ void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazin
     const uint8_t lcMiddleY = 28;
     const uint8_t lcShieldIndex = 11;
 
-    lX = lcMiddleX - lpItemList[aWeapon]->width / 2;
-    lY = lcMiddleY - lpItemList[aWeapon]->height / 2;
+    lX = lcMiddleX - gpItemList[aWeapon]->width / 2;
+    lY = lcMiddleY - gpItemList[aWeapon]->height / 2;
 
-    while (lpItemNameList[aWeapon][lItemNameLength] != 0 && lItemNameLength < 6) {
+    while (gpItemNameList[aWeapon][lItemNameLength] != 0 && lItemNameLength < 6) {
         lItemNameLength++;
     }
 
@@ -2625,7 +2633,7 @@ void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazin
 
     lXNameLength = lItemNameLength * 6 + 10; // 6 is char size on display and 10 is space between anme and price
     lXName = 68 - lXNameLength / 2;
-    ENGINE_drawString(lXName, 5, lpItemNameList[aWeapon], 0);
+    ENGINE_drawString(lXName, 5, gpItemNameList[aWeapon], 0);
 
     if (lItemIsShield == 0) {
         ENGINE_drawInt(103 - 2, 46, aAmmo, 'R', 1);
@@ -2633,7 +2641,7 @@ void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazin
         ENGINE_drawInt(103 + 10 + 1, 46, aMagazine, 'L', 1);
     }
 
-    ENGINE_drawBitmap(lX, lY, lpItemList[aWeapon]->width, lpItemList[aWeapon]->height, lpItemList[aWeapon]->data);
+    ENGINE_drawBitmap(lX, lY, gpItemList[aWeapon]->width, gpItemList[aWeapon]->height, gpItemList[aWeapon]->data);
 }
 
 void DISPLAY_drawBarSegmented(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
@@ -2797,8 +2805,6 @@ void DISPLAY_spawn_animation(uint8_t aAnimation) {
 }
 
 void DISPLAY_agent(uint8_t aAgentCount) {
-    uint8_t lPlayerName[21] = {0};
-    uint8_t lPlayerNameLength = 0;
     if (aAgentCount == 0) {
         ENGINE_drawBitmap(44, 2, Agent.width, Agent.height, Agent.data);
         ENGINE_drawString(31, 46, "Agent!", 1);
@@ -2815,38 +2821,36 @@ void DISPLAY_agent(uint8_t aAgentCount) {
 }
 
 void DISPLAY_orbReceived(uint8_t aOrbType) {
-    tImage *lpOrbImage[4] = {&machinegun_big, &shield_big, &flash_big, &healing_big};
-    uint8_t *lpOrbName[4] = {"MACHINEGUN", "ARMOR", "SNIPER", "HEALING"};
-
     if (aOrbType < 4) {
-        uint8_t lX = 30 - lpOrbImage[aOrbType]->width / 2;
-        uint8_t lY = 32 - lpOrbImage[aOrbType]->height / 2;
-        ENGINE_drawBitmap(lX, lY, lpOrbImage[aOrbType]->width, lpOrbImage[aOrbType]->height, lpOrbImage[aOrbType]->data);
-        lX = 94 - (strlen(lpOrbName[aOrbType]) * 3); // * 6 / 2
-        ENGINE_drawString(lX, 28, lpOrbName[aOrbType], 0);
+        uint8_t lX = 30 - gpOrbImage[aOrbType]->width / 2;
+        uint8_t lY = 32 - gpOrbImage[aOrbType]->height / 2;
+        ENGINE_drawBitmap(lX, lY, gpOrbImage[aOrbType]->width, gpOrbImage[aOrbType]->height, gpOrbImage[aOrbType]->data);
+        lX = 94 - (strlen(gpOrbName[aOrbType]) * 3); // * 6 / 2
+        ENGINE_drawString(lX, 28, gpOrbName[aOrbType], 0);
     }
 }
 
 void DISPLAY_drawOrbs(uint8_t aX, uint8_t aY, uint8_t aOrbs) {
-    tImage lOrbMachinegun = machinegun_small_empty;
-    tImage lOrbArmor = shield_empty;
-    tImage lOrbSniper = flash_small_empty;
-    tImage lOrbHealing = healing_empty;
+    ENGINE_fillRectangle(aX, aY, 120, 27, 0);
+
     if (((aOrbs >> 0) & 0x01) != 0) {
-        lOrbMachinegun = machinegun_small;
+        ENGINE_drawBitmap(aX + 16 - machinegun_small.width / 2, aY + 1, machinegun_small.width, machinegun_small.height, machinegun_small.data);
+    } else {
+        ENGINE_drawBitmap(aX + 16 - machinegun_small_empty.width / 2, aY + 1, machinegun_small_empty.width, machinegun_small_empty.height, machinegun_small_empty.data);
     }
     if (((aOrbs >> 1) & 0x01) != 0) {
-        lOrbArmor = shield;
+        ENGINE_drawBitmap(aX + 46 - shield.width / 2, aY + 1, shield.width, shield.height, shield.data);
+    } else {
+        ENGINE_drawBitmap(aX + 46 - shield_empty.width / 2, aY + 1, shield_empty.width, shield_empty.height, shield_empty.data);
     }
     if (((aOrbs >> 2) & 0x01) != 0) {
-        lOrbSniper = flash_small;
+        ENGINE_drawBitmap(aX + 76 - flash_small.width / 2, aY + 1, flash_small.width, flash_small.height, flash_small.data);
+    } else {
+        ENGINE_drawBitmap(aX + 76 - flash_small_empty.width / 2, aY + 1, flash_small_empty.width, flash_small_empty.height, flash_small_empty.data);
     }
-    if (((aOrbs >> 3) & 0x01) != 0) {
-        lOrbHealing = healing;
+    if (((aOrbs >> 3) & 0x01) != 0) {        
+        ENGINE_drawBitmap(aX + 106 - healing.width / 2, aY + 1, healing.width, healing.height, healing.data);
+    } else {
+        ENGINE_drawBitmap(aX + 106 - healing_empty.width / 2, aY + 1, healing_empty.width, healing_empty.height, healing_empty.data);
     }
-    ENGINE_fillRectangle(aX, aY, 120,27,0);
-    ENGINE_drawBitmap(aX + 16 - lOrbMachinegun.width / 2, aY + 1, lOrbMachinegun.width, lOrbMachinegun.height, lOrbMachinegun.data);
-    ENGINE_drawBitmap(aX + 46 - lOrbArmor.width / 2, aY + 1, lOrbArmor.width, lOrbArmor.height, lOrbArmor.data);
-    ENGINE_drawBitmap(aX + 76 - lOrbSniper.width / 2, aY + 1, lOrbSniper.width, lOrbSniper.height, lOrbSniper.data);
-    ENGINE_drawBitmap(aX + 106 - lOrbHealing.width / 2, aY + 1, lOrbHealing.width, lOrbHealing.height, lOrbHealing.data);
 }
