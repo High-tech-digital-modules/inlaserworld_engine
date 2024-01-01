@@ -61,7 +61,7 @@
     "id": "cb2951e0-d91a-4c48-aa2d-eb8efb6dd079",
     "name": "sfxShoot",
     "type": "media",
-    "value": 0,
+    "value": 120,
     "label": "Sound of the gun",
     "target": 4,
     "inlaserworldId": 92
@@ -70,7 +70,7 @@
     "id": "96aa2418-1aff-4179-8607-9932257c537a",
     "name": "sfxEmptyShoot",
     "type": "media",
-    "value": 0,
+    "value": 121,
     "label": "Sound of empty gun",
     "target": 4,
     "inlaserworldId": 93
@@ -79,7 +79,7 @@
     "id": "2ce16494-d12a-472b-8801-004335893b7b",
     "name": "sfxKillDone",
     "type": "media",
-    "value": 0,
+    "value": 116,
     "label": "Sound when you kill someone",
     "target": 4,
     "inlaserworldId": 68
@@ -136,7 +136,7 @@
     "id": "c81ecffd-d18e-4736-9cf6-21c04e727528",
     "name": "sfxMineExplosion",
     "type": "media",
-    "value": 0,
+    "value": 105,
     "label": "Sound for mine explosion",
     "target": 8,
     "inlaserworldId": 25
@@ -148,5 +148,25 @@
     "value": -100,
     "label": "Points per team kill",
     "target": 8
+  },
+  {
+    "id": "e3a2b9c0-649c-4db6-84d1-2e0cae1c410b",
+    "name": "mainVolume",
+    "type": "channelVolume",
+    "value": 51,
+    "label": "Volume 1",
+    "target": 8
+  },
+  {
+    "id": "93a215fb-4620-481d-bd56-ab3cab079454",
+    "name": "mainMusic",
+    "type": "media",
+    "value": 128,
+    "label": "",
+    "target": 8,
+    "options": {
+      "type": 2
+    },
+    "inlaserworldId": null
   }
 ]

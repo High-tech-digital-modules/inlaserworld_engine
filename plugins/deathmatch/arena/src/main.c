@@ -195,7 +195,7 @@ void PLUGIN_newLeader(const Player *apPLayer) {
 void PLUGIN_setup() {
     ENGINE_customMusicControl();
     playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
-    //playMusicOnMainChannel(ENGINE_getMediaUrl(128)); // Example how to play it directly from media id
+    //playMusicOnMainChannel(ENGINE_getMediaUrl(mainMusic)); // Example how to play it directly from media id
     gpMainChannel->setCallback([](FMOD_CHANNELCONTROL *channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void *commanddata1, void *commanddata2) -> FMOD_RESULT {
         if (controltype == FMOD_CHANNELCONTROL_CALLBACK_END) {
             // the sound has finished playing here
