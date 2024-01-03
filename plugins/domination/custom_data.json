@@ -52,7 +52,8 @@
     "name": "shootPower",
     "type": "uint32_t",
     "value": 100,
-    "label": "Shoot power",
+    "label": "Síla střelby (%)",
+    "label_en": "Shoot power (%)",
     "target": 4,
     "inGameMenu": true
   },
@@ -96,7 +97,8 @@
     "name": "expertMode",
     "type": "boolean",
     "value": true,
-    "label": "Enables expert mode",
+    "label": "Oživování u bonusů",
+    "label_en": "Enables expert mode",
     "target": 12,
     "inGameMenu": true
   }

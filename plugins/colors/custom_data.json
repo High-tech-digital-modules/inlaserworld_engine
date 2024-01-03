@@ -68,7 +68,8 @@
     "name": "shootPower",
     "type": "uint32_t",
     "value": 20,
-    "label": "Shoot power",
+    "label": "Síla střelby (%)",
+    "label_en": "Shoot power (%)",
     "target": 4,
     "inGameMenu": true
   },
@@ -118,15 +119,6 @@
     "target": 12
   },
   {
-    "id": "f2801fe6-020d-48af-be0e-6b191f8ef259",
-    "name": "colorArena",
-    "type": "color",
-    "value": "#303030",
-    "label": "Color of all arena lights",
-    "target": 8,
-    "inGameMenu": true
-  },
-  {
     "id": "10899832-d535-48c8-bd2f-5ab461c78f9d",
     "name": "bonusSendByXbee",
     "type": "boolean",
@@ -158,7 +150,8 @@
     "name": "singlePlayerTeams",
     "type": "boolean",
     "value": false,
-    "label": "Force one player teams",
+    "label": "Týmy po jednom",
+    "label_en": "Force one player teams",
     "target": 8,
     "inGameMenu": true
   },

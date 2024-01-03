@@ -52,7 +52,8 @@
     "name": "shootPower",
     "type": "uint32_t",
     "value": 100,
-    "label": "Shoot power",
+    "label": "Síla střelby (%)",
+    "label_en": "Shoot power (%)",
     "target": 4,
     "inGameMenu": true
   },
@@ -88,7 +89,8 @@
     "name": "bonusEnabled",
     "type": "boolean",
     "value": true,
-    "label": "Bonus feature enable",
+    "label": "Bonus",
+    "label_en": "Bonus feature enable",
     "target": 12,
     "inGameMenu": true
   },
@@ -105,7 +107,8 @@
     "name": "colorArena",
     "type": "color",
     "value": "#00007f",
-    "label": "Color of all arena lights",
+    "label": "Barva osvětlení",
+    "label_en": "Color of all arena lights",
     "target": 8,
     "inGameMenu": true
   },
@@ -114,7 +117,8 @@
     "name": "bonusSendByXbee",
     "type": "boolean",
     "value": true,
-    "label": "Bonus only for the player who shot it",
+    "label": "Bonus pouze pro střelce",
+    "label_en": "Bonus only for the player who shot it",
     "target": 8,
     "inGameMenu": true
   },
@@ -123,7 +127,8 @@
     "name": "mineEnabled",
     "type": "boolean",
     "value": true,
-    "label": "Mine feature enabled",
+    "label": "Mina",
+    "label_en": "Mine feature enabled",
     "target": 12,
     "inGameMenu": true
   },
