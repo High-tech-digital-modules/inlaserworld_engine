@@ -30,14 +30,14 @@ volatile uint16_t gvTimeDeathCounter = 0;
 volatile uint8_t gvTimeRevival = 0;
 volatile uint16_t gvTimeRevivalCounter = 0;
 
-volatile uint8_t gvTimeDisplayHit = 0;
-volatile uint16_t gvTimeDisplayHitCounter = 0;
+volatile uint8_t gvTimeDisplayHitKill = 0;
+volatile uint16_t gvTimeDisplayHitKillCounter = 0;
 
-volatile uint16_t gvLengthBlinking = 20;    // in 0,01*seconds
-volatile uint16_t gvLengthStroboscope = 10; // in 0,01*seconds
-volatile uint16_t gvLengthDeath = 0;        // in 0,01*seconds
-volatile uint16_t gvLengthRevival = 0;      // in 0,01*seconds
-volatile uint16_t gvLengthDisplayHit = 300; // in 0,01*seconds
+volatile uint16_t gvLengthBlinking = 20;        // in 0,01*seconds
+volatile uint16_t gvLengthStroboscope = 10;     // in 0,01*seconds
+volatile uint16_t gvLengthDeath = 0;            // in 0,01*seconds
+volatile uint16_t gvLengthRevival = 0;          // in 0,01*seconds
+volatile uint16_t gvLengthDisplayHitKill = 300; // in 0,01*seconds
 
 volatile uint8_t gvHitCodeLast = 0;
 volatile uint8_t gvAlreadyDead = 0;
@@ -72,11 +72,11 @@ void PLUGIN_mainLoop(void) {
             lDisplayDraw = (gvDisplayLock == DL_NONE ? 1 : 0);
         } else if ((gvDisplayIndex & DI_SWITCH_BASIC) != 0) {
             gvDisplayIndex &= ~DI_SWITCH_BASIC;
-            if (lGameState != game_state_dead) {
-                ENGINE_selectDisplayBuffer(1);
-                gvDisplayLock = DL_NONE;
-                lDisplayDraw = 1;
-            }
+            // if (lGameState != game_state_dead) {
+            ENGINE_selectDisplayBuffer(1);
+            gvDisplayLock = DL_NONE;
+            lDisplayDraw = 1;
+            //}
         } else if ((gvDisplayIndex & DI_KILLED) != 0) {
             gvDisplayIndex &= ~DI_KILLED;
             ENGINE_selectDisplayBuffer(2);
@@ -85,6 +85,11 @@ void PLUGIN_mainLoop(void) {
             gvOtherCode = 0;
             gvDisplayLock = DL_KILLED;
             lDisplayDraw = 1;
+            if (gvTimeDisplayHitKill == 1) {
+                gvTimeDisplayHitKillCounter = 0;
+            } else {
+                gvTimeDisplayHitKill = 1;
+            }
         } else if ((gvDisplayIndex & DI_HIT) != 0) {
             gvDisplayIndex &= ~DI_HIT;
             ENGINE_selectDisplayBuffer(2);
@@ -93,7 +98,7 @@ void PLUGIN_mainLoop(void) {
             gvOtherCode = 0;
             gvDisplayLock = DL_HIT;
             lDisplayDraw = 1;
-            gvTimeDisplayHit = 1;
+            gvTimeDisplayHitKill = 1;
         } else if ((gvDisplayIndex & DI_INIT) != 0) {
             gvDisplayIndex &= ~DI_INIT;
             ENGINE_selectDisplayBuffer(1);
@@ -173,16 +178,16 @@ void PLUGIN_timer10ms(void) {
     }
 
     /*display counter*/
-    if (gvTimeDisplayHit == 1) {
-        if (gvTimeDisplayHitCounter < gvLengthDisplayHit)
-            gvTimeDisplayHitCounter++;
+    if (gvTimeDisplayHitKill == 1) {
+        if (gvTimeDisplayHitKillCounter < gvLengthDisplayHitKill)
+            gvTimeDisplayHitKillCounter++;
         else {
-            gvTimeDisplayHitCounter = 0;
-            gvTimeDisplayHit = 0;
+            gvTimeDisplayHitKillCounter = 0;
+            gvTimeDisplayHitKill = 0;
             gvDisplayIndex |= DI_SWITCH_BASIC;
         }
     } else {
-        gvTimeDisplayHitCounter = 0;
+        gvTimeDisplayHitKillCounter = 0;
     }
 }
 
@@ -324,7 +329,7 @@ void PLUGIN_setModulesState(uint8_t aState, uint8_t aGameState,
     if ((aState == state_game) || (aState == state_ending)) {
         apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_stroboscope));
         uint8_t lOptionTouchEnabled = ENGINE_getOptionsTouchEnabled();
-        if ((((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) && displayBacklight == 1) {
+        if ((((lOptionTouchEnabled != 0) && (ENGINE_getTouchPressed() == 1)) || (lOptionTouchEnabled == 0)) && (displayBacklight == 1 || aGameState == game_state_dead || aGameState == game_state_starting)) {
             apModulesState[MODULE_MAIN_BOARD] |= LED2(led_basic);
         } else {
             apModulesState[MODULE_MAIN_BOARD] &= ~(LED2(led_basic));

@@ -2161,8 +2161,14 @@ void DISPLAY_bonusTime(uint16_t aTime) {
 void DISPLAY_killed(uint8_t aPlayerCode) {
     uint8_t lPlayerName[21] = {0};
     uint8_t lPlayerNameLength = 0;
-    lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
-    ENGINE_drawBitmap(20, 25, pistol_small.width, pistol_small.height, pistol_small.data);
+    if (aPlayerCode <= 100) {
+        lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
+        ENGINE_drawBitmap(16, 15, skull_small.width, skull_small.height, skull_small.data);
+    } else {
+        lPlayerNameLength = "Mine";
+        ENGINE_drawBitmap(16, 4, bomb.width, bomb.height, bomb.data);
+    }
+
     if (lPlayerNameLength < 6) {
         ENGINE_drawString(88 - (lPlayerNameLength / 2) * 11, 25, lPlayerName, 1);
     } else {
@@ -2848,7 +2854,7 @@ void DISPLAY_drawOrbs(uint8_t aX, uint8_t aY, uint8_t aOrbs) {
     } else {
         ENGINE_drawBitmap(aX + 76 - flash_small_empty.width / 2, aY + 1, flash_small_empty.width, flash_small_empty.height, flash_small_empty.data);
     }
-    if (((aOrbs >> 3) & 0x01) != 0) {        
+    if (((aOrbs >> 3) & 0x01) != 0) {
         ENGINE_drawBitmap(aX + 106 - healing.width / 2, aY + 1, healing.width, healing.height, healing.data);
     } else {
         ENGINE_drawBitmap(aX + 106 - healing_empty.width / 2, aY + 1, healing_empty.width, healing_empty.height, healing_empty.data);
