@@ -130,7 +130,8 @@
     "label": "Mina",
     "label_en": "Mine feature enabled",
     "target": 12,
-    "inGameMenu": true
+    "inGameMenu": true,
+    "inOnlineMenu": true
   },
   {
     "id": "c81ecffd-d18e-4736-9cf6-21c04e727528",
@@ -155,7 +156,8 @@
     "type": "channelVolume",
     "value": 51,
     "label": "Volume 1",
-    "target": 8
+    "target": 8,
+    "inOnlineMenu": true
   },
   {
     "id": "93a215fb-4620-481d-bd56-ab3cab079454",

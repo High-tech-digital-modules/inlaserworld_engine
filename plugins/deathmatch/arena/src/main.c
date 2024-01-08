@@ -194,15 +194,15 @@ void PLUGIN_newLeader(const Player *apPLayer) {
 
 void PLUGIN_setup() {
     ENGINE_customMusicControl();
-    playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
+    //playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
     //playMusicOnMainChannel(ENGINE_getMediaUrl(mainMusic)); // Example how to play it directly from media id
-    gpMainChannel->setCallback([](FMOD_CHANNELCONTROL *channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void *commanddata1, void *commanddata2) -> FMOD_RESULT {
+    /*gpMainChannel->setCallback([](FMOD_CHANNELCONTROL *channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void *commanddata1, void *commanddata2) -> FMOD_RESULT {
         if (controltype == FMOD_CHANNELCONTROL_CALLBACK_END) {
             // the sound has finished playing here
         }
         printf("Callback called??\n");
         return FMOD_OK;  // indicate all went well
-    });
+    });*/
     LIGHT_switchOffAllModules();
     LIGHT_setArenaLightsColor(colorArena, 1);
 
@@ -425,5 +425,12 @@ void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
 
         // select next bonus
         selectNewBonus();
+    }
+}
+
+void PLUGIN_customVariableChanged(const std::string& aName) {
+    if(aName == "mainVolume") {
+        mainVolume = ENGINE_getTcvUInt("mainVolume", 100);
+        gpMainChannel->setVolume((double)mainVolume * 0.01);    
     }
 }
