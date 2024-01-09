@@ -192,6 +192,10 @@ void PLUGIN_newLeader(const Player *apPLayer) {
     }
 }
 
+void PLUGIN_customMessageFromVisualization(const rapidjson::Value &aValue){
+    printf("received custom message from web %d\n", aValue["test"].GetUint());
+}
+
 void PLUGIN_setup() {
     ENGINE_customMusicControl();
     //playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
@@ -203,6 +207,7 @@ void PLUGIN_setup() {
         printf("Callback called??\n");
         return FMOD_OK;  // indicate all went well
     });*/
+    
     LIGHT_switchOffAllModules();
     LIGHT_setArenaLightsColor(colorArena, 1);
 
@@ -328,6 +333,9 @@ void playSound(uint32_t aMediaId) {
 void PLUGIN_main() {
     int32_t time = ENGINE_getRemainingTime();
     uint8_t state = ENGINE_getPreviousGameState();
+    rapidjson::Document d(rapidjson::kObjectType);
+    d.AddMember("test", rapidjson::Value(10), d.GetAllocator());
+    ENGINE_sendCustomMessageToVisualization(d);
     switch (time) {
     case 5:
         playSoundFromSet(five);
