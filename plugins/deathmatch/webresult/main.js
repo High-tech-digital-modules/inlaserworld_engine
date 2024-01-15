@@ -244,7 +244,7 @@ function Main () {
   }, []);
 
   return <SResult style={{ color: '#fff' }}>
-    <button onClick={() => sendCustomMessage({test: 11})}>Click me I will send message</button>
+    {/*<button onClick={() => sendCustomMessage({test: 11})}>Click me I will send message</button>*/}
     {gameResultState === GameResultsState.RUNNING && <CountDown/>}
     <SContent>
       {gameResultState !== GameResultsState.RUNNING && <SPlayerMain>
