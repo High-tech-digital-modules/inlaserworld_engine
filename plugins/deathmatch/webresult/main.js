@@ -193,6 +193,13 @@ function OnlineTeamGameScore() {
   )
 }
 
+function MainWrapper () {
+  if(gameResultState === GameResultsState.LOADED) {
+    return <div>Just loaded</div>
+  } 
+  return <Main/>
+}
+
 function Main () {
   const playerNumber = useSelector(getPlayersLength());
   const teamNumber = useSelector(getTeamsLength());
@@ -323,4 +330,4 @@ function Main () {
   </SResult>
 }
 
-render(<Main/>);
+render(<MainWrapper/>);

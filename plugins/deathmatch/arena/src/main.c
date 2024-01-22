@@ -198,6 +198,7 @@ void PLUGIN_customMessageFromVisualization(const rapidjson::Value &aValue){
 
 void PLUGIN_setup() {
     ENGINE_customMusicControl();
+    ENGINE_useVirtualScreen(1, Engine::VirtualScreen::gameLoaded);
     //playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
     //playMusicOnMainChannel(ENGINE_getMediaUrl(mainMusic)); // Example how to play it directly from media id
     /*gpMainChannel->setCallback([](FMOD_CHANNELCONTROL *channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void *commanddata1, void *commanddata2) -> FMOD_RESULT {
@@ -282,6 +283,7 @@ void PLUGIN_setup() {
 }
 
 void PLUGIN_destroyed() {
+    ENGINE_useVirtualScreen(1, Engine::VirtualScreen::gameFreshFinish);
     LIGHT_setColorStandby();
     if (gpMainMusicPlayer != nullptr){
 		gpMainMusicPlayer->release();
@@ -378,6 +380,7 @@ void PLUGIN_main() {
 void PLUGIN_gameStateChanged(uint8_t aState) {
     printf("New state: %d, %d\n", aState, ENGINE_getPreviousGameState());
     if(aState == 0x03 && ENGINE_getPreviousGameState() == 0xFF) {
+        ENGINE_useVirtualScreen(1, Engine::VirtualScreen::gameRunning);
         if(!playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicPrepared))) {
             stopMainChannel();
         }
