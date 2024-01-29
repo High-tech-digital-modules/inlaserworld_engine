@@ -18,6 +18,12 @@ z := $(shell rm -f ../include/custom_variables_map.h && (makeheaders ../src/cust
 endif
 endif
 
+ifneq (, $(findstring -rasp, $(ODIR)))
+CPU = armhf
+else
+CPU = x86_64
+endif
+
 LIB_NAME=lib_$(GAME_TEMPLATE_ID_).a
 
 FLAGS += -fPIC
@@ -29,6 +35,7 @@ $(SDK_ROOT)/raspberry/lib/plugin_library_base/src/plugin_library.c
 LIB_INC =                                                                \
 -I../include                                                             \
 -I../src                                                                 \
+-I$(SDK_ROOT)/3rdParty/fmodstudioapi11005linux/api/lowlevel/inc          \
 -I$(SDK_ROOT)/raspberry/apps/lasergame/include/engine                    \
 -I$(SDK_ROOT)/raspberry/lib/fmod_common/include          				 \
 -I$(SDK_ROOT)/3rdParty/rapidjson-1.1.0/include
