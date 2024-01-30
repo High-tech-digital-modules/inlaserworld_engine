@@ -149,26 +149,5 @@
     "value": -100,
     "label": "Points per team kill",
     "target": 8
-  },
-  {
-    "id": "e3a2b9c0-649c-4db6-84d1-2e0cae1c410b",
-    "name": "mainVolume",
-    "type": "channelVolume",
-    "value": 51,
-    "label": "Volume 1",
-    "target": 8,
-    "inOnlineMenu": true
-  },
-  {
-    "id": "93a215fb-4620-481d-bd56-ab3cab079454",
-    "name": "mainMusic",
-    "type": "media",
-    "value": 128,
-    "label": "",
-    "target": 8,
-    "options": {
-      "type": 2
-    },
-    "inlaserworldId": null
   }
 ]
