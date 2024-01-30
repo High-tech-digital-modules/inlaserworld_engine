@@ -26,6 +26,7 @@ function Player ( {index} ) {
     <div>{player.playerName}</div>
   </SPlayerItem>;
 }
+
 function TeamScore({ index} ) {
   const team = useSelector(getTeam(index));
 
@@ -214,22 +215,7 @@ function Main () {
     teamScore.push(<TeamScore index={i}/>);
   }
 
-  const receivedCustomData = (data) => {
-    console.log({data, from: 1});
-  }
-
-  React.useEffect(() => {
-    const listener = {
-      listener: receivedCustomData
-    };
-    registerCustomDataListener(listener);
-    return () => {
-      removeCustomDataListener(listener);
-    }
-  }, []);
-
   return <SResult style={{ color: '#fff' }}>
-    {/*<button onClick={() => sendCustomMessage({test: 11})}>Click me I will send message</button>*/}
     {gameResultState === GameResultsState.RUNNING && <CountDown/>}
     <SContent>
       {gameResultState !== GameResultsState.RUNNING && <SPlayerMain>
