@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Messaging
-parent: Concepts
+parent: Tutorials
 ---
 
 # Messaging
@@ -22,7 +22,7 @@ Message on the webresult side can be handled by following:
 
 - This can be handled in any component, so multiple listeners can exist
 
-```jsx
+```javascript
 // ...
     const receivedCustomData = (data) => {
       console.log({data, from: 1});
@@ -58,13 +58,13 @@ void PLUGIN_customMessageFromVisualization(const rapidjson::Value &aValue){
 
 ## Arena -> Chest
  - To send check function ```ENGINE_sendCustomMessage``` in:
-[Arena engine functions](../engine_api/main_unit_engine.md){: .btn .btn-purple }
+[Arena engine functions](../engine_api/main_unit_engine.md)
 
  - To receive message check ```PLUGIN_processCustomMessage``` in:
-[Chest plugin events](../engine_api/chest_plugin.md){: .btn .btn-blue }
+[Chest plugin events](../engine_api/chest_plugin.md)
 
 ## Chest -> Arena
  - To send check function ```ENGINE_sendCustomMessage``` in:
-[Chest engine functions](../engine_api/chest_engine.md){: .btn .btn-purple }
+[Chest engine functions](../engine_api/chest_engine.md)
  - To receive message check ```PLUGIN_processCustomMessage``` in:
-[Check plugin events](../engine_api/main_unit_plugin.md){: .btn .btn-blue }
+[Check plugin events](../engine_api/main_unit_plugin.md)

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Music engine
-parent: Concepts
+parent: Tutorials
 ---
 
 # Music engine

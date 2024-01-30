@@ -932,3 +932,17 @@ void ENGINE_useVirtualScreen(uint8_t aScreenId, uint8_t aState);
 ### Params
 {: .no_toc }
 - **aScreenId** - ID of screen
+- **aState** - state of screen
+
+		 default_ - Default screen
+		 gameLoaded - When game loaded
+		 gameRunning - When game running
+		 gameFreshFinish - When game just finished
+		 gameFinished - When some previous game is loaded to be visualized
+		 error - Error screen could be done
+
+### Usage
+{: .no_toc }
+```cpp
+ ENGINE_useVirtualScreen(1, Engine::VirtualScreen::gameLoaded);
+```
