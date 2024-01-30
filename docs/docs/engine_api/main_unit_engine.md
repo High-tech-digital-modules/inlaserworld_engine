@@ -265,7 +265,7 @@ uint8_t ENGINE_playSoundOnPlayersChest(const uint8_t aPlayerIndex, const uint32_
 get game template custom string variable by name
 
 ```cpp
-std::string ENGINE_getTcvString(const char * aName, std::string aDefValue);
+std::string ENGINE_getTcvString(const char * aName, const char * aDefValue);
 ```
 
 ### Params
@@ -831,3 +831,118 @@ Switch player team by team index and player index
 - **aPlayerIndex** - index of player
 - **aTeamIndex** - index of team
 - **aFlags** - 0x000000ct - c = send color, t = send table
+
+---
+## ENGINE_saveResultSnapshot
+Save actual results generated to its own snapshot
+
+```cpp
+void ENGINE_saveResultSnapshot();
+```
+
+
+---
+## ENGINE_customMusicControl
+Call this if music is controlled by plugin
+
+```cpp
+void ENGINE_customMusicControl();
+```
+
+
+---
+## ENGINE_getAudioEngine
+Get sound system engine
+
+```cpp
+FMOD::System* ENGINE_getAudioEngine();
+```
+
+- **return** pointer to audio system
+
+---
+## ENGINE_getSelectedMusicUrl
+Get selected music url
+
+```cpp
+std::string ENGINE_getSelectedMusicUrl(Engine::MusicSelected aSelection);
+```
+
+- **return** url for selected music item
+
+---
+## ENGINE_getSoundFromMediaLibrary
+Get Fmod sound object
+
+```cpp
+FMOD::Sound* ENGINE_getSoundFromMediaLibrary(const uint32_t aMediaId);
+```
+
+### Params
+{: .no_toc }
+- **aMediaId** -Media id of sound
+- **return** sound
+
+---
+## ENGINE_getSoundFromSoundSet
+Get Fmod sound object from selected sound set
+
+```cpp
+FMOD::Sound* ENGINE_getSoundFromSoundSet(const uint32_t aIndex);
+```
+
+### Params
+{: .no_toc }
+- **aIndex** - index in list
+- **return** sound
+
+---
+## ENGINE_getMediaUrl
+Get url to media item
+
+```cpp
+std::string ENGINE_getMediaUrl(const uint32_t aMediaId);
+```
+
+### Params
+{: .no_toc }
+- **aMediaId** - media id
+- **return** Url to media item
+
+---
+## ENGINE_sendCustomMessageToVisualization
+This function takes rapid json and sends it to web results
+
+```cpp
+void ENGINE_sendCustomMessageToVisualization(rapidjson::Document& aDocument);
+```
+
+### Params
+{: .no_toc }
+- **aValue** - rapid json value with message
+
+---
+## ENGINE_useVirtualScreen
+This function let know web virtual screen to load this game
+
+```cpp
+void ENGINE_useVirtualScreen(uint8_t aScreenId, uint8_t aState);
+```
+
+### Params
+{: .no_toc }
+- **aScreenId** - ID of screen
+- **aState** - state of screen
+
+		 default_ - Default screen
+		 gameLoaded - When game loaded
+		 gameRunning - When game running
+		 gameFreshFinish - When game just finished
+		 gameFinished - When some previous game is loaded to be visualized
+		 error - Error screen could be done
+
+### Usage
+{: .no_toc }
+```cpp
+ ENGINE_useVirtualScreen(1, Engine::VirtualScreen::gameLoaded);
+```

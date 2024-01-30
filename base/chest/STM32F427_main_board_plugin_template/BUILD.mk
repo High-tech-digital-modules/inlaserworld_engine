@@ -21,6 +21,13 @@ z := $(shell (makeheaders ../src/custom_variables_map.c || touch ../src/custom_v
 endif
 endif
 
+ifdef SIMULATION_PLUGIN
+FLAGS+=-DSIMULATION_PLUGIN
+endif
+ifdef AUTO_REVIVE
+FLAGS+=-DAUTO_REVIVE
+endif
+
 PLUGIN = 1
 
 ifneq (, $(findstring -linux, $(ODIR)))

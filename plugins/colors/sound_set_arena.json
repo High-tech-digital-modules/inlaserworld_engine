@@ -4,93 +4,90 @@
     {
       "name": "five",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 26
     },
     {
       "name": "four",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 27
     },
     {
       "name": "three",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 44
     },
     {
       "name": "two",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 45
     },
     {
       "name": "one",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 36
     },
     {
       "name": "arenaLeaderChange",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 106
     },
     {
       "name": "Min5Remaining",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 13
     },
     {
       "name": "Min1Remaining",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 11
+    },
+    {
+      "name": "BonusActivated",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 20
+    },
+    {
+      "name": "BonusDeactivated",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 19
+    },
+    {
+      "name": "BonusTaken",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 21
+    },
+    {
+      "name": "MineActivated",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 34
+    },
+    {
+      "name": "DoubleKill",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 60
+    },
+    {
+      "name": "MonsterKill",
+      "label": "",
+      "mediaId": 0,
+      "inlaserworldId": 80
     }
   ],
   "subName": "en",
   "subType": 1,
-  "soundSetChildren": [
-    {
-      "name": "Deathmatch Arena",
-      "soundItemList": [
-        {
-          "name": "five",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "four",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "three",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "two",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "one",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "arenaLeaderChange",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "5MinRemaining",
-          "label": "",
-          "mediaId": 0
-        },
-        {
-          "name": "",
-          "label": "",
-          "mediaId": 0
-        }
-      ],
-      "subName": "cz",
-      "subType": 1
-    }
-  ]
+  "isDefault": true,
+  "soundSetChildren": []
 }

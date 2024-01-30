@@ -145,7 +145,7 @@ void selectNewBonus(void) {
 }
 
 void selectBonusActivateTime(void) {
-    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 5000 + rand() % 5000);//15000 + rand() % 15000
+    gTimerBonusActivate = ENGINE_setTimer(handlerBonusActivate, 5000 + rand() % 5000); // 15000 + rand() % 15000
 }
 
 void selectMineActivateTime(void) {
@@ -200,7 +200,7 @@ void PLUGIN_setup() {
             ENGINE_lightStartSequence(lModule.address, 0x0550); // stop all operations
             usleep(40000);
             ENGINE_lightClearOperationBuffer(lModule.address);
-            ENGINE_lightClearSequenceBuffer(lModule.address, 0b00111100);
+            ENGINE_lightClearSequenceBuffer(lModule.address, 0b00111111);
 
             // 0 blinking, white, fast
             ENGINE_lightAddOperation(lModule.address, {0, 0xFF, 0xFF, 0xFF, 5, 5});
@@ -306,6 +306,10 @@ void PLUGIN_playerDidBonusKill(uint8_t aPlayerIndex, uint8_t aBonus) {
 
 void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo) {
     Player *p = ENGINE_getPlayerByCode(aCode);
+
+    if (p == NULL) {
+        return;
+    }
 
     if (bonusEnabled == true && (strcmp(aAddress.c_str(), gBonusModule.c_str()) == 0) && gvBonusNonactive == 0) {
         ENGINE_playSoundFromSoundSet(BonusTaken);

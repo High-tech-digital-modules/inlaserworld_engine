@@ -52,7 +52,8 @@
     "name": "shootPower",
     "type": "uint32_t",
     "value": 100,
-    "label": "Shoot power",
+    "label": "Síla střelby (%)",
+    "label_en": "Shoot power (%)",
     "target": 4,
     "inGameMenu": true
   },
@@ -60,32 +61,36 @@
     "id": "cb2951e0-d91a-4c48-aa2d-eb8efb6dd079",
     "name": "sfxShoot",
     "type": "media",
-    "value": 0,
+    "value": 120,
     "label": "Sound of the gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 92
   },
   {
     "id": "96aa2418-1aff-4179-8607-9932257c537a",
     "name": "sfxEmptyShoot",
     "type": "media",
-    "value": 0,
+    "value": 121,
     "label": "Sound of empty gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 93
   },
   {
     "id": "2ce16494-d12a-472b-8801-004335893b7b",
     "name": "sfxKillDone",
     "type": "media",
-    "value": 0,
+    "value": 116,
     "label": "Sound when you kill someone",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 68
   },
   {
     "id": "5ffb01d2-133d-469c-bb65-fd49cb9b83bf",
     "name": "bonusEnabled",
     "type": "boolean",
     "value": true,
-    "label": "Bonus feature enable",
+    "label": "Bonus",
+    "label_en": "Bonus feature enable",
     "target": 12,
     "inGameMenu": true
   },
@@ -102,7 +107,8 @@
     "name": "colorArena",
     "type": "color",
     "value": "#00007f",
-    "label": "Color of all arena lights",
+    "label": "Barva osvětlení",
+    "label_en": "Color of all arena lights",
     "target": 8,
     "inGameMenu": true
   },
@@ -111,7 +117,8 @@
     "name": "bonusSendByXbee",
     "type": "boolean",
     "value": true,
-    "label": "Bonus only for the player who shot it",
+    "label": "Bonus pouze pro střelce",
+    "label_en": "Bonus only for the player who shot it",
     "target": 8,
     "inGameMenu": true
   },
@@ -120,17 +127,20 @@
     "name": "mineEnabled",
     "type": "boolean",
     "value": true,
-    "label": "Mine feature enabled",
+    "label": "Mina",
+    "label_en": "Mine feature enabled",
     "target": 12,
-    "inGameMenu": true
+    "inGameMenu": true,
+    "inOnlineMenu": true
   },
   {
     "id": "c81ecffd-d18e-4736-9cf6-21c04e727528",
     "name": "sfxMineExplosion",
     "type": "media",
-    "value": 0,
+    "value": 105,
     "label": "Sound for mine explosion",
-    "target": 8
+    "target": 8,
+    "inlaserworldId": 25
   },
   {
     "id": "296b39d2-9ee2-46ad-8b4f-f1d38a96b95b",

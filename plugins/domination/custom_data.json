@@ -1,0 +1,105 @@
+[
+  {
+    "id": "03f50a3a-091a-40fa-93bb-7c1e26cf3c93",
+    "name": "pointsKill",
+    "type": "int32_t",
+    "value": 150,
+    "label": "Points per kill",
+    "target": 8
+  },
+  {
+    "id": "eaa4f9a9-f556-4913-ae4c-d9d024cea27c",
+    "name": "pointsDeath",
+    "type": "int32_t",
+    "value": -50,
+    "label": "Point per death",
+    "target": 8
+  },
+  {
+    "id": "cdcdcd59-da2f-49e2-ab13-113e5130fe7b",
+    "name": "pointsHit",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per hit",
+    "target": 8
+  },
+  {
+    "id": "2b5a7745-f53b-42e2-b3a7-c1bd1dedfec7",
+    "name": "pointsPerShoot",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per shoot",
+    "target": 8
+  },
+  {
+    "id": "21a99011-fb98-41db-8414-ede994c49b3e",
+    "name": "pointsDoubleKill",
+    "type": "int32_t",
+    "value": 50,
+    "label": "Points per double kill",
+    "target": 8
+  },
+  {
+    "id": "529c73dd-721a-4ee7-9a9f-0ce293f9b1c3",
+    "name": "pointsMonsterKill",
+    "type": "int32_t",
+    "value": 100,
+    "label": "Points per monster kill",
+    "target": 8
+  },
+  {
+    "id": "919f46c2-fe43-4304-bac9-ad0e88073936",
+    "name": "shootPower",
+    "type": "uint32_t",
+    "value": 100,
+    "label": "Síla střelby (%)",
+    "label_en": "Shoot power (%)",
+    "target": 4,
+    "inGameMenu": true
+  },
+  {
+    "id": "37ccc979-7174-4532-a864-9d319939dbe1",
+    "name": "sfxShoot",
+    "type": "media",
+    "value": 0,
+    "label": "Sound of the gun",
+    "target": 4,
+    "inlaserworldId": 92
+  },
+  {
+    "id": "d90cab4d-352d-4747-9bf5-eeb316494183",
+    "name": "sfxEmptyShoot",
+    "type": "media",
+    "value": 0,
+    "label": "Sound of empty gun",
+    "target": 4,
+    "inlaserworldId": 93
+  },
+  {
+    "id": "e7d56779-cfc8-4c4d-9ee0-86401f6207ef",
+    "name": "sfxKillDone",
+    "type": "media",
+    "value": 0,
+    "label": "Sound when you kill someone",
+    "target": 4,
+    "inlaserworldId": 68
+  },
+  {
+    "id": "cbd1da45-82c8-4835-b056-4abb8986e62d",
+    "name": "pointsPerBonus",
+    "type": "uint32_t",
+    "value": 30,
+    "label": "Points per bonus per second",
+    "target": 8
+  },
+  {
+    "id": "e2c32b4f-5979-48bb-bc52-4f60f335d4b9",
+    "name": "expertMode",
+    "type": "boolean",
+    "value": true,
+    "label": "Oživování u bonusů",
+    "label_en": "Enables expert mode",
+    "target": 12,
+    "inGameMenu": true
+  }
+]

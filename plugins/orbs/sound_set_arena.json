@@ -4,65 +4,78 @@
     {
       "name": "five",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 26
     },
     {
       "name": "four",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 27
     },
     {
       "name": "three",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 44
     },
     {
       "name": "two",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 45
     },
     {
       "name": "one",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 36
     },
     {
       "name": "arenaLeaderChange",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 106
     },
     {
       "name": "Min5Remaining",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 13
     },
     {
       "name": "Min1Remaining",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 11
     },
     {
       "name": "machineGunTaken",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 33
     },
     {
       "name": "sniperTaken",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 41
     },
     {
       "name": "armorTaken",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 14
     },
     {
       "name": "healingTaken",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 31
     }
   ],
   "subName": "en",
   "subType": 1,
+  "isDefault": true,
   "soundSetChildren": []
 }

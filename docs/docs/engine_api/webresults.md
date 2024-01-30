@@ -130,6 +130,23 @@ get player from list by index selector hook
 ```
 
 ---
+## getPlayerByItsProp
+get player from list by property and value
+
+
+### Params
+{: .no_toc }
+- **key** - property of player like playerName
+- **return** IEvPlayers data structure
+
+### Usage
+{: .no_toc }
+```javascript
+ // this must be used with selector it is hook
+ const player = useSelector(getPlayer("playerName", "Daniel"));
+```
+
+---
 ## getTeam
 get team from list by index selector hook
 
@@ -274,6 +291,13 @@ set result snapshot index
 - **index** - index of result snapshot
 
 ---
+## getSnapshotResultIndex
+get actual index of selected sub results
+
+
+- **return** index
+
+---
 ## tl
 translate function for local template translations
 
@@ -290,3 +314,39 @@ translate function for global translations
 extracted custom template data
 
 
+
+---
+## registerCustomDataListener
+setup event listener when arena sends some custom data
+
+
+### Params
+{: .no_toc }
+- **listener** listener like {listener}
+
+---
+## removeCustomDataListener
+remove event listener when arena sens some custom data
+
+
+### Params
+{: .no_toc }
+- **listener** listener like {listener}
+
+---
+## sendCustomMessage
+sends message to arena plugin must be JSON
+
+
+### Params
+{: .no_toc }
+- **message** must be JSON
+
+---
+## getMediaItem
+get media item info by selected id
+
+
+### Params
+{: .no_toc }
+- **media** item ID

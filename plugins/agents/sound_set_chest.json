@@ -4,35 +4,42 @@
     {
       "name": "becomeAgent",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 8
     },
     {
       "name": "loaded",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 73
     },
     {
       "name": "aliveAgain",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 96
     },
     {
       "name": "gameStarting",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 96
     },
     {
       "name": "death",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 59
     },
     {
       "name": "doubleAgent",
       "label": "",
-      "mediaId": 0
+      "mediaId": 0,
+      "inlaserworldId": 61
     }
   ],
   "subName": "en",
   "subType": 0,
+  "isDefault": true,
   "soundSetChildren": []
 }

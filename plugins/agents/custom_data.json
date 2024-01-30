@@ -29,7 +29,8 @@
     "value": 0,
     "label": "SFX Shoot",
     "id": "6a69e853-8fee-45ab-bdfb-90a47dd10224",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 92
   },
   {
     "name": "sfxEmptyShoot",
@@ -37,7 +38,17 @@
     "value": 0,
     "label": "SFX Empty shoot",
     "id": "2223722e-0297-4eff-8de9-cb6d09b816d6",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 93
+  },
+  {
+    "id": "2ce16494-d12a-472b-8801-004335893b7b",
+    "name": "sfxKillDone",
+    "type": "media",
+    "value": 0,
+    "label": "Sound when you kill someone",
+    "target": 4,
+    "inlaserworldId": 68
   },
   {
     "id": "ab5b35dc-2f6c-42bb-a9a0-a9d83b86bae3",

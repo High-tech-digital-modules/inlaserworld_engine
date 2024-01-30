@@ -1,4 +1,5 @@
 
+
 function PlayerScore({ index} ) {
   const player = useSelector(getPlayer(index));
 
@@ -137,28 +138,6 @@ function KillLogRow({ log, colorArray, gameTime, index, opacity }) {
   </SKillLogRow>;
 }
 
-function CountDown () {
-  const evaluationGameTime = useSelector(getEvaluationItem('evaluationGameTime'));
-  const evaluationState = useSelector(getEvaluationItem('evaluationState'));
-  const gameTime = useSelector(getEvaluationItem('gameTime'));
-  const barColor = evaluationState === 3 ? '244, 169, 65' : '174, 41, 175';
-  return <SGameProgress>
-    <CircularProgressbar
-      counterClockwise={true}
-      strokeWidth={14}
-      styles={{
-        path: { stroke: `rgba(${barColor}, ${evaluationGameTime * 100 /
-          (gameTime * 60)})`, strokeWidth: 8 },
-        text: { fill: '#fff', fontSize: '16px' },
-        trail: { stroke: '#282C31', strokeWidth: 14 },
-      }}
-      percentage={evaluationGameTime * 100 /
-        (gameTime * 60)}
-      text={minuteSecondsString(evaluationGameTime)}
-    />
-  </SGameProgress>;
-}
-
 function OnlinePlayerGameScore() {
   const players = useSelector(getEvaluationItem('evaluationPlayers'));
 
@@ -191,6 +170,13 @@ function OnlineTeamGameScore() {
       }
     </FlipMove>
   )
+}
+
+function MainWrapper () {
+  if(gameResultState === GameResultsState.LOADED) {
+    return <div>Just loaded</div>
+  }
+  return <Main/>
 }
 
 function Main () {
@@ -308,4 +294,4 @@ function Main () {
   </SResult>
 }
 
-render(<Main/>);
+render(<MainWrapper/>);

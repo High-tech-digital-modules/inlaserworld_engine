@@ -123,7 +123,8 @@
     "type": "media",
     "value": 0,
     "label": "Sound of the gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 92
   },
   {
     "id": "9100e360-79f4-4b6d-a219-e0586065ddef",
@@ -131,14 +132,16 @@
     "type": "media",
     "value": 0,
     "label": "Sound of empty gun",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 93
   },
   {
     "id": "866f8ce2-51bd-43c3-8ce5-fbe211831b1d",
     "name": "colorArena",
     "type": "color",
     "value": "#3f0000",
-    "label": "Color of all arena lights",
+    "label": "Barva osvětlení",
+    "label_en": "Color of all arena lights",
     "target": 8,
     "inGameMenu": true
   },
@@ -148,14 +151,26 @@
     "type": "media",
     "value": 0,
     "label": "Kill done sound effect",
-    "target": 4
+    "target": 4,
+    "inlaserworldId": 68
   },
   {
     "id": "760d0ed2-271c-4ad2-bbc9-d8ba3d6a9665",
-    "name": "bonusRandomDistribution",
+    "name": "orbsRandomDistribution",
     "type": "boolean",
     "value": true,
-    "label": "random distribution of bonuses on targets",
+    "label": "Náhodné rozmístění orbů",
+    "label_en": "random distribution of orbs on targets",
+    "target": 8,
+    "inGameMenu": true
+  },
+  {
+    "id": "e905a678-0be5-401f-8641-062c805eddaa",
+    "name": "orbsDelayedActivation",
+    "type": "boolean",
+    "value": true,
+    "label": "Zapnout orby s prodlevou",
+    "label_en": "delayed activation of orbs",
     "target": 8,
     "inGameMenu": true
   }
