@@ -225,12 +225,24 @@ void PLUGIN_lightGotHit(std::string aAddress, uint8_t aCode, uint8_t aInfo);
 
 ---
 ## PLUGIN_destroyed
-game ended and plugin is destroyed
+game ended and plugin is destroyed - should be used only for cleanup
 
 ```cpp
 void PLUGIN_destroyed();
 ```
 
+
+---
+## PLUGIN_stopped
+game received stop command after this last PLUGIN_main is called use this to finalize data etc.
+
+```cpp
+void PLUGIN_stopped(bool aForce);
+```
+
+### Params
+{: .no_toc }
+- **aForce** - if game was stop by time or by command from application
 
 ---
 ## PLUGIN_serializeOtherCustomVariables
@@ -245,3 +257,27 @@ void PLUGIN_serializeOtherCustomVariables(rapidjson::Value& aValue, rapidjson::D
 - **aValue** - predefined rapid json Value as object
 - **al** - rapid json allocator
 - **aIsFinal** - if the last call before saving results
+
+---
+## PLUGIN_customVariableChanged
+When custom variable is changed when game is active
+
+```cpp
+void PLUGIN_customVariableChanged(const std::string& aName);
+```
+
+### Params
+{: .no_toc }
+- **aName** - name of custom variable
+
+---
+## PLUGIN_customMessageFromVisualization
+When web results sends some data
+
+```cpp
+void PLUGIN_customMessageFromVisualization(const rapidjson::Value& aValue);
+```
+
+### Params
+{: .no_toc }
+- **aDocument** json value

@@ -199,7 +199,7 @@ void PLUGIN_customMessageFromVisualization(const rapidjson::Value &aValue){
 void PLUGIN_setup() {
     ENGINE_customMusicControl();
     ENGINE_useVirtualScreen(1, Engine::VirtualScreen::gameLoaded);
-    //playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
+    playMusicOnMainChannel(ENGINE_getSelectedMusicUrl(Engine::musicLoaded));
     //playMusicOnMainChannel(ENGINE_getMediaUrl(mainMusic)); // Example how to play it directly from media id
     /*gpMainChannel->setCallback([](FMOD_CHANNELCONTROL *channelcontrol, FMOD_CHANNELCONTROL_TYPE controltype, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbacktype, void *commanddata1, void *commanddata2) -> FMOD_RESULT {
         if (controltype == FMOD_CHANNELCONTROL_CALLBACK_END) {
