@@ -39,6 +39,7 @@ FLAGS += -fPIC -D SIMULATION -D PLUGIN_CODE -fpermissive
 
 LIB_SRCS =                                                                 \
 ../src/custom_variables_map.c                                              \
+$(wildcard ../src/plugin/extra/*.c)                                        \
 $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_base/src/plugin_init.c          \
 $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_def/src/engine_def.c            \
 
@@ -60,6 +61,7 @@ APP_NAME=plugin
 
 APP_SRCS =                                                                 \
 ../src/custom_variables_map.c                                              \
+$(wildcard ../src/plugin/extra/*.c)                                        \
 $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_base/src/plugin_init.c          \
 $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_def/src/engine_def.c            \
 
@@ -81,4 +83,5 @@ endif
 
 CUSTOM_DEP_TARGET = plugin_init.o
 CUSTOM_DEP_DEPENDENCIES = $(SDK_ROOT)/firmware/stm/32F427/lib/plugin_base/src/plugin_init.c \
+$(wildcard ../src/plugin/extra/*.c)                                                         \
 ../src/plugin/plugin_functions.c

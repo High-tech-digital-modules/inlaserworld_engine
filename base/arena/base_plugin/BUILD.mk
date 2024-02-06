@@ -25,6 +25,7 @@ FLAGS += -fPIC
 
 LIB_SRCS =                                                               \
 ../src/custom_variables_map.c                                            \
+$(wildcard ../src/extra/*.c)                                             \
 $(SDK_ROOT)/raspberry/apps/lasergame/include/engine/engine_functions.cpp \
 $(SDK_ROOT)/raspberry/lib/plugin_base/src/plugin.c                                                                                             
 
@@ -40,4 +41,5 @@ LIB_LIBS =                                                               \
 
 CUSTOM_DEP_TARGET = plugin.o
 CUSTOM_DEP_DEPENDENCIES = $(SDK_ROOT)/raspberry/lib/plugin_base/src/plugin.c \
+$(wildcard ../src/extra/*.c)                                                 \
 ../src/main.c
