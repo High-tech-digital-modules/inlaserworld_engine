@@ -2279,7 +2279,7 @@ static const uint8_t *gpCongratulationsList[GGT_CONGRAT_NMBR] = {
     "Phenomenal",
     "Splendid"};
 
-int8_t circle_16_2[92][2] = {
+/*int8_t circle_16_2[92][2] = {
     {-12, -11},
     {-12, -10},
     {-13, -9},
@@ -2371,7 +2371,7 @@ int8_t circle_16_2[92][2] = {
     {-8, -14},
     {-9, -13},
     {-10, -12},
-    {-11, -12}};
+    {-11, -12}};*/
 
 typedef enum {
     teamCT = 0,
@@ -3478,13 +3478,12 @@ void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
                       hand_2.data);
 }
 
-void DISPLAY_drawCirclePart(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
+/*void DISPLAY_drawCirclePart(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
     uint8_t lQuadrant = 0;
     uint8_t lStartIndex = 92 - (aPercentage * 87 / 100);
     uint8_t i = 0;
     for (i = 0; i < 5; i++) {
-        /*setpixels(display_buffer_1, aX + circle_16_2[91][0], aY + circle_16_2[91][1] - i,
-                  1, 3);*/
+        //setpixels(display_buffer_1, aX + circle_16_2[91][0], aY + circle_16_2[91][1] - i, 1, 3);
         ENGINE_drawPixel(aX + circle_16_2[91][0], aY + circle_16_2[91][1] - i, 1);
     }
     for (i = lStartIndex; i < 92; i++) {
@@ -3497,12 +3496,11 @@ void DISPLAY_drawCirclePart(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
         } else if (circle_16_2[i][0] >= 0 && circle_16_2[i][1] < 0) {
             lQuadrant = 4;
         }
-        /*setpixels(display_buffer_1, aX + circle_16_2[i][0],
-                  aY + circle_16_2[i][1], 1, lQuadrant);*/
+        //setpixels(display_buffer_1, aX + circle_16_2[i][0],aY + circle_16_2[i][1], 1, lQuadrant);
         ENGINE_drawPixel(aX + circle_16_2[i][0],
                          aY + circle_16_2[i][1], 1);
     }
-}
+}*/
 
 void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercentage) {
     uint8_t lLabelLength = strlen(apLabel);
@@ -3513,7 +3511,8 @@ void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercen
 
     ENGINE_drawInt(63, 33, aValue, 'C', 1);
     ENGINE_invertCircle(63, 40, 12);
-    DISPLAY_drawCirclePart(63, 40, 100 - aPercentage);
+    ENGINE_drawCirclePart(63, 40, 1, 100 - aPercentage, 1);
+    //DISPLAY_drawCirclePart(63, 40, 100 - aPercentage);
 }
 
 void DISPLAY_tutorialShoot(uint8_t aCount) {
