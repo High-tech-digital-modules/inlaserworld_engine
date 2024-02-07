@@ -10,6 +10,7 @@
 #define DISPLAY_HEIGHT 64
 #define CS_WEAPONS_ALL_NMBR 12
 #define CS_NONWEAPON_ITEMS_NMBR 3
+#define GGT_CONGRAT_NMBR 12
 
 typedef struct {
     const uint8_t *data;
@@ -1909,6 +1910,325 @@ static const uint8_t image_data_healing_empty[75] = {
 static const tImage healing_empty = {image_data_healing_empty, 22, 25,
                                      8};
 
+static const uint8_t image_data_stickman_run2[45] = {0x00, 0x01, 0x80, 0x00,
+                                                     0x03, 0xc0, 0x00, 0x03, 0xc0, 0x00, 0x3f, 0x80, 0x3e, 0x6e, 0x00, 0x00,
+                                                     0xcf, 0x00, 0xf0, 0x9d, 0xe0, 0x00, 0x38, 0x00, 0x78, 0x78, 0x00, 0x00,
+                                                     0xcc, 0x00, 0x07, 0x86, 0x00, 0x00, 0x02, 0x00, 0x00, 0x06, 0x00, 0x00,
+                                                     0x0c, 0x00, 0x00, 0x08, 0x00};
+static const tImage stickman_run2 = {image_data_stickman_run2, 19, 15, 8};
+
+static const uint8_t image_data_stickman_lying[18] = {0x00, 0x06, 0x00, 0x0f,
+                                                      0x00, 0x7f, 0x01, 0xf6, 0x03, 0xf0, 0x07, 0xd8, 0x0f, 0x48, 0x39, 0x48,
+                                                      0xef, 0x48};
+static const tImage stickman_lying = {image_data_stickman_lying, 16, 9, 8};
+
+static const uint8_t image_data_stickman_climb[36] = {0x00, 0x0c, 0x18, 0x0c,
+                                                      0x3c, 0x1c, 0x3d, 0x9c, 0x1a, 0x3c, 0x3c, 0x7c, 0x70, 0x7c, 0x7f, 0x7c,
+                                                      0xe0, 0x7c, 0xe0, 0xfc, 0x78, 0xfc, 0x68, 0xfc, 0x6c, 0xfc, 0x24, 0xfc,
+                                                      0x63, 0xfc, 0x47, 0xfc, 0x4f, 0xfc, 0xff, 0xfc};
+static const tImage stickman_climb = {image_data_stickman_climb, 14, 18, 8};
+
+static const uint8_t image_data_stickman_fight2[42] = {0x0c, 0x00, 0x00, 0x1e,
+                                                       0x03, 0x00, 0x1e, 0x07, 0x80, 0x0c, 0x27, 0x80, 0x18, 0x13, 0x20, 0x1f,
+                                                       0x8b, 0x20, 0x1c, 0x07, 0xc0, 0x1b, 0x06, 0x00, 0x18, 0x0e, 0x00, 0x14,
+                                                       0x12, 0x00, 0x22, 0x24, 0x00, 0x22, 0x24, 0x00, 0x42, 0x24, 0x00, 0x82,
+                                                       0x00, 0x00};
+static const tImage stickman_fight2 = {image_data_stickman_fight2, 19, 14, 8};
+
+static const uint8_t image_data_ammo_big_empty[60] = {
+    0x0e, 0x00,
+    0x11, 0x00,
+    0x11, 0x00,
+    0x20, 0x80,
+    0x20, 0x80,
+    0x20, 0x80,
+    0x20, 0x80,
+    0x40, 0x40,
+    0x40, 0x40,
+    0x40, 0x40,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x80, 0x20,
+    0x40, 0x40,
+    0x40, 0x40,
+    0x40, 0x40,
+    0xff, 0xe0};
+static const tImage ammo_big_empty = {image_data_ammo_big_empty, 11, 30,
+                                      8};
+
+static const uint8_t image_data_ammo_big[60] = {
+    0x0e, 0x00,
+    0x1f, 0x00,
+    0x1f, 0x00,
+    0x3f, 0x80,
+    0x3f, 0x80,
+    0x3f, 0x80,
+    0x3f, 0x80,
+    0x40, 0x40,
+    0x7f, 0xc0,
+    0x7f, 0xc0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0xff, 0xe0,
+    0x7f, 0xc0,
+    0x40, 0x40,
+    0x7f, 0xc0,
+    0xff, 0xe0};
+static const tImage ammo_big = {image_data_ammo_big, 11, 30,
+                                8};
+
+static const uint8_t image_data_reload_arrow[72] = {
+    0x00, 0x7e, 0x0e,
+    0x01, 0xff, 0x8e,
+    0x07, 0xff, 0xee,
+    0x0f, 0x81, 0xfe,
+    0x1e, 0x00, 0x7e,
+    0x3c, 0x00, 0x3e,
+    0x38, 0x03, 0xfe,
+    0x70, 0x03, 0xfe,
+    0x70, 0x03, 0xfe,
+    0xe0, 0x00, 0x00,
+    0xe0, 0x00, 0x00,
+    0xe0, 0x00, 0x07,
+    0xe0, 0x00, 0x07,
+    0xe0, 0x00, 0x07,
+    0xe0, 0x00, 0x07,
+    0x70, 0x00, 0x0e,
+    0x70, 0x00, 0x0e,
+    0x38, 0x00, 0x1e,
+    0x3c, 0x00, 0x3c,
+    0x1e, 0x00, 0x78,
+    0x0f, 0x81, 0xf0,
+    0x07, 0xff, 0xe0,
+    0x03, 0xff, 0xc0,
+    0x00, 0x7e, 0x00};
+static const tImage reload_arrow = {image_data_reload_arrow, 24, 24,
+                                    8};
+
+static const uint8_t image_data_checked[96] = {
+    0x3f, 0xff, 0xfc, 0x00,
+    0x7f, 0xff, 0xfe, 0x00,
+    0xff, 0xff, 0xfe, 0x00,
+    0xe0, 0x00, 0x00, 0x00,
+    0xe0, 0x00, 0x03, 0x00,
+    0xe0, 0x00, 0x07, 0x80,
+    0xe0, 0x00, 0x0f, 0xc0,
+    0xe0, 0x00, 0x1f, 0x80,
+    0xe0, 0x00, 0x3f, 0x00,
+    0xe1, 0x00, 0x7e, 0x00,
+    0xe3, 0x80, 0xfc, 0x00,
+    0xe7, 0xc1, 0xf9, 0x00,
+    0xe7, 0xe3, 0xf3, 0x00,
+    0xe3, 0xf7, 0xe7, 0x00,
+    0xe1, 0xff, 0xc7, 0x00,
+    0xe0, 0xff, 0x87, 0x00,
+    0xe0, 0x7f, 0x07, 0x00,
+    0xe0, 0x3e, 0x07, 0x00,
+    0xe0, 0x1c, 0x07, 0x00,
+    0xe0, 0x00, 0x07, 0x00,
+    0xe0, 0x00, 0x07, 0x00,
+    0xff, 0xff, 0xff, 0x00,
+    0x7f, 0xff, 0xfe, 0x00,
+    0x3f, 0xff, 0xfc, 0x00};
+static const tImage checked = {image_data_checked, 26, 24,
+                               8};
+
+static const uint8_t image_data_figure_empty[12] = {
+    0x30,
+    0x48,
+    0x30,
+    0x48,
+    0xcc,
+    0xb4,
+    0xb4,
+    0x48,
+    0x78,
+    0x48,
+    0x48,
+    0x48};
+static const tImage figure_empty = {image_data_figure_empty, 6, 12,
+                                    8};
+
+static const uint8_t image_data_figure[12] = {
+    0x30,
+    0x78,
+    0x30,
+    0x78,
+    0xfc,
+    0xb4,
+    0xb4,
+    0x78,
+    0x78,
+    0x48,
+    0x48,
+    0x48};
+static const tImage figure = {image_data_figure, 6, 12,
+                              8};
+
+static const uint8_t image_data_weapon_white[615] = {0x78, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x0c, 0xcc, 0xc0, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x06, 0x66, 0x60,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80,
+                                                     0x03, 0x33, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x80, 0x03, 0x33, 0x33, 0x33, 0x33, 0x33, 0x30, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x7c, 0x01, 0x99, 0x99, 0x99, 0x99, 0x99,
+                                                     0x98, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0xcc, 0xcc,
+                                                     0xcc, 0xcc, 0xcc, 0xcc, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x3f, 0xff, 0xf0, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x0c, 0x00, 0x00, 0x02,
+                                                     0x00, 0x00, 0x00, 0x00, 0x3f, 0xff, 0xf0, 0x00, 0x00, 0x80, 0x00, 0x02,
+                                                     0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x04, 0x08, 0x00, 0x00,
+                                                     0x80, 0x00, 0x01, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02,
+                                                     0x04, 0x00, 0x00, 0x80, 0x00, 0x00, 0x80, 0x00, 0x02, 0x00, 0x1f, 0xf8,
+                                                     0x01, 0x00, 0x02, 0x04, 0x00, 0x00, 0x80, 0x00, 0x00, 0x80, 0x00, 0x02,
+                                                     0x00, 0x30, 0x0c, 0x02, 0x00, 0x02, 0x04, 0x00, 0x00, 0x80, 0x00, 0x00,
+                                                     0x40, 0x00, 0x01, 0x00, 0x20, 0x04, 0x02, 0x00, 0x02, 0x04, 0x00, 0x00,
+                                                     0x80, 0x00, 0x00, 0x40, 0x00, 0x01, 0x00, 0x3f, 0xfc, 0x02, 0x00, 0x02,
+                                                     0x04, 0x00, 0x00, 0x40, 0x00, 0x00, 0x40, 0x00, 0x01, 0x00, 0x20, 0x04,
+                                                     0x02, 0x00, 0x02, 0x04, 0x00, 0x00, 0x40, 0x00, 0x00, 0x40, 0x00, 0x01,
+                                                     0x00, 0x20, 0x04, 0x02, 0x00, 0x04, 0x08, 0x00, 0x00, 0x20, 0x00, 0x00,
+                                                     0x40, 0x00, 0x01, 0x00, 0x20, 0x02, 0x02, 0x00, 0x1f, 0xf0, 0x00, 0x00,
+                                                     0x10, 0x00, 0x00, 0x40, 0x00, 0x00, 0xff, 0xc0, 0x02, 0x02, 0x00, 0x10,
+                                                     0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x02,
+                                                     0x01, 0x00, 0x20, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x80, 0x00, 0x00,
+                                                     0x00, 0x00, 0x02, 0x00, 0x80, 0x40, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+                                                     0x80, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x61, 0x80, 0x7f, 0x80, 0x00,
+                                                     0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x1e, 0x01,
+                                                     0x80, 0x40, 0x00, 0x00, 0x60, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
+                                                     0x00, 0x00, 0x02, 0x00, 0x20, 0x00, 0x00, 0x1c, 0x0c, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x80, 0x00, 0x02, 0x00, 0x10, 0x00, 0x00, 0x03, 0xf0,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x02, 0x00, 0x08, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00, 0x02,
+                                                     0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x40, 0x00, 0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x20, 0x00, 0x01, 0x00, 0x01, 0x80, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x01, 0x00, 0x00, 0x40,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x01,
+                                                     0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x06, 0x00, 0x01, 0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x01, 0x80, 0x00, 0x80, 0x00, 0x03, 0x00, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x60, 0x00, 0x80, 0x00, 0x00,
+                                                     0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1e, 0x00,
+                                                     0x80, 0x00, 0x00, 0x3f, 0xff, 0xff, 0xff, 0xf0, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0x01, 0xff, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const tImage weapon_white = {image_data_weapon_white, 116, 41, 8};
+
+static const uint8_t image_data_hand[96] = {0x03, 0xc0, 0x00, 0x00, 0x1c, 0x20,
+                                            0x00, 0x00, 0x20, 0x2f, 0x00, 0x00, 0x40, 0x70, 0xc0, 0x00, 0x81, 0xc0,
+                                            0x20, 0x00, 0x80, 0x00, 0x20, 0x00, 0x80, 0x00, 0x30, 0x00, 0x40, 0x00,
+                                            0xc8, 0x00, 0x40, 0x0f, 0x04, 0x00, 0x20, 0xf0, 0x04, 0x00, 0x1f, 0x00,
+                                            0x04, 0x00, 0x20, 0x00, 0x0e, 0x00, 0x20, 0x00, 0x11, 0x00, 0x20, 0x00,
+                                            0x21, 0x00, 0x10, 0x00, 0xc1, 0xc0, 0x08, 0x03, 0x02, 0x20, 0x07, 0xfc,
+                                            0x02, 0x20, 0x01, 0x00, 0x04, 0x20, 0x01, 0x00, 0x08, 0x40, 0x00, 0x80,
+                                            0x30, 0x80, 0x00, 0x60, 0xc1, 0x00, 0x00, 0x1f, 0x02, 0x00, 0x00, 0x01,
+                                            0x8c, 0x00, 0x00, 0x00, 0x70, 0x00};
+static const tImage hand = {image_data_hand, 27, 24, 8};
+
+static const uint8_t image_data_hand_black[96] = {0x03, 0xc0, 0x00, 0x00, 0x1f,
+                                                  0xe0, 0x00, 0x00, 0x3f, 0xef, 0x00, 0x00, 0x7f, 0xff, 0xc0, 0x00, 0xff,
+                                                  0xff, 0xe0, 0x00, 0xff, 0xff, 0xe0, 0x00, 0xff, 0xff, 0xf0, 0x00, 0x7f,
+                                                  0xff, 0xf8, 0x00, 0x7f, 0xff, 0xfc, 0x00, 0x3f, 0xff, 0xfc, 0x00, 0x1f,
+                                                  0xff, 0xfc, 0x00, 0x3f, 0xff, 0xfe, 0x00, 0x3f, 0xff, 0xff, 0x00, 0x3f,
+                                                  0xff, 0xff, 0x00, 0x1f, 0xff, 0xff, 0xc0, 0x0f, 0xff, 0xff, 0xe0, 0x07,
+                                                  0xff, 0xff, 0xe0, 0x01, 0xff, 0xff, 0xe0, 0x01, 0xff, 0xff, 0xc0, 0x00,
+                                                  0xff, 0xff, 0x80, 0x00, 0x7f, 0xff, 0x00, 0x00, 0x1f, 0xfe, 0x00, 0x00,
+                                                  0x01, 0xfc, 0x00, 0x00, 0x00, 0x70, 0x00};
+static const tImage hand_black = {image_data_hand_black, 27, 24, 8};
+
+static const uint8_t image_data_hand_finger[48] = {0x00, 0x70, 0x00, 0x00,
+                                                   0x03, 0x8f, 0xc0, 0x00, 0x06, 0x00, 0x38, 0x00, 0x18, 0x00, 0x06, 0x00,
+                                                   0x20, 0x00, 0x01, 0x00, 0x40, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00, 0x40,
+                                                   0x80, 0x00, 0x00, 0x40, 0x80, 0x1e, 0x00, 0x40, 0x41, 0xe1, 0x00, 0x80,
+                                                   0x3e, 0x00, 0xc3, 0x00, 0x00, 0x00, 0x3c, 0x00};
+static const tImage hand_finger = {image_data_hand_finger, 26, 12, 8};
+
+static const uint8_t image_data_hand_finger_black[48] = {0x00, 0x70, 0x00,
+                                                         0x00, 0x03, 0xff, 0xc0, 0x00, 0x07, 0xff, 0xf8, 0x00, 0x1f, 0xff, 0xfe,
+                                                         0x00, 0x3f, 0xff, 0xff, 0x00, 0x7f, 0xff, 0xff, 0x80, 0xff, 0xff, 0xff,
+                                                         0xc0, 0xff, 0xff, 0xff, 0xc0, 0xff, 0xff, 0xff, 0xc0, 0x7f, 0xe1, 0xff,
+                                                         0x80, 0x3e, 0x00, 0xff, 0x00, 0x00, 0x00, 0x3c, 0x00};
+static const tImage hand_finger_black = {image_data_hand_finger_black, 26, 12, 8};
+
+static const uint8_t image_data_hand_2_finger[7] = {0x3f, 0x40, 0x80, 0x80,
+                                                    0x80, 0x40, 0x3f};
+static const tImage hand_2_finger = {image_data_hand_2_finger, 8, 7, 8};
+
+static const uint8_t image_data_hand_2[203] = {0x00, 0x00, 0x00, 0x01, 0x01,
+                                               0x80, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00,
+                                               0x02, 0x00, 0x20, 0x00, 0x3f, 0xff, 0xff, 0xff, 0x80, 0x10, 0x00, 0x40,
+                                               0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x04,
+                                               0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x80, 0x00, 0x00, 0x00,
+                                               0x00, 0x01, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x3f, 0xff,
+                                               0xff, 0x80, 0x00, 0x00, 0x80, 0x00, 0x00, 0x03, 0x80, 0x00, 0x00, 0x80,
+                                               0x00, 0x00, 0x1c, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00, 0x60, 0x00, 0x00,
+                                               0x00, 0x40, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x40, 0x00, 0x03, 0x00,
+                                               0x00, 0x00, 0x00, 0x40, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x40, 0x00,
+                                               0x08, 0x00, 0x30, 0x00, 0x00, 0x40, 0x00, 0x10, 0x01, 0xc0, 0x00, 0x00,
+                                               0x40, 0x00, 0x10, 0x06, 0x00, 0x00, 0x00, 0x40, 0x00, 0x08, 0xf8, 0x00,
+                                               0x00, 0x00, 0x40, 0x00, 0x07, 0x20, 0x00, 0x00, 0x00, 0x40, 0x00, 0x00,
+                                               0x40, 0x03, 0x00, 0x00, 0x80, 0x00, 0x00, 0x80, 0x0c, 0x00, 0x00, 0x80,
+                                               0x00, 0x00, 0x80, 0x30, 0x00, 0x03, 0x00, 0x00, 0x00, 0x63, 0xc0, 0x03,
+                                               0xfc, 0x00, 0x00, 0x00, 0x1c, 0x80, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                               0x80, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x41, 0xc0, 0x00, 0x00, 0x00,
+                                               0x00, 0x00, 0x3e, 0x00, 0x00, 0x00};
+static const tImage hand_2 = {image_data_hand_2, 50, 29, 8};
+
+static const uint8_t image_data_hand_2_black[203] = {0x00, 0x00, 0x00, 0x01,
+                                                     0xff, 0x80, 0x00, 0x00, 0x00, 0x00, 0x03, 0xff, 0xc0, 0x00, 0x00, 0x00,
+                                                     0x00, 0x03, 0xff, 0xe0, 0x00, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xf0, 0x00,
+                                                     0x7f, 0xff, 0xff, 0xff, 0xff, 0xf8, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff,
+                                                     0xfc, 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfe, 0x00, 0xff, 0xff, 0xff,
+                                                     0xff, 0xff, 0xff, 0x00, 0x7f, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x3f,
+                                                     0xff, 0xff, 0xff, 0xff, 0xff, 0x80, 0x00, 0x00, 0x03, 0xff, 0xff, 0xff,
+                                                     0x80, 0x00, 0x00, 0x1f, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x00, 0x7f, 0xff,
+                                                     0xff, 0xff, 0xc0, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x03,
+                                                     0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x07, 0xff, 0xff, 0xff, 0xff, 0xc0,
+                                                     0x00, 0x0f, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x1f, 0xff, 0xff, 0xff,
+                                                     0xff, 0xc0, 0x00, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x0f, 0xff,
+                                                     0xff, 0xff, 0xff, 0xc0, 0x00, 0x07, 0x3f, 0xff, 0xff, 0xff, 0xc0, 0x00,
+                                                     0x00, 0x7f, 0xff, 0xff, 0xff, 0x80, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff,
+                                                     0x80, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x7f, 0xff,
+                                                     0xff, 0xfc, 0x00, 0x00, 0x00, 0x1c, 0xff, 0xfc, 0x00, 0x00, 0x00, 0x00,
+                                                     0x00, 0xff, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7f, 0xc0, 0x00, 0x00,
+                                                     0x00, 0x00, 0x00, 0x3e, 0x00, 0x00, 0x00};
+static const tImage hand_2_black = {image_data_hand_2_black, 50, 29, 8};
+
+static const uint8_t image_data_trigger[8] = {0x80, 0x40, 0x40, 0x40, 0x40,
+                                              0x40, 0x40, 0x80};
+static const tImage trigger = {image_data_trigger, 2, 8, 8};
+
 static const tImage *gpListOfImages[23] = {&weapon, &trophy, &target, &steps, &shield_big, &shield, &pistol_small, &medaile, &aim, &ak47, &ak47_small_2, &ammo, &arrows, &bomb, &bomb_small, &defuse, &flash, &flash_big, &heart, &heart_big, &invisibility_big, &machinegun_big, &machinegun_small};
 static const tImage *gpOrbImage[4] = {&machinegun_big, &shield_big, &flash_big, &healing_big};
 static const uint8_t *gpOrbName[4] = {"MACHINEGUN", "ARMOR", "SNIPER", "HEALING"};
@@ -1944,6 +2264,114 @@ static const uint8_t *gpItemNameList[CS_WEAPONS_ALL_NMBR + CS_NONWEAPON_ITEMS_NM
     "Kevlar",
     "DefKit",
 };
+
+static const uint8_t *gpCongratulationsList[GGT_CONGRAT_NMBR] = {
+    "Congrats",
+    "Good job",
+    "Well done",
+    "Nice",
+    "You're good",
+    "Hoooray",
+    "Kudos",
+    "Bravo",
+    "Excellent",
+    "Way to go",
+    "Phenomenal",
+    "Splendid"};
+
+/*int8_t circle_16_2[92][2] = {
+    {-12, -11},
+    {-12, -10},
+    {-13, -9},
+    {-14, -8},
+    {-14, -7},
+    {-15, -6},
+    {-15, -5},
+    {-15, -4},
+    {-16, -3},
+    {-16, -2},
+    {-16, -1},
+    {-16, 0},
+    {-16, 1},
+    {-16, 2},
+    {-16, 3},
+    {-15, 4},
+    {-15, 5},
+    {-15, 6},
+    {-14, 7},
+    {-14, 8},
+    {-13, 9},
+    {-12, 10},
+    {-12, 11},
+    {-11, 12},
+    {-10, 12},
+    {-9, 13},
+    {-8, 14},
+    {-7, 14},
+    {-6, 15},
+    {-5, 15},
+    {-4, 15},
+    {-3, 16},
+    {-2, 16},
+    {-1, 16},
+    {0, 16},
+    {1, 16},
+    {2, 16},
+    {3, 16},
+    {4, 15},
+    {5, 15},
+    {6, 15},
+    {7, 14},
+    {8, 14},
+    {9, 13},
+    {10, 12},
+    {11, 12},
+    {12, 11},
+    {12, 10},
+    {13, 9},
+    {14, 8},
+    {14, 7},
+    {15, 6},
+    {15, 5},
+    {15, 4},
+    {16, 3},
+    {16, 2},
+    {16, 1},
+    {16, 0},
+    {16, -1},
+    {16, -2},
+    {16, -3},
+    {15, -4},
+    {15, -5},
+    {15, -6},
+    {14, -7},
+    {14, -8},
+    {13, -9},
+    {12, -10},
+    {12, -11},
+    {11, -12},
+    {10, -12},
+    {9, -13},
+    {8, -14},
+    {7, -14},
+    {6, -15},
+    {5, -15},
+    {4, -15},
+    {3, -16},
+    {2, -16},
+    {1, -16},
+    {0, -16},
+    {-1, -16},
+    {-2, -16},
+    {-3, -16},
+    {-4, -15},
+    {-5, -15},
+    {-6, -15},
+    {-7, -14},
+    {-8, -14},
+    {-9, -13},
+    {-10, -12},
+    {-11, -12}};*/
 
 typedef enum {
     teamCT = 0,
@@ -2859,4 +3287,399 @@ void DISPLAY_drawOrbs(uint8_t aX, uint8_t aY, uint8_t aOrbs) {
     } else {
         ENGINE_drawBitmap(aX + 106 - healing_empty.width / 2, aY + 1, healing_empty.width, healing_empty.height, healing_empty.data);
     }
+}
+
+void DISPLAY_bans(void) {
+    const uint8_t lXCentres[4] = {19, 49, 79, 109};
+    const uint8_t lXPixels[21] = {34, 36, 38, 37, 35, 32, 31, 31, 32, 35, 37,
+                                  43, 45, 46, 48, 49, 49, 48, 46, 45, 43};
+    const uint8_t lYPixels[21] = {8, 6, 5, 5, 6, 9, 11, 17, 19, 22, 23, 5, 6,
+                                  8, 9, 11, 17, 19, 20, 22, 23};
+    uint8_t i = 0;
+
+    /*icon*/
+    ENGINE_drawCircle(40, 14, 10, 1);
+    ENGINE_drawCircle(40, 14, 9, 1);
+    ENGINE_drawLine(33, 20, 46, 7, 1);
+    ENGINE_drawLine(34, 20, 46, 8, 1);
+    ENGINE_drawLine(34, 21, 47, 8, 1);
+    for (i = 0; i < 21; i++) {
+        ENGINE_drawPixel(lXPixels[i], lYPixels[i], 1);
+    }
+
+    /*label*/
+    ENGINE_drawString(60, 7, "BANS", 1);
+
+    /*line*/
+    ENGINE_drawLine(2, 28, 126, 28, 1);
+
+    /*stickman icons*/
+    ENGINE_drawBitmap(lXCentres[0] - stickman_run2.width / 2,
+                      49 - stickman_run2.height, stickman_run2.width,
+                      stickman_run2.height, stickman_run2.data);
+    ENGINE_drawBitmap(lXCentres[1] - stickman_climb.width / 2,
+                      49 - stickman_climb.height, stickman_climb.width,
+                      stickman_climb.height, stickman_climb.data);
+    ENGINE_drawBitmap(lXCentres[2] - stickman_lying.width / 2,
+                      49 - stickman_lying.height, stickman_lying.width,
+                      stickman_lying.height, stickman_lying.data);
+    ENGINE_drawBitmap(lXCentres[3] - stickman_fight2.width / 2,
+                      49 - stickman_fight2.height, stickman_fight2.width,
+                      stickman_fight2.height, stickman_fight2.data);
+
+    /*stickman labels*/
+    ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Run", 0);
+    ENGINE_drawString(lXCentres[1] - 5 * 3, 51, "Climb", 0);
+    ENGINE_drawString(lXCentres[2] - 3 * 3, 51, "Lie", 0);
+    ENGINE_drawString(lXCentres[3] - 5 * 3, 51, "Fight", 0);
+}
+
+void DISPLAY_animationTwoHandsShooting(uint8_t aX, uint8_t aY, uint8_t aFrame) {
+    uint8_t lYHand = 0;
+    uint8_t lXHand = 0;
+    if (aFrame > 30) {
+        return;
+    } else if (aFrame < 20) {
+        lYHand = 19 - aFrame;
+    } else if (aFrame > 20) {
+        if (aFrame > 25) {
+            aFrame = 50 - aFrame;
+        }
+        lXHand = aFrame - 20;
+    }
+
+    ENGINE_fillRectangle(aX, aY, 120, 48, 0);
+
+    ENGINE_drawBitmap(aX, aY, weapon_white.width, weapon_white.height,
+                      weapon_white.data);
+
+    ENGINE_clearBitmap(aX + 20, aY + 22 + lYHand, hand_black.width,
+                       hand_black.height, hand_black.data);
+    ENGINE_drawBitmap(aX + 20, aY + 22 + lYHand, hand.width, hand.height,
+                      hand.data);
+
+    if (aFrame >= 20) {
+        ENGINE_clearBitmap(aX + 25, aY + 16, hand_finger_black.width,
+                           hand_finger_black.height, hand_finger_black.data);
+        ENGINE_drawBitmap(aX + 25, aY + 16, hand_finger.width,
+                          hand_finger.height, hand_finger.data);
+    }
+
+    ENGINE_clearBitmap(aX + 53, aY + 14, trigger.width, trigger.height,
+                       trigger.data);
+    ENGINE_drawBitmap(aX + 53 + lXHand, aY + 14, trigger.width, trigger.height,
+                      trigger.data);
+
+    ENGINE_clearBitmap(aX + 50, aY + 12, hand_2_black.width,
+                       hand_2_black.height, hand_2_black.data);
+    ENGINE_drawBitmap(aX + 50, aY + 12, hand_2.width, hand_2.height,
+                      hand_2.data);
+
+    if (aFrame > 20) {
+        ENGINE_clearBitmap(aX + 50, aY + 15, hand_2_finger.width,
+                           hand_2_finger.height, hand_2_finger.data);
+        ENGINE_drawBitmap(aX + 50 + lXHand, aY + 15, hand_2_finger.width,
+                          hand_2_finger.height, hand_2_finger.data);
+    }
+
+    ENGINE_drawLine(20, 62, 50, 62, 1);
+    ENGINE_drawLine(20, 63, 50, 63, 1);
+}
+
+void DISPLAY_animationReload(uint8_t aX, uint8_t aY, uint8_t aFrame) {
+    uint8_t lYHand = 20;
+    uint8_t lXHand = 0;
+
+    if (aFrame > 30) {
+        return;
+    } else if (aFrame < 20) {
+        lYHand = aFrame;
+    } else if (aFrame > 20) {
+        if (aFrame > 25) {
+            aFrame = 50 - aFrame;
+        }
+        lXHand = aFrame - 20;
+    }
+
+    ENGINE_fillRectangle(aX, aY, 120, 48, 0);
+
+    ENGINE_drawBitmap(aX, aY, weapon_white.width, weapon_white.height,
+                      weapon_white.data);
+
+    ENGINE_clearBitmap(aX + 20, aY + 22 + lYHand, hand_black.width,
+                       hand_black.height, hand_black.data);
+    ENGINE_drawBitmap(aX + 20, aY + 22 + lYHand, hand.width, hand.height,
+                      hand.data);
+
+    if (aFrame <= 1) {
+        ENGINE_clearBitmap(aX + 25, aY + 16, hand_finger_black.width,
+                           hand_finger_black.height, hand_finger_black.data);
+        ENGINE_drawBitmap(aX + 25, aY + 16, hand_finger.width,
+                          hand_finger.height, hand_finger.data);
+    }
+
+    ENGINE_clearBitmap(aX + 53, aY + 14, trigger.width, trigger.height,
+                       trigger.data);
+    ENGINE_drawBitmap(aX + 53 + lXHand, aY + 14, trigger.width, trigger.height,
+                      trigger.data);
+
+    ENGINE_clearBitmap(aX + 50, aY + 12, hand_2_black.width,
+                       hand_2_black.height, hand_2_black.data);
+    ENGINE_drawBitmap(aX + 50, aY + 12, hand_2.width, hand_2.height,
+                      hand_2.data);
+
+    if (aFrame > 20) {
+        ENGINE_clearBitmap(aX + 50, aY + 15, hand_2_finger.width,
+                           hand_2_finger.height, hand_2_finger.data);
+        ENGINE_drawBitmap(aX + 50 + lXHand, aY + 15, hand_2_finger.width,
+                          hand_2_finger.height, hand_2_finger.data);
+    }
+
+    ENGINE_drawLine(20, 62, 50, 62, 1);
+    ENGINE_drawLine(20, 63, 50, 63, 1);
+}
+
+void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
+    uint8_t lYHand = 0;
+    uint8_t lXHand = 0;
+    if (aFrame <= 5) {
+        lYHand = aFrame;
+        lXHand = lYHand / 3;
+    } else if (aFrame > 5 && aFrame <= 10) {
+        lYHand = 10 - aFrame;
+        lXHand = lYHand / 3;
+    } else {
+        return;
+    }
+
+    ENGINE_fillRectangle(aX, aY, 120, 48, 0);
+    ENGINE_drawBitmap(aX, aY, weapon_white.width, weapon_white.height,
+                      weapon_white.data);
+
+    if (aFrame > 2 && aFrame < 8) {
+        ENGINE_drawLine(aX + 19, aY + 19, aX + 29, aY + 19, 0);
+        ENGINE_drawLine(aX + 19, aY + 19 - lYHand + 2, aX + 29,
+                        aY + 19 - lYHand + 2, 1);
+    }
+
+    ENGINE_clearBitmap(aX + 20 - lXHand, aY + 22 - lYHand, hand_black.width,
+                       hand_black.height, hand_black.data);
+    ENGINE_drawBitmap(aX + 20 - lXHand, aY + 22 - lYHand, hand.width,
+                      hand.height, hand.data);
+
+    ENGINE_clearBitmap(aX + 25, aY + 16, hand_finger_black.width,
+                       hand_finger_black.height, hand_finger_black.data);
+    ENGINE_drawBitmap(aX + 25, aY + 16, hand_finger.width, hand_finger.height,
+                      hand_finger.data);
+
+    ENGINE_clearBitmap(aX + 50, aY + 12, hand_2_black.width,
+                       hand_2_black.height, hand_2_black.data);
+    ENGINE_drawBitmap(aX + 50, aY + 12, hand_2.width, hand_2.height,
+                      hand_2.data);
+}
+
+/*void DISPLAY_drawCirclePart(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
+    uint8_t lQuadrant = 0;
+    uint8_t lStartIndex = 92 - (aPercentage * 87 / 100);
+    uint8_t i = 0;
+    for (i = 0; i < 5; i++) {
+        //setpixels(display_buffer_1, aX + circle_16_2[91][0], aY + circle_16_2[91][1] - i, 1, 3);
+        ENGINE_drawPixel(aX + circle_16_2[91][0], aY + circle_16_2[91][1] - i, 1);
+    }
+    for (i = lStartIndex; i < 92; i++) {
+        if (circle_16_2[i][0] >= 0 && circle_16_2[i][1] >= 0) {
+            lQuadrant = 1;
+        } else if (circle_16_2[i][0] < 0 && circle_16_2[i][1] >= 0) {
+            lQuadrant = 2;
+        } else if (circle_16_2[i][0] < 0 && circle_16_2[i][1] < 0) {
+            lQuadrant = 3;
+        } else if (circle_16_2[i][0] >= 0 && circle_16_2[i][1] < 0) {
+            lQuadrant = 4;
+        }
+        //setpixels(display_buffer_1, aX + circle_16_2[i][0],aY + circle_16_2[i][1], 1, lQuadrant);
+        ENGINE_drawPixel(aX + circle_16_2[i][0],
+                         aY + circle_16_2[i][1], 1);
+    }
+}*/
+
+void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercentage) {
+    uint8_t lLabelLength = strlen(apLabel);
+
+    ENGINE_fillRectangle(20, 22, 88, 38, 0);
+
+    ENGINE_drawString(63 - lLabelLength * 11 / 2, 6, apLabel, 1);
+
+    ENGINE_drawInt(63, 33, aValue, 'C', 1);
+    ENGINE_invertCircle(63, 40, 12);
+    ENGINE_drawCirclePart(63, 40, 1, 100 - aPercentage, 1);
+    //DISPLAY_drawCirclePart(63, 40, 100 - aPercentage);
+}
+
+void DISPLAY_tutorialShoot(uint8_t aCount) {
+    uint8_t i = 0;
+
+    if (aCount > 3) {
+        aCount = 3;
+    }
+
+    ENGINE_drawString(63 - 9 * 11 / 2, 10, "SHOOT 3x!", 1);
+    ENGINE_drawBitmap(25, 33, Deagle.width, Deagle.height, Deagle.data);
+    for (i = 0; i < aCount; i++) {
+        ENGINE_drawBitmap(68 + i * 13, 28, ammo_big.width, ammo_big.height,
+                          ammo_big.data);
+    }
+    for (; i < 3; i++) {
+        ENGINE_drawBitmap(68 + i * 13, 28, ammo_big_empty.width,
+                          ammo_big_empty.height, ammo_big_empty.data);
+    }
+}
+
+void DISPLAY_tutorialReload(uint8_t aCount) {
+    uint8_t i = 0;
+
+    if (aCount > 1) {
+        aCount = 1;
+    }
+
+    ENGINE_drawString(63 - 10 * 11 / 2, 10, "RELOAD 1x!", 1);
+    ENGINE_drawBitmap(25, 33, reload_arrow.width, reload_arrow.height, reload_arrow.data);
+    for (i = 0; i < 3; i++) {
+        if (aCount == 0) {
+            ENGINE_drawBitmap(68 + i * 13, 28, ammo_big_empty.width,
+                              ammo_big_empty.height, ammo_big_empty.data);
+        } else {
+            ENGINE_drawBitmap(68 + i * 13, 28, ammo_big.width, ammo_big.height,
+                              ammo_big.data);
+        }
+    }
+}
+
+void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
+                                   uint8_t aWeaponListLength,
+                                   uint8_t *apWeaponsList,
+                                   uint8_t aSwipe,
+                                   uint16_t aPrice,
+                                   uint8_t aAmmo,
+                                   uint8_t aMagazine) {
+
+    uint8_t i = 0;
+    tImage *lpItem1;
+    tImage *lpItem2;
+    tImage *lpItem3;
+    uint8_t *lpItemNameList[CS_WEAPONS_ALL_NMBR] = {0};
+    tImage *lpItemList[CS_WEAPONS_ALL_NMBR] = {0};
+    uint8_t lItemNameLength = 0;
+    int16_t lX1, lX2, lX3;
+    uint8_t lY1, lY2, lY3;
+    int16_t lDist1, lDist2, lDist3;
+    uint8_t lItemCount = aWeaponListLength;
+    uint8_t lWeaponsCount = aWeaponListLength;
+    const uint8_t lcPixels = 10;
+    const uint8_t lcMiddleX = 64;
+    const uint8_t lcMiddleY = 40;
+
+    for (i = 0; i < lWeaponsCount; i++) {
+        lpItemList[i] = gpItemList[apWeaponsList[i]];
+        lpItemNameList[i] = gpItemNameList[apWeaponsList[i]];
+    }
+
+    lpItem1 = lpItemList[(aWeaponListIndex - 1 + lItemCount) % lItemCount];
+    lpItem2 = lpItemList[aWeaponListIndex];
+    lpItem3 = lpItemList[(aWeaponListIndex + 1) % lItemCount];
+
+    lX1 = lcPixels - lpItem1->width;
+    lX2 = lcMiddleX - lpItem2->width / 2;
+    lX3 = DISPLAY_WIDTH - lcPixels;
+    lY1 = lcMiddleY - lpItem1->height / 2;
+    lY2 = lcMiddleY - lpItem2->height / 2;
+    lY3 = lcMiddleY - lpItem3->height / 2;
+
+    while (lpItemNameList[aWeaponListIndex][lItemNameLength] != 0 && lItemNameLength < 6) {
+        lItemNameLength++;
+    }
+
+    ENGINE_fillRectangle(2, 20, 124, 41, 0);
+    ENGINE_drawString(63 - 10 * 11 / 2, 4, "CHECK LIST", 1);
+    
+    if (aSwipe == 0) {
+        uint8_t lXName = 0;
+        uint8_t lXNameLength = lItemNameLength * 6 + 10; // 6 is char size on display and 10 is space between anme and price
+        uint8_t lXDollar = 61;
+        uint8_t lXPrice = 68;
+        uint16_t lPriceTemp = aPrice;
+        while (lPriceTemp > 0) {
+            lPriceTemp /= 10;
+            lXDollar -= 3;
+        }
+        lXPrice += lXNameLength / 2;
+        lXDollar += lXNameLength / 2;
+        lXName = lXDollar - lXNameLength;
+        ENGINE_drawInt(lXPrice, 20, aPrice, 'C', 0);
+        ENGINE_drawChar(lXDollar, 20, 36, 0);
+
+        ENGINE_drawString(lXName, 20, lpItemNameList[aWeaponListIndex], 0);
+
+        ENGINE_drawInt(112 - 1, 53, aAmmo, 'R', 0);
+        // ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
+        ENGINE_drawChar(112, 53, '-', 0);
+        ENGINE_drawInt(112 + 6 + 1, 53, aMagazine, 'L', 0);
+
+        ENGINE_drawBitmap(lX1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
+        ENGINE_drawBitmap(lX2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
+        ENGINE_drawBitmap(lX3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+    } else {
+        if (aSwipe < lcPixels) {
+            lDist1 = aSwipe;
+        } else if (aSwipe < (100 - lcPixels)) {
+            lDist1 = 0;
+            lX1 = DISPLAY_WIDTH;
+        } else {
+            lDist1 = aSwipe - 100 + lcPixels;
+            lpItem1 = lpItemList[(aWeaponListIndex + 2) % lItemCount];
+            lX1 = DISPLAY_WIDTH;
+        }
+
+        lDist2 = (lX2 + lpItem2->width - lcPixels) * aSwipe / 100;
+        lDist3 = (lX3 + lpItem3->width / 2 - lcMiddleX) * aSwipe / 100;
+
+        /*lDist1 = aSwipe;
+        lDist2 = aSwipe;
+        lDist3 = aSwipe;*/
+
+        ENGINE_drawBitmap(lX1 - lDist1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
+        ENGINE_drawBitmap(lX2 - lDist2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
+        ENGINE_drawBitmap(lX3 - lDist3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+    }
+}
+
+void DISPLAY_tutorialWaiting(uint8_t aPercentage) {
+    uint8_t i = 0;
+
+    if (aPercentage > 100) {
+        aPercentage = 100;
+    }
+
+    ENGINE_drawBitmap(50, 3, checked.width, checked.height, checked.data);
+    ENGINE_drawString(63 - 12 * 3, 29, "YOU ARE READY", 0);
+    ENGINE_drawLine(2, 39, 126, 39, 1);
+    ENGINE_drawString(63 - 11 * 3, 54, "PLEASE WAIT", 0);
+    for (i = 0; i < aPercentage / 10; i++) {
+        ENGINE_drawBitmap(23 + i * 8, 41, figure.width, figure.height,
+                          figure.data);
+    }
+
+    for (; i < 10; i++) {
+        ENGINE_clearBitmap(23 + i * 8, 41, figure.width, figure.height,
+                           figure.data);
+    }
+}
+
+void DISPLAY_tutorialCongratulation(void) {
+    uint8_t aValue = ENGINE_generateRandomNumber(GGT_CONGRAT_NMBR - 1);
+    uint8_t lTextLength = strlen(gpCongratulationsList[aValue]);
+
+    ENGINE_clearDisplayBuffer();
+    DISPLAY_initLayout(1);
+
+    ENGINE_drawString(63 - lTextLength * 11 / 2, 24, gpCongratulationsList[aValue], 1);
 }

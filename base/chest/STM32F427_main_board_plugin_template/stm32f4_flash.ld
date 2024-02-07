@@ -88,6 +88,8 @@ SECTIONS
     *engine_*.o(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
     *custom_*.o(.rodata)         /* .rodata sections (constants, strings, etc.) */
     *custom_*.o(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
+    *(.rodata)
+    *(.rodata*)
     . = ALIGN(4);
   } >PLUGINRAM
   
@@ -102,7 +104,8 @@ SECTIONS
     *engine_*.o(.data*)          /* .data* sections */
     *custom_*.o(.data)           /* .data sections */
     *custom_*.o(.data*)          /* .data* sections */
-
+    *(.data)
+    *(.data*)
     . = ALIGN(4);
     _emydata = .;        /* define a global symbol at data end */
   } >PLUGINRAM
@@ -123,7 +126,8 @@ SECTIONS
     *custom_*.o(.bss)
     *custom_*.o(.bss*)
     *custom_*.o(COMMON)
-
+    *(.bss)
+    *(.bss*)
     . = ALIGN(4);
     _emybss = .;         /* define a global symbol at bss end */
     __mybss_end__ = _emybss;
