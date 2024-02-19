@@ -2145,6 +2145,51 @@ static const uint8_t image_data_weapon_white[615] = {0x78, 0x00, 0x00, 0x00,
                                                      0x00, 0x01, 0xff, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 static const tImage weapon_white = {image_data_weapon_white, 116, 41, 8};
 
+static const uint8_t image_data_weapon_black[615] = {
+    0x7f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0xff, 0xf3, 0x33, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0xff, 0xf9, 0x99, 0x9f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0xff, 0xfc, 0xcc, 0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0xff, 0xfc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcc, 0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x7f, 0xfe, 0x66, 0x66, 0x66, 0x66, 0x66, 0x67, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x07, 0xff, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x07, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x07, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x07, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x07, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x0f, 0xff, 0xf0,
+    0x03, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x80, 0x00, 0x03, 0xff, 0xf0,
+    0x03, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x04, 0x0f, 0xff, 0xff, 0x80, 0x00, 0x01, 0xff, 0xf0,
+    0x03, 0xff, 0xff, 0xff, 0xff, 0x00, 0x02, 0x07, 0xff, 0xff, 0x80, 0x00, 0x00, 0xff, 0xf0,
+    0x03, 0xff, 0xff, 0xff, 0xff, 0x00, 0x02, 0x07, 0xff, 0xff, 0x80, 0x00, 0x00, 0xff, 0xf0,
+    0x03, 0xff, 0xf0, 0x0f, 0xfe, 0x00, 0x02, 0x07, 0xff, 0xff, 0x80, 0x00, 0x00, 0x7f, 0xf0,
+    0x01, 0xff, 0xe0, 0x07, 0xfe, 0x00, 0x02, 0x07, 0xff, 0xff, 0x80, 0x00, 0x00, 0x7f, 0xf0,
+    0x01, 0xff, 0xff, 0xff, 0xfe, 0x00, 0x02, 0x07, 0xff, 0xff, 0xc0, 0x00, 0x00, 0x7f, 0xf0,
+    0x01, 0xff, 0xe0, 0x07, 0xfe, 0x00, 0x02, 0x07, 0xff, 0xff, 0xc0, 0x00, 0x00, 0x7f, 0xf0,
+    0x01, 0xff, 0xe0, 0x07, 0xfe, 0x00, 0x04, 0x0f, 0xff, 0xff, 0xe0, 0x00, 0x00, 0x7f, 0xf0,
+    0x01, 0xff, 0xe0, 0x03, 0xfe, 0x00, 0x1f, 0xff, 0xff, 0xff, 0xf0, 0x00, 0x00, 0x7f, 0xf0,
+    0x00, 0xff, 0xc0, 0x03, 0xfe, 0x00, 0x1f, 0xff, 0xff, 0xff, 0xf8, 0x00, 0x00, 0x7f, 0xf0,
+    0x00, 0x00, 0x00, 0x03, 0xff, 0x00, 0x3f, 0xff, 0xff, 0xff, 0xfe, 0x00, 0x00, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x03, 0xff, 0x80, 0x7f, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x03, 0xff, 0xe1, 0xff, 0xff, 0xff, 0xff, 0xff, 0x80, 0x01, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x01, 0xff, 0xff, 0xff, 0x80, 0x7f, 0xff, 0xff, 0xe0, 0x03, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x01, 0xff, 0xff, 0xfe, 0x00, 0x3f, 0xff, 0xff, 0xfc, 0x0f, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xfe, 0x00, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xfe, 0x00, 0x0f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x7f, 0xff, 0xfe, 0x00, 0x07, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x7f, 0xff, 0xff, 0x00, 0x03, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x3f, 0xff, 0xff, 0x00, 0x01, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x1f, 0xff, 0xff, 0x00, 0x00, 0x7f, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x0f, 0xff, 0xff, 0x00, 0x00, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x07, 0xff, 0xff, 0x00, 0x00, 0x1f, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x01, 0xff, 0xff, 0x80, 0x00, 0x03, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x7f, 0xff, 0x80, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0xff, 0x80, 0x00, 0x00, 0x3f, 0xff, 0xff, 0xff, 0xf0,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0xff, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+static const tImage weapon_black = {image_data_weapon_black, 116, 41,
+                                    8};
+
 static const uint8_t image_data_hand[96] = {0x03, 0xc0, 0x00, 0x00, 0x1c, 0x20,
                                             0x00, 0x00, 0x20, 0x2f, 0x00, 0x00, 0x40, 0x70, 0xc0, 0x00, 0x81, 0xc0,
                                             0x20, 0x00, 0x80, 0x00, 0x20, 0x00, 0x80, 0x00, 0x30, 0x00, 0x40, 0x00,
@@ -2228,6 +2273,186 @@ static const tImage hand_2_black = {image_data_hand_2_black, 50, 29, 8};
 static const uint8_t image_data_trigger[8] = {0x80, 0x40, 0x40, 0x40, 0x40,
                                               0x40, 0x40, 0x80};
 static const tImage trigger = {image_data_trigger, 2, 8, 8};
+
+static const uint8_t image_data_magazine[60] = {
+    0x6f, 0x80,
+    0xbe, 0x80,
+    0xb6, 0x40,
+    0xb6, 0x40,
+    0xdb, 0x40,
+    0x5b, 0x40,
+    0x5b, 0x40,
+    0x5b, 0x40,
+    0x58, 0x20,
+    0x59, 0xa0,
+    0x4d, 0xa0,
+    0x2c, 0x20,
+    0x2d, 0xa0,
+    0x2d, 0xa0,
+    0x2c, 0x10,
+    0x2c, 0xd0,
+    0x26, 0xd0,
+    0x16, 0x10,
+    0x16, 0xd0,
+    0x16, 0xd0,
+    0x16, 0x08,
+    0x16, 0x68,
+    0x13, 0x68,
+    0x0b, 0x08,
+    0x0b, 0x08,
+    0x0b, 0x08,
+    0x0b, 0x04,
+    0x0b, 0x04,
+    0x08, 0x04,
+    0x3f, 0xfc};
+static const tImage magazine = {image_data_magazine, 14, 30,
+                                8};
+
+static const uint8_t image_data_magazine_empty[60] = {
+    0x6f, 0x80,
+    0x90, 0x80,
+    0x80, 0x40,
+    0x80, 0x40,
+    0xc0, 0x40,
+    0x40, 0x40,
+    0x40, 0x40,
+    0x40, 0x40,
+    0x40, 0x20,
+    0x40, 0x20,
+    0x40, 0x20,
+    0x20, 0x20,
+    0x20, 0x20,
+    0x20, 0x20,
+    0x20, 0x10,
+    0x20, 0x10,
+    0x20, 0x10,
+    0x10, 0x10,
+    0x10, 0x10,
+    0x10, 0x10,
+    0x10, 0x08,
+    0x10, 0x08,
+    0x10, 0x08,
+    0x08, 0x08,
+    0x08, 0x08,
+    0x08, 0x08,
+    0x08, 0x04,
+    0x08, 0x04,
+    0x08, 0x04,
+    0x3f, 0xfc};
+static const tImage magazine_empty = {image_data_magazine_empty, 14, 30,
+                                      8};
+
+static const uint8_t image_data_magazine_invert[60] = {
+    0x6f, 0x80,
+    0xfd, 0x80,
+    0xdd, 0xc0,
+    0xdd, 0xc0,
+    0xcc, 0xc0,
+    0x6e, 0xc0,
+    0x6e, 0xc0,
+    0x6e, 0xc0,
+    0x6f, 0xe0,
+    0x67, 0x60,
+    0x77, 0xe0,
+    0x37, 0xe0,
+    0x37, 0x60,
+    0x37, 0xe0,
+    0x37, 0xf0,
+    0x33, 0xb0,
+    0x3b, 0xf0,
+    0x1b, 0xf0,
+    0x1b, 0xb0,
+    0x1b, 0xf0,
+    0x1b, 0xf8,
+    0x19, 0xd8,
+    0x1d, 0xf8,
+    0x0d, 0xf8,
+    0x0d, 0xf8,
+    0x0d, 0xf8,
+    0x0d, 0xfc,
+    0x0d, 0xfc,
+    0x0f, 0xfc,
+    0x3f, 0xfc};
+static const tImage magazine_invert = {image_data_magazine_invert, 14, 30,
+                                       8};
+
+static const uint8_t image_data_ammo_small[8] = {
+    0x20,
+    0x50,
+    0x70,
+    0x88,
+    0x88,
+    0x88,
+    0x88,
+    0xf8};
+static const tImage ammo_small = {image_data_ammo_small, 5, 8,
+                                  8};
+
+static const uint8_t image_data_ammo_small_empty[8] = {
+    0x20,
+    0x50,
+    0x50,
+    0x88,
+    0x88,
+    0x88,
+    0x88,
+    0xf8};
+static const tImage ammo_small_empty = {image_data_ammo_small_empty, 5, 8,
+                                        8};
+
+static const uint8_t image_data_ammo_small_invert[8] = {
+    0x20,
+    0x70,
+    0x70,
+    0xf8,
+    0xf8,
+    0xf8,
+    0xf8,
+    0xf8};
+static const tImage ammo_small_invert = {image_data_ammo_small_invert, 5, 8,
+                                         8};
+
+static const uint8_t image_data_magazine_small[17] = {
+    0x3e,
+    0x3e,
+    0x2a,
+    0x3a,
+    0x7a,
+    0x5a,
+    0x74,
+    0x74,
+    0x54,
+    0x74,
+    0x74,
+    0xfc,
+    0xfc,
+    0xf8,
+    0xf8,
+    0xf8,
+    0xfc};
+static const tImage magazine_small = {image_data_magazine_small, 7, 17,
+                                      8};
+
+static const uint8_t image_data_magazine_small_empty[17] = {
+    0x3e,
+    0x22,
+    0x22,
+    0x22,
+    0x42,
+    0x42,
+    0x44,
+    0x44,
+    0x44,
+    0x44,
+    0x44,
+    0x84,
+    0x84,
+    0x88,
+    0x88,
+    0x88,
+    0xfc};
+static const tImage magazine_small_empty = {image_data_magazine_small_empty, 7, 17,
+                                            8};
 
 static const tImage *gpListOfImages[23] = {&weapon, &trophy, &target, &steps, &shield_big, &shield, &pistol_small, &medaile, &aim, &ak47, &ak47_small_2, &ammo, &arrows, &bomb, &bomb_small, &defuse, &flash, &flash_big, &heart, &heart_big, &invisibility_big, &machinegun_big, &machinegun_small};
 static const tImage *gpOrbImage[4] = {&machinegun_big, &shield_big, &flash_big, &healing_big};
@@ -2467,6 +2692,12 @@ void DISPLAY_playersCount(uint8_t aX, uint8_t aY, uint8_t aCount) {
     ENGINE_drawBitmap(aX, aY, stickman.width, stickman.height, stickman.data);
     ENGINE_fillRectangle(aX + stickman.width + 10, aY, 22, 14, 0); // clean space for count number
     ENGINE_drawInt(aX + stickman.width + 10 + 11, aY, aCount, 'C', 1);
+}
+
+void DISPLAY_playersCount_ggt(uint8_t aX, uint8_t aY, uint8_t aCount) {
+    ENGINE_drawBitmap(aX, aY + 1, pistol_cs.width, pistol_cs.height, pistol_cs.data);
+    ENGINE_fillRectangle(aX + pistol_cs.width + 10, aY, 22, 14, 0); // clean space for count number
+    ENGINE_drawInt(aX + pistol_cs.width + 10 + 11, aY, aCount, 'C', 1);
 }
 
 void DISPLAY_drawRank_gg(uint8_t aX, uint8_t aY, uint8_t aRank, uint8_t aKills) {
@@ -3337,21 +3568,26 @@ void DISPLAY_bans(void) {
 void DISPLAY_animationTwoHandsShooting(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     uint8_t lYHand = 0;
     uint8_t lXHand = 0;
-    if (aFrame > 30) {
+    if (aFrame > 31) {
         return;
     } else if (aFrame < 20) {
         lYHand = 19 - aFrame;
-    } else if (aFrame > 20) {
-        if (aFrame > 25) {
-            aFrame = 50 - aFrame;
+    } else if (aFrame > 21) {
+        if (aFrame > 26) {
+            aFrame = 52 - aFrame;
         }
-        lXHand = aFrame - 20;
+        lXHand = aFrame - 21;
     }
 
     ENGINE_fillRectangle(aX, aY, 120, 48, 0);
 
+#ifdef SIMULATION_PLUGIN
     ENGINE_drawBitmap(aX, aY, weapon_white.width, weapon_white.height,
                       weapon_white.data);
+#else
+    ENGINE_drawBitmap(aX, aY, weapon_black.width, weapon_black.height,
+                      weapon_black.data);
+#endif
 
     ENGINE_clearBitmap(aX + 20, aY + 22 + lYHand, hand_black.width,
                        hand_black.height, hand_black.data);
@@ -3375,11 +3611,25 @@ void DISPLAY_animationTwoHandsShooting(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     ENGINE_drawBitmap(aX + 50, aY + 12, hand_2.width, hand_2.height,
                       hand_2.data);
 
-    if (aFrame > 20) {
+    if (aFrame > 21) {
         ENGINE_clearBitmap(aX + 50, aY + 15, hand_2_finger.width,
                            hand_2_finger.height, hand_2_finger.data);
         ENGINE_drawBitmap(aX + 50 + lXHand, aY + 15, hand_2_finger.width,
                           hand_2_finger.height, hand_2_finger.data);
+    }
+    if (aFrame > 20) {
+        uint8_t lXCheck = aX + 10;
+        uint8_t lYCheck = aY + 32;
+
+        ENGINE_drawPixels(lXCheck, lYCheck + 1, 1, 4);
+        ENGINE_drawPixels(lXCheck, lYCheck + 2, 1, 4);
+        ENGINE_drawPixels(lXCheck + 1, lYCheck + 3, 1, 4);
+        ENGINE_drawPixels(lXCheck + 1, lYCheck + 4, 1, 4);
+        ENGINE_drawPixels(lXCheck + 2, lYCheck + 4, 1, 4);
+        ENGINE_drawPixels(lXCheck + 3, lYCheck + 3, 1, 4);
+        ENGINE_drawPixels(lXCheck + 4, lYCheck + 2, 1, 4);
+        ENGINE_drawPixels(lXCheck + 5, lYCheck + 1, 1, 4);
+        ENGINE_drawPixels(lXCheck + 6, lYCheck, 1, 4);
     }
 
     ENGINE_drawLine(20, 62, 50, 62, 1);
@@ -3390,21 +3640,28 @@ void DISPLAY_animationReload(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     uint8_t lYHand = 20;
     uint8_t lXHand = 0;
 
-    if (aFrame > 30) {
+    if (aFrame > 32) {
         return;
-    } else if (aFrame < 20) {
-        lYHand = aFrame;
-    } else if (aFrame > 20) {
-        if (aFrame > 25) {
-            aFrame = 50 - aFrame;
+    } else if (aFrame <= 1) {
+        lYHand = 0;
+    } else if (aFrame < 21) {
+        lYHand = aFrame - 1;
+    } else if (aFrame > 22) {
+        if (aFrame > 27) {
+            aFrame = 54 - aFrame;
         }
-        lXHand = aFrame - 20;
+        lXHand = aFrame - 22;
     }
 
     ENGINE_fillRectangle(aX, aY, 120, 48, 0);
 
+#ifdef SIMULATION_PLUGIN
     ENGINE_drawBitmap(aX, aY, weapon_white.width, weapon_white.height,
                       weapon_white.data);
+#else
+    ENGINE_drawBitmap(aX, aY, weapon_black.width, weapon_black.height,
+                      weapon_black.data);
+#endif
 
     ENGINE_clearBitmap(aX + 20, aY + 22 + lYHand, hand_black.width,
                        hand_black.height, hand_black.data);
@@ -3428,11 +3685,26 @@ void DISPLAY_animationReload(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     ENGINE_drawBitmap(aX + 50, aY + 12, hand_2.width, hand_2.height,
                       hand_2.data);
 
-    if (aFrame > 20) {
+    if (aFrame > 22) {
         ENGINE_clearBitmap(aX + 50, aY + 15, hand_2_finger.width,
                            hand_2_finger.height, hand_2_finger.data);
         ENGINE_drawBitmap(aX + 50 + lXHand, aY + 15, hand_2_finger.width,
                           hand_2_finger.height, hand_2_finger.data);
+    }
+
+    if (aFrame > 21) {
+        uint8_t lXCheck = aX + 10;
+        uint8_t lYCheck = aY + 32;
+
+        ENGINE_drawPixels(lXCheck, lYCheck + 1, 1, 4);
+        ENGINE_drawPixels(lXCheck, lYCheck + 2, 1, 4);
+        ENGINE_drawPixels(lXCheck + 1, lYCheck + 3, 1, 4);
+        ENGINE_drawPixels(lXCheck + 1, lYCheck + 4, 1, 4);
+        ENGINE_drawPixels(lXCheck + 2, lYCheck + 4, 1, 4);
+        ENGINE_drawPixels(lXCheck + 3, lYCheck + 3, 1, 4);
+        ENGINE_drawPixels(lXCheck + 4, lYCheck + 2, 1, 4);
+        ENGINE_drawPixels(lXCheck + 5, lYCheck + 1, 1, 4);
+        ENGINE_drawPixels(lXCheck + 6, lYCheck, 1, 4);
     }
 
     ENGINE_drawLine(20, 62, 50, 62, 1);
@@ -3453,8 +3725,13 @@ void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     }
 
     ENGINE_fillRectangle(aX, aY, 120, 48, 0);
+#ifdef SIMULATION_PLUGIN
     ENGINE_drawBitmap(aX, aY, weapon_white.width, weapon_white.height,
                       weapon_white.data);
+#else
+    ENGINE_drawBitmap(aX, aY, weapon_black.width, weapon_black.height,
+                      weapon_black.data);
+#endif
 
     if (aFrame > 2 && aFrame < 8) {
         ENGINE_drawLine(aX + 19, aY + 19, aX + 29, aY + 19, 0);
@@ -3502,6 +3779,16 @@ void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     }
 }*/
 
+void DISPLAY_drawBullet(uint8_t aX, uint8_t aY, uint8_t aType) {
+    if (aType == 0) {
+        ENGINE_drawBitmap(aX, aY, ammo_small.width, ammo_small.height, ammo_small.data);
+    } else if (aType == 1) {
+        ENGINE_drawBitmap(aX, aY, ammo_small_empty.width, ammo_small_empty.height, ammo_small_empty.data);
+    } else if (aType == 2) {
+        ENGINE_drawBitmap(aX, aY, ammo_small_invert.width, ammo_small_invert.height, ammo_small_invert.data);
+    }
+}
+
 void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercentage) {
     uint8_t lLabelLength = strlen(apLabel);
 
@@ -3512,44 +3799,80 @@ void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercen
     ENGINE_drawInt(63, 33, aValue, 'C', 1);
     ENGINE_invertCircle(63, 40, 12);
     ENGINE_drawCirclePart(63, 40, 1, 100 - aPercentage, 1);
-    //DISPLAY_drawCirclePart(63, 40, 100 - aPercentage);
+    // DISPLAY_drawCirclePart(63, 40, 100 - aPercentage);
 }
 
 void DISPLAY_tutorialShoot(uint8_t aCount) {
     uint8_t i = 0;
+    const uint8_t lMaxCount = 5;
 
-    if (aCount > 3) {
-        aCount = 3;
+    if (aCount > lMaxCount) {
+        aCount = lMaxCount;
     }
 
-    ENGINE_drawString(63 - 9 * 11 / 2, 10, "SHOOT 3x!", 1);
-    ENGINE_drawBitmap(25, 33, Deagle.width, Deagle.height, Deagle.data);
+    ENGINE_drawString(63 - 9 * 11 / 2, 10, "SHOOT 5x!", 1);
+    ENGINE_drawBitmap(10, 33, Deagle.width, Deagle.height, Deagle.data);
     for (i = 0; i < aCount; i++) {
-        ENGINE_drawBitmap(68 + i * 13, 28, ammo_big.width, ammo_big.height,
+        ENGINE_drawBitmap(53 + i * 13, 28, ammo_big.width, ammo_big.height,
                           ammo_big.data);
     }
-    for (; i < 3; i++) {
-        ENGINE_drawBitmap(68 + i * 13, 28, ammo_big_empty.width,
+    for (; i < lMaxCount; i++) {
+        ENGINE_drawBitmap(53 + i * 13, 28, ammo_big_empty.width,
                           ammo_big_empty.height, ammo_big_empty.data);
     }
 }
 
-void DISPLAY_tutorialReload(uint8_t aCount) {
+void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow, uint8_t aType) {
     uint8_t i = 0;
+    const uint8_t lMaxCount = 3;
+    char *lpReloadTitle = "RELOAD 3x!";
 
-    if (aCount > 1) {
-        aCount = 1;
+    if (aCount > lMaxCount) {
+        aCount = lMaxCount;
     }
 
-    ENGINE_drawString(63 - 10 * 11 / 2, 10, "RELOAD 1x!", 1);
-    ENGINE_drawBitmap(25, 33, reload_arrow.width, reload_arrow.height, reload_arrow.data);
-    for (i = 0; i < 3; i++) {
-        if (aCount == 0) {
-            ENGINE_drawBitmap(68 + i * 13, 28, ammo_big_empty.width,
-                              ammo_big_empty.height, ammo_big_empty.data);
-        } else {
-            ENGINE_drawBitmap(68 + i * 13, 28, ammo_big.width, ammo_big.height,
-                              ammo_big.data);
+    ENGINE_fillRectangle(25, 33, 34, 24, 0);
+    ENGINE_fillRectangle(7, 10, 114, 16, 0);
+
+    lpReloadTitle[7] = (lMaxCount - aCount) + '0';
+    if (aShootNow == 0) {
+        ENGINE_drawString(63 - 10 * 11 / 2, 10, lpReloadTitle, 1);
+        ENGINE_drawBitmap(25, 33, reload_arrow.width, reload_arrow.height, reload_arrow.data);
+    } else {
+        ENGINE_drawString(63 - 10 * 6 / 2, 10, "SHOOT!", 1);
+        ENGINE_drawBitmap(25, 33, Deagle.width, Deagle.height, Deagle.data);
+    }
+
+    if (aType == 1) {
+        for (i = 0; i < aCount; i++) {
+            ENGINE_drawBitmap(68 + i * 15, 28, magazine_invert.width, magazine_invert.height,
+                              magazine_invert.data);
+        }
+        for (; i < lMaxCount; i++) {
+            ENGINE_drawBitmap(68 + i * 15, 28, magazine_empty.width,
+                              magazine_empty.height, magazine_empty.data);
+        }
+    } else if (aType == 2) {
+        DISPLAY_bullets(60, 32, ENGINE_getAmmo(), aCount);
+    } else if (aType == 3) {
+        /*bullets*/
+
+        ENGINE_fillRectangle(68, 28, 50, 8, 0);
+        for (i = 0; i < ENGINE_getAmmo(); i++) {
+            DISPLAY_drawBullet(68 + i * 6, 28, 2);
+        }
+        for (; i < 7; i++) {
+            DISPLAY_drawBullet(68 + i * 6, 28, 1);
+        }
+        /*magazines*/
+        ENGINE_fillRectangle(68, 38, 55, 20, 0);
+        for (i = 0; i < (3 - aCount); i++) {
+            ENGINE_drawBitmap(68 + i * 15, 38, magazine_small.width, magazine_small.height,
+                              magazine_small.data);
+        }
+        for (; i < lMaxCount; i++) {
+            ENGINE_drawBitmap(68 + i * 15, 38, magazine_small_empty.width,
+                              magazine_small_empty.height, magazine_small_empty.data);
         }
     }
 }
@@ -3600,7 +3923,7 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
 
     ENGINE_fillRectangle(2, 20, 124, 41, 0);
     ENGINE_drawString(63 - 10 * 11 / 2, 4, "CHECK LIST", 1);
-    
+
     if (aSwipe == 0) {
         uint8_t lXName = 0;
         uint8_t lXNameLength = lItemNameLength * 6 + 10; // 6 is char size on display and 10 is space between anme and price
