@@ -3805,12 +3805,14 @@ void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercen
 void DISPLAY_tutorialShoot(uint8_t aCount) {
     uint8_t i = 0;
     const uint8_t lMaxCount = 5;
+    char *lpReloadTitle = "SHOOT 5x!";
 
     if (aCount > lMaxCount) {
         aCount = lMaxCount;
     }
 
-    ENGINE_drawString(63 - 9 * 11 / 2, 10, "SHOOT 5x!", 1);
+    lpReloadTitle[6] = (lMaxCount - aCount) + '0';
+    ENGINE_drawString(63 - 9 * 11 / 2, 10, lpReloadTitle, 1);
     ENGINE_drawBitmap(10, 33, Deagle.width, Deagle.height, Deagle.data);
     for (i = 0; i < aCount; i++) {
         ENGINE_drawBitmap(53 + i * 13, 28, ammo_big.width, ammo_big.height,
@@ -3877,13 +3879,10 @@ void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow, uint8_t aType) {
     }
 }
 
-void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
+void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
                                    uint8_t aWeaponListLength,
                                    uint8_t *apWeaponsList,
-                                   uint8_t aSwipe,
-                                   uint16_t aPrice,
-                                   uint8_t aAmmo,
-                                   uint8_t aMagazine) {
+                                   uint8_t aSwipe) {
 
     uint8_t i = 0;
     tImage *lpItem1;
@@ -3897,18 +3896,31 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
     int16_t lDist1, lDist2, lDist3;
     uint8_t lItemCount = aWeaponListLength;
     uint8_t lWeaponsCount = aWeaponListLength;
+    uint8_t lCirclesX;
+    uint8_t lWeaponListIndex;
     const uint8_t lcPixels = 10;
     const uint8_t lcMiddleX = 64;
     const uint8_t lcMiddleY = 40;
+    const uint8_t lcCirclesStep = 10;
+    const uint8_t lcCircleRadius = 3;
+
+    if (aCount == 0) {
+        lWeaponListIndex = aWeaponListLength - 1;
+    } else {
+        lWeaponListIndex = (aCount - 1) % aWeaponListLength;
+        if (aCount > aWeaponListLength + 1) {
+            aCount = aWeaponListLength + 1;
+        }
+    }
 
     for (i = 0; i < lWeaponsCount; i++) {
         lpItemList[i] = gpItemList[apWeaponsList[i]];
         lpItemNameList[i] = gpItemNameList[apWeaponsList[i]];
     }
 
-    lpItem1 = lpItemList[(aWeaponListIndex - 1 + lItemCount) % lItemCount];
-    lpItem2 = lpItemList[aWeaponListIndex];
-    lpItem3 = lpItemList[(aWeaponListIndex + 1) % lItemCount];
+    lpItem1 = lpItemList[(lWeaponListIndex - 1 + lItemCount) % lItemCount];
+    lpItem2 = lpItemList[lWeaponListIndex];
+    lpItem3 = lpItemList[(lWeaponListIndex + 1) % lItemCount];
 
     lX1 = lcPixels - lpItem1->width;
     lX2 = lcMiddleX - lpItem2->width / 2;
@@ -3917,7 +3929,7 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
     lY2 = lcMiddleY - lpItem2->height / 2;
     lY3 = lcMiddleY - lpItem3->height / 2;
 
-    while (lpItemNameList[aWeaponListIndex][lItemNameLength] != 0 && lItemNameLength < 6) {
+    while (lpItemNameList[lWeaponListIndex][lItemNameLength] != 0 && lItemNameLength < 6) {
         lItemNameLength++;
     }
 
@@ -3925,27 +3937,11 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
     ENGINE_drawString(63 - 10 * 11 / 2, 4, "CHECK LIST", 1);
 
     if (aSwipe == 0) {
-        uint8_t lXName = 0;
+        uint8_t lXName = lcMiddleX;
         uint8_t lXNameLength = lItemNameLength * 6 + 10; // 6 is char size on display and 10 is space between anme and price
-        uint8_t lXDollar = 61;
-        uint8_t lXPrice = 68;
-        uint16_t lPriceTemp = aPrice;
-        while (lPriceTemp > 0) {
-            lPriceTemp /= 10;
-            lXDollar -= 3;
-        }
-        lXPrice += lXNameLength / 2;
-        lXDollar += lXNameLength / 2;
-        lXName = lXDollar - lXNameLength;
-        ENGINE_drawInt(lXPrice, 20, aPrice, 'C', 0);
-        ENGINE_drawChar(lXDollar, 20, 36, 0);
 
-        ENGINE_drawString(lXName, 20, lpItemNameList[aWeaponListIndex], 0);
-
-        ENGINE_drawInt(112 - 1, 53, aAmmo, 'R', 0);
-        // ENGINE_drawBitmap(103, 43, ammo.width, ammo.height, ammo.data);
-        ENGINE_drawChar(112, 53, '-', 0);
-        ENGINE_drawInt(112 + 6 + 1, 53, aMagazine, 'L', 0);
+        lXName = lXName - lXNameLength / 2;
+        ENGINE_drawString(lXName, 20, lpItemNameList[lWeaponListIndex], 0);
 
         ENGINE_drawBitmap(lX1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
         ENGINE_drawBitmap(lX2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
@@ -3958,7 +3954,7 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
             lX1 = DISPLAY_WIDTH;
         } else {
             lDist1 = aSwipe - 100 + lcPixels;
-            lpItem1 = lpItemList[(aWeaponListIndex + 2) % lItemCount];
+            lpItem1 = lpItemList[(lWeaponListIndex + 2) % lItemCount];
             lX1 = DISPLAY_WIDTH;
         }
 
@@ -3972,6 +3968,16 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aWeaponListIndex,
         ENGINE_drawBitmap(lX1 - lDist1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
         ENGINE_drawBitmap(lX2 - lDist2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
         ENGINE_drawBitmap(lX3 - lDist3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+    }
+
+    lCirclesX = lcMiddleX - (aWeaponListLength + 1) * lcCirclesStep / 2 - lcCircleRadius;
+
+    /*aCount incremented at the beginning, to count */
+    for (i = 0; i < aCount; i++) {
+        ENGINE_fillCircle(lCirclesX + i * lcCirclesStep, 57, 3, 1);
+    }
+    for (; i < aWeaponListLength + 1; i++) {
+        ENGINE_drawCircle(lCirclesX + i * lcCirclesStep, 57, 3, 1);
     }
 }
 
