@@ -3882,7 +3882,8 @@ void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow, uint8_t aType) {
 void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
                                    uint8_t aWeaponListLength,
                                    uint8_t *apWeaponsList,
-                                   uint8_t aSwipe) {
+                                   uint8_t aSwipe,
+                                   uint8_t aArrowsAnimation) {
 
     uint8_t i = 0;
     tImage *lpItem1;
@@ -3900,9 +3901,11 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
     uint8_t lWeaponListIndex;
     const uint8_t lcPixels = 10;
     const uint8_t lcMiddleX = 64;
-    const uint8_t lcMiddleY = 40;
-    const uint8_t lcCirclesStep = 10;
-    const uint8_t lcCircleRadius = 3;
+    const uint8_t lcMiddleY = 35;
+    const uint8_t lcCirclesStep = 12;
+    const uint8_t lcCircleRadius = 4;
+    const uint8_t lcArrowsX = 100;
+    const uint8_t lcArrowsY = 4;
 
     if (aCount == 0) {
         lWeaponListIndex = aWeaponListLength - 1;
@@ -3933,15 +3936,14 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
         lItemNameLength++;
     }
 
-    ENGINE_fillRectangle(2, 20, 124, 41, 0);
-    ENGINE_drawString(63 - 10 * 11 / 2, 4, "CHECK LIST", 1);
-
+    ENGINE_fillRectangle(2, 3, 124, 58, 0);
+    
     if (aSwipe == 0) {
         uint8_t lXName = lcMiddleX;
-        uint8_t lXNameLength = lItemNameLength * 6 + 10; // 6 is char size on display and 10 is space between anme and price
+        uint8_t lXNameLength = lItemNameLength * 11; // 11 is char size on display and 10 is space between anme and price
 
         lXName = lXName - lXNameLength / 2;
-        ENGINE_drawString(lXName, 20, lpItemNameList[lWeaponListIndex], 0);
+        ENGINE_drawString(lXName, 6, lpItemNameList[lWeaponListIndex], 1);
 
         ENGINE_drawBitmap(lX1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
         ENGINE_drawBitmap(lX2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
@@ -3970,14 +3972,29 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
         ENGINE_drawBitmap(lX3 - lDist3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
     }
 
-    lCirclesX = lcMiddleX - (aWeaponListLength + 1) * lcCirclesStep / 2 - lcCircleRadius;
+    lCirclesX = lcMiddleX - (aWeaponListLength) * lcCirclesStep / 2 - lcCircleRadius;
 
     /*aCount incremented at the beginning, to count */
     for (i = 0; i < aCount; i++) {
-        ENGINE_fillCircle(lCirclesX + i * lcCirclesStep, 57, 3, 1);
+        ENGINE_fillCircle(lCirclesX + i * lcCirclesStep, 55, 3, 1);
     }
     for (; i < aWeaponListLength + 1; i++) {
-        ENGINE_drawCircle(lCirclesX + i * lcCirclesStep, 57, 3, 1);
+        ENGINE_drawCircle(lCirclesX + i * lcCirclesStep, 55, 3, 1);
+    }
+
+    /*animated arrows to indicate switch to next weapon*/
+    switch (aArrowsAnimation) {
+    case 0:
+        break;
+    case 3:
+        ENGINE_drawBitmap(lcArrowsX + 14, lcArrowsY, arrow2.width, arrow2.height, arrow2.data);
+    case 2:
+        ENGINE_drawBitmap(lcArrowsX + 7, lcArrowsY, arrow2.width, arrow2.height, arrow2.data);
+    case 1:
+        ENGINE_drawBitmap(lcArrowsX, lcArrowsY, arrow2.width, arrow2.height, arrow2.data);
+        break;
+    default:
+        break;
     }
 }
 
