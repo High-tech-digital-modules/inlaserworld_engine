@@ -164,9 +164,9 @@ typedef enum {
 
 volatile static tImage **gvpWeaponsAllList[CS_WEAPONS_ALL_NMBR] = {&IMG_knife, &IMG_usp, &IMG_pistol_small, &IMG_Deagle, &IMG_mp5, &IMG_P90, &IMG_m4, &IMG_ak47_small_2, &IMG_Aug, &IMG_sg552, &IMG_awp, &IMG_tactical_shield}; // 10 weapons + knife + shield
 
-void DISPLAY_drawBitmap(uint8_t aX, uint8_t aY, uint8_t aBitmapIndex) {
-    ENGINE_drawBitmap(aX, aY, (*gpListOfImages[aBitmapIndex])->width, (*gpListOfImages[aBitmapIndex])->height, (*gpListOfImages[aBitmapIndex])->data);
-    // ENGINE_drawBitmap(aX, aY, ak47->width, ak47->height, image_data_ak47);
+void DISPLAY_drawBitmap(uint8_t aX, uint8_t aY, uint16_t aBitmapIndex) {
+    ENGINE_drawBitmapByIndex(aX, aY, aBitmapIndex);
+    // ENGINE_drawBitmapByIndex(aX, aY, ak47Index);
 }
 
 void DISPLAY_initLayout(uint8_t aNumberOfCells) {
@@ -237,7 +237,7 @@ void DISPLAY_initLayout(uint8_t aNumberOfCells) {
 void DISPLAY_rank(uint8_t aX, uint8_t aY, uint8_t aCell) {
     uint8_t lRank = ENGINE_getRank();
     if (aCell == 1) {
-        ENGINE_drawBitmap(aX, aY, IMG_medaile->width, IMG_medaile->height, IMG_medaile->data);
+        ENGINE_drawBitmapByIndex(aX, aY, EII_MEDAILE);
         ENGINE_fillRectangle(aX + IMG_medaile->width + 10, aY + 7, 22, 14, 0); // clean space for rank number
         ENGINE_drawInt(aX + IMG_medaile->width + 10 + 11, aY + 7, lRank, 'C', 1);
     } else if (aCell == 5) {
@@ -247,13 +247,13 @@ void DISPLAY_rank(uint8_t aX, uint8_t aY, uint8_t aCell) {
 }
 
 void DISPLAY_playersCount(uint8_t aX, uint8_t aY, uint8_t aCount) {
-    ENGINE_drawBitmap(aX, aY, IMG_stickman->width, IMG_stickman->height, IMG_stickman->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_STICKMAN);
     ENGINE_fillRectangle(aX + IMG_stickman->width + 10, aY, 22, 14, 0); // clean space for count number
     ENGINE_drawInt(aX + IMG_stickman->width + 10 + 11, aY, aCount, 'C', 1);
 }
 
 void DISPLAY_playersCount_ggt(uint8_t aX, uint8_t aY, uint8_t aCount) {
-    ENGINE_drawBitmap(aX, aY + 1, IMG_pistol_cs->width, IMG_pistol_cs->height, IMG_pistol_cs->data);
+    ENGINE_drawBitmapByIndex(aX, aY + 1, EII_PISTOL_CS);
     ENGINE_fillRectangle(aX + IMG_pistol_cs->width + 10, aY, 22, 14, 0); // clean space for count number
     ENGINE_drawInt(aX + IMG_pistol_cs->width + 10 + 11, aY, aCount, 'C', 1);
 }
@@ -261,12 +261,11 @@ void DISPLAY_playersCount_ggt(uint8_t aX, uint8_t aY, uint8_t aCount) {
 void DISPLAY_drawRank_gg(uint8_t aX, uint8_t aY, uint8_t aRank, uint8_t aKills) {
     ENGINE_fillRectangle(aX, aY, 59, 27, 0);
     if (aKills == 255) {
-        ENGINE_drawBitmap(aX + 10, aY, IMG_medaile->width, IMG_medaile->height, IMG_medaile->data);
+        ENGINE_drawBitmapByIndex(aX + 10, aY, EII_MEDAILE);
         ENGINE_drawInt(aX + IMG_medaile->width + 25, aY + 7, aRank, 'C', 1);
     } else {
-        // ENGINE_drawBitmap(aX + 1, aY, IMG_medaile->width, IMG_medaile->height, IMG_medaile->data);
         ENGINE_drawInt(aX + 13, aY + 7, aRank, 'C', 1);
-        ENGINE_drawBitmap(aX + 32, aY + 8, IMG_skull_cs->width, IMG_skull_cs->height, IMG_skull_cs->data);
+        ENGINE_drawBitmapByIndex(aX + 32, aY + 8, EII_SKULL_CS);
         if (aKills > 9) {
             aKills = 9;
         }
@@ -279,6 +278,8 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     uint8_t lNmbr = lHealth / 25;
     tImage *lHeartFull;
     tImage *lHeartEmpty;
+    uint16_t lHeartFullIndex;
+    uint16_t lHeartEmptyIndex;
     uint8_t lBitmapPart;
     uint8_t i;
     uint8_t j;
@@ -288,14 +289,14 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     uint8_t bytes_per_row;
     uint8_t lSpace = 0;
     if (aSize == 2) {
-        lHeartFull = IMG_heart_small;
-        lHeartEmpty = IMG_heart_small_empty;
+        lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL);        // IMG_heart_small;
+        lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL_EMPTY); // IMG_heart_small_empty;
     } else if (aSize == 3) {
-        lHeartFull = IMG_heart_small2;
-        lHeartEmpty = IMG_heart_small2_empty;
+        lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL2);        // IMG_heart_small2;
+        lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL2_EMPTY); // IMG_heart_small2_empty;
     } else {
-        lHeartFull = IMG_heart;
-        lHeartEmpty = IMG_heart_empty;
+        lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART);        // IMG_heart;
+        lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_EMPTY); // IMG_heart_empty;
     }
     lSpace = lHeartEmpty->width + 1;
     lBitmapPart = (lHealth % 25) * lHeartFull->width / 25;
@@ -306,7 +307,7 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
 
     ENGINE_fillRectangle(aX, aY, lHeartFull->width + lSpace * 3, lHeartFull->height, 0);
     for (i = 0; i < lNmbr; i++) {
-        ENGINE_drawBitmap(aX + lSpace * i, aY, lHeartFull->width, lHeartFull->height, lHeartFull->data);
+        ENGINE_drawBitmapByIndex(aX + lSpace * i, aY, lHeartFullIndex);
     }
 
     for (h = 0; h < lHeartFull->height; h++) {
@@ -323,26 +324,26 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     }
 
     for (; i < 4; i++) {
-        ENGINE_drawBitmap(aX + lSpace * i, aY, lHeartEmpty->width, lHeartEmpty->height, lHeartEmpty->data);
+        ENGINE_drawBitmapByIndex(aX + lSpace * i, aY, lHeartEmptyIndex);
     }
 }
 
 void DISPLAY_bullets(uint8_t aX, uint8_t aY, uint8_t aBulletCount, uint8_t aMagazineCount) {
-    // ENGINE_drawBitmap(aX, aY, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
-    // ENGINE_drawBitmap(aX + IMG_ammo->width + 1, aY, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
-    // ENGINE_drawBitmap(aX + 2 * IMG_ammo->width, aY + 1, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
+    // ENGINE_drawBitmapByIndex(aX, aY, EII_AMMO);
+    // ENGINE_drawBitmapByIndex(aX + IMG_ammo->width + 1, aY, EII_AMMO);
+    // ENGINE_drawBitmapByIndex(aX + 2 * IMG_ammo->width, aY + 1, EII_AMMO);
     ENGINE_fillRectangle(aX + 8, aY, 50, 22, 0); // clean space for bullets number
     // ENGINE_fillRectangle(aX + 50, aY, 11, 22, 0); // clean space for bullets number
     if (aBulletCount == 0xFF) {
         // ENGINE_drawChar(aX + 3 * IMG_ammo->width + 10 + 11 + 2 - 5, aY + 2, 236, 1);
         // ENGINE_fillRectangle(aX + 8, aY, 50, 22, 0); // clean space for bullets number
-        ENGINE_drawBitmap(aX + 2 * IMG_ammo->width, aY + 1, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
+        ENGINE_drawBitmapByIndex(aX + 2 * IMG_ammo->width, aY + 1, EII_AMMO);
         ENGINE_drawChar(aX + 3 * IMG_ammo->width + 10 + 11 - 15, aY + 2, 'o', 1);
         ENGINE_drawChar(aX + 3 * IMG_ammo->width + 10 + 11 - 6, aY + 2, 'o', 1);
     } else {
         ENGINE_drawInt(aX + 3 * IMG_ammo->width + 10 - 2, aY + 4, aBulletCount, 'R', 1);
         // ENGINE_drawChar(aX + 3 * IMG_ammo->width + 10 , aY + 2, '|', 1);
-        ENGINE_drawBitmap(aX + 3 * IMG_ammo->width + 10, aY + 1, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
+        ENGINE_drawBitmapByIndex(aX + 3 * IMG_ammo->width + 10, aY + 1, EII_AMMO);
         ENGINE_drawInt(aX + 3 * IMG_ammo->width + 10 + 10 + 1, aY + 4, aMagazineCount, 'L', 1);
     }
 }
@@ -350,15 +351,15 @@ void DISPLAY_bullets(uint8_t aX, uint8_t aY, uint8_t aBulletCount, uint8_t aMaga
 void DISPLAY_bonus(uint8_t aBonusType) {
     switch (aBonusType) {
     case 1:
-        ENGINE_drawBitmap(5, 13, IMG_machinegun_big->width, IMG_machinegun_big->height, IMG_machinegun_big->data);
+        ENGINE_drawBitmapByIndex(5, 13, EII_MACHINEGUN_BIG);
         ENGINE_drawString(37, 0, "MACHINEGUN", 0);
         break;
     case 2:
-        ENGINE_drawBitmap(5, 15, IMG_invisibility_big->width, IMG_invisibility_big->height, IMG_invisibility_big->data);
+        ENGINE_drawBitmapByIndex(5, 15, EII_INVISIBILITY_BIG);
         ENGINE_drawString(27, 0, "INVISIBILITY", 0);
         break;
     case 3:
-        ENGINE_drawBitmap(5, 10, IMG_flash->width, IMG_flash->height, IMG_flash->data);
+        ENGINE_drawBitmapByIndex(5, 10, EII_FLASH);
         ENGINE_drawString(32, 0, "IMMORTALITY", 0);
         break;
     default:
@@ -380,10 +381,10 @@ void DISPLAY_killed(uint8_t aPlayerCode) {
     uint8_t lPlayerNameLength = 0;
     if (aPlayerCode <= 100) {
         lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
-        ENGINE_drawBitmap(16, 15, IMG_skull_small->width, IMG_skull_small->height, IMG_skull_small->data);
+        ENGINE_drawBitmapByIndex(16, 15, EII_SKULL_SMALL);
     } else {
         lPlayerNameLength = "Mine";
-        ENGINE_drawBitmap(16, 4, IMG_bomb->width, IMG_bomb->height, IMG_bomb->data);
+        ENGINE_drawBitmapByIndex(16, 4, EII_BOMB);
     }
 
     if (lPlayerNameLength < 6) {
@@ -404,7 +405,7 @@ void DISPLAY_hit(uint8_t aPlayerCode) {
     uint8_t lPlayerName[21] = {0};
     uint8_t lPlayerNameLength = 0;
     lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
-    ENGINE_drawBitmap(4, 10, IMG_aim->width, IMG_aim->height, IMG_aim->data);
+    ENGINE_drawBitmapByIndex(4, 10, EII_AIM);
     if (lPlayerNameLength < 6) {
         ENGINE_drawString(88 - (lPlayerNameLength / 2) * 11, 25, lPlayerName, 1);
     } else {
@@ -429,7 +430,7 @@ void DISPLAY_killed_cs(uint8_t aPlayerCode, uint8_t aWeaponIndex) {
     tImage *lWeapon;
     lWeapon = *gvpWeaponsAllList[aWeaponIndex];
     lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
-    ENGINE_drawBitmap(41, 1, IMG_skull_small->width, IMG_skull_small->height, IMG_skull_small->data);
+    ENGINE_drawBitmapByIndex(41, 1, EII_SKULL_SMALL);
 
     lTotalWidth = lWeapon->width + 18 + 2; // pistol width, 3 arrows width, two onepixel spaces
     if (lPlayerNameLength * 11 <= DISPLAY_WIDTH - lTotalWidth) {
@@ -449,7 +450,7 @@ void DISPLAY_killed_cs(uint8_t aPlayerCode, uint8_t aWeaponIndex) {
         // ENGINE_drawString(92 - (lPlayerNameLength / 2) * 6, 50, lPlayerName, 0);
     }
     lX = 64 - lTotalWidth / 2;
-    ENGINE_drawBitmap(lX, 41, lWeapon->width, lWeapon->height, lWeapon->data);
+    ENGINE_drawBitmapByIndex(lX, 41, lWeaponIndex);
     lX += lWeapon->width + 1;
     ENGINE_drawString(lX, 46, ">>>", 0);
     lX += 18 + 1;
@@ -467,11 +468,11 @@ void DISPLAY_hit_cs(uint8_t aPlayerCode, uint8_t aWeaponIndex, uint8_t aWeaponOb
     lWeapon = *gvpWeaponsAllList[aWeaponIndex];
     lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
     if (aWeaponObtainedIndex == 255) {
-        ENGINE_drawBitmap(41, 1, IMG_aim_small->width, IMG_aim_small->height, IMG_aim_small->data);
+        ENGINE_drawBitmapByIndex(41, 1, EII_AIM_SMALL);
     } else {
         uint8_t lX = 64 - (*gvpWeaponsAllList[aWeaponObtainedIndex])->width / 2;
         uint8_t lY = 19 - (*gvpWeaponsAllList[aWeaponObtainedIndex])->height / 2;
-        ENGINE_drawBitmap(lX, lY, (*gvpWeaponsAllList[aWeaponObtainedIndex])->width, (*gvpWeaponsAllList[aWeaponObtainedIndex])->height, (*gvpWeaponsAllList[aWeaponObtainedIndex])->data);
+        ENGINE_drawBitmapByIndex(lX, lY, (*gvpWeaponsAllList[aWeaponObtainedIndex])->width, (*gvpWeaponsAllList[aWeaponObtainedIndex])->height, (*gvpWeaponsAllList[aWeaponObtainedIndex])->data);
     }
 
     lTotalWidth = lWeapon->width + 18 + 2; // pistol width, 3 arrows width, two onepixel spaces
@@ -492,14 +493,14 @@ void DISPLAY_hit_cs(uint8_t aPlayerCode, uint8_t aWeaponIndex, uint8_t aWeaponOb
         // ENGINE_drawString(92 - (lPlayerNameLength / 2) * 6, 50, lPlayerName, 0);
     }
     lX = 64 - lTotalWidth / 2;
-    ENGINE_drawBitmap(lX, 41, lWeapon->width, lWeapon->height, lWeapon->data);
+    ENGINE_drawBitmapByIndex(lX, 41, lWeaponIndex);
     lX += lWeapon->width + 1;
     ENGINE_drawString(lX, 46, ">>>", 0);
     lX += 18 + 1;
     ENGINE_drawString(lX, 45 - lSize * 3, lPlayerName, lSize);
 
     /*
-    ENGINE_drawBitmap(0, 46, IMG_pistol_small->width, IMG_pistol_small->height, IMG_pistol_small->data);
+    ENGINE_drawBitmapByIndex(0, 46, EII_PISTOL_SMALL);
     ENGINE_drawString(55, 48, ">>>", 1);
     if (lPlayerNameLength < 6) {
         ENGINE_drawString(92 - (lPlayerNameLength / 2) * 11, 48, lPlayerName, 1);
@@ -598,7 +599,7 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
     ENGINE_drawInt(15, 46, aMoney, 'L', 1);
 
     if (aBombHolding == 1) {
-        ENGINE_drawBitmap(110, 0, IMG_bomb_miniature->width, IMG_bomb_miniature->height, IMG_bomb_miniature->data);
+        ENGINE_drawBitmapByIndex(110, 0, EII_BOMB_MINIATURE);
     }
 
     if (aSwipe == 0) {
@@ -627,7 +628,7 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
             if ((aItemState == itemBought || aItemState == itemAmmo) || (aItemState == itemAvailable && aItemIndex == lcKevlarIndex && aAmmo > 0)) {
                 if (aItemIndex < lWeaponsCount) {
                     ENGINE_drawInt(103 - 2, 46, aAmmo, 'R', 1);
-                    ENGINE_drawBitmap(103, 43, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
+                    ENGINE_drawBitmapByIndex(103, 43, EII_AMMO);
                     ENGINE_drawInt(103 + 10 + 1, 46, aMagazine, 'L', 1);
                 } else if (aItemIndex == lcKevlarIndex) {
                     ENGINE_drawInt(115, 46, aAmmo, 'R', 1);
@@ -636,7 +637,7 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
             } else {
                 if (aItemIndex < lWeaponsCount) {
                     ENGINE_drawChar(88, 46, '-', 1);
-                    ENGINE_drawBitmap(103, 43, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
+                    ENGINE_drawBitmapByIndex(103, 43, EII_AMMO);
                     ENGINE_drawChar(103 + 10 + 1, 46, '-', 1);
                 } else if (aItemIndex == lcKevlarIndex) {
                     ENGINE_drawChar(105, 46, '-', 1);
@@ -646,26 +647,26 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
 
         switch (aItemState) {
         case itemBlocked:
-            ENGINE_drawBitmap(5, 0, IMG_Basket->width, IMG_Basket->height, IMG_Basket->data);
+            ENGINE_drawBitmapByIndex(5, 0, EII_BASKET);
             ENGINE_drawLine(4, 11, 30, 2, 1);
             ENGINE_drawLine(4, 12, 30, 3, 1);
 
             break;
         case itemAvailable:
-            ENGINE_drawBitmap(5, 0, IMG_Basket->width, IMG_Basket->height, IMG_Basket->data);
+            ENGINE_drawBitmapByIndex(5, 0, EII_BASKET);
             break;
         case itemBought:
             break;
         case itemAmmo:
-            ENGINE_drawBitmap(3, 0, IMG_bullets->width, IMG_bullets->height, IMG_bullets->data);
+            ENGINE_drawBitmapByIndex(3, 0, EII_BULLETS);
             break;
         default:
             break;
         }
 
-        ENGINE_drawBitmap(lX1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
-        ENGINE_drawBitmap(lX2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
-        ENGINE_drawBitmap(lX3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+        ENGINE_drawBitmapByIndex(lX1, lY1, lpItem1Index);
+        ENGINE_drawBitmapByIndex(lX2, lY2, lpItem2Index);
+        ENGINE_drawBitmapByIndex(lX3, lY3, lpItem3Index);
     } else {
 
         if (aSwipe < lcPixels) {
@@ -686,34 +687,34 @@ void DISPLAY_buying_cs(int8_t aItemIndex,
         lDist2 = aSwipe;
         lDist3 = aSwipe;*/
 
-        ENGINE_drawBitmap(lX1 - lDist1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
-        ENGINE_drawBitmap(lX2 - lDist2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
-        ENGINE_drawBitmap(lX3 - lDist3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+        ENGINE_drawBitmapByIndex(lX1 - lDist1, lY1, lpItem1Index);
+        ENGINE_drawBitmapByIndex(lX2 - lDist2, lY2, lpItem2Index);
+        ENGINE_drawBitmapByIndex(lX3 - lDist3, lY3, lpItem3Index);
     }
 }
 
 void DISPLAY_drawBomb(uint8_t aX, uint8_t aY) {
-    ENGINE_drawBitmap(aX, aY, IMG_bomb_small->width, IMG_bomb_small->height, IMG_bomb_small->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_BOMB_SMALL);
 }
 
 void DISPLAY_drawBombSmall(uint8_t aX, uint8_t aY) {
-    ENGINE_drawBitmap(aX, aY, IMG_bomb_miniature->width, IMG_bomb_miniature->height, IMG_bomb_miniature->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_BOMB_MINIATURE);
 }
 
 void DISPLAY_drawDefuse(uint8_t aX, uint8_t aY) {
-    ENGINE_drawBitmap(aX, aY, IMG_defuse->width, IMG_defuse->height, IMG_defuse->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_DEFUSE);
 }
 
 void DISPLAY_drawDefuseSmall(uint8_t aX, uint8_t aY) {
-    ENGINE_drawBitmap(aX, aY, IMG_defuseSmall->width, IMG_defuseSmall->height, IMG_defuseSmall->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_DEFUSESMALL);
 }
 
 void DISPLAY_drawStickman(uint8_t aX, uint8_t aY) {
-    ENGINE_drawBitmap(aX, aY, IMG_stickman->width, IMG_stickman->height, IMG_stickman->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_STICKMAN);
 }
 
 void DISPLAY_drawAgent(uint8_t aX, uint8_t aY) {
-    ENGINE_drawBitmap(aX, aY, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_AGENT);
 }
 
 void DISPLAY_drawPlayers(uint8_t aX, uint8_t aY, uint8_t aTeam, uint8_t aPlayersCountCT, uint8_t aPlayersCountTerr) {
@@ -730,14 +731,14 @@ void DISPLAY_drawPlayers(uint8_t aX, uint8_t aY, uint8_t aTeam, uint8_t aPlayers
     }
     if (lCount2 == 250) {
         ENGINE_drawInt(aX + 7, aY, lCount1, 'L', 1);
-        ENGINE_drawBitmap(aX + 20, aY, IMG_stickman->width, IMG_stickman->height, IMG_stickman->data);
+        ENGINE_drawBitmapByIndex(aX + 20, aY, EII_STICKMAN);
     } else {
         if (lCount2 > 9) {
             lCount2 = 9;
         }
         ENGINE_drawInt(aX + 2, aY, lCount1, 'L', 1);
         ENGINE_drawInt(aX + 25, aY, lCount2, 'L', 1);
-        ENGINE_drawBitmap(aX + 15, aY, IMG_stickman->width, IMG_stickman->height, IMG_stickman->data);
+        ENGINE_drawBitmapByIndex(aX + 15, aY, EII_STICKMAN);
     }
 }
 
@@ -767,53 +768,53 @@ void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aOption
     // ENGINE_fillRectangle(aX + 49, aY, 10, 17, 0);
     switch (aWeapon) {
     case weaponKnife:
-        ENGINE_drawBitmap(aX + 8, aY + 8, IMG_knife->width, IMG_knife->height, IMG_knife->data);
+        ENGINE_drawBitmapByIndex(aX + 8, aY + 8, EII_KNIFE);
         break;
     case weaponUSP:
-        ENGINE_drawBitmap(aX + 13, aY + 3, IMG_usp->width, IMG_usp->height, IMG_usp->data);
+        ENGINE_drawBitmapByIndex(aX + 13, aY + 3, EII_USP);
         break;
     case weaponGlock:
-        ENGINE_drawBitmap(aX + 12, aY + 3, IMG_pistol_small->width, IMG_pistol_small->height, IMG_pistol_small->data);
+        ENGINE_drawBitmapByIndex(aX + 12, aY + 3, EII_PISTOL_SMALL);
         aOptions = aOptions * 2;
         break;
     case weaponDeagle:
-        ENGINE_drawBitmap(aX + 15, aY + 3, IMG_Deagle->width, IMG_Deagle->height, IMG_Deagle->data);
+        ENGINE_drawBitmapByIndex(aX + 15, aY + 3, EII_DEAGLE);
         break;
     case weaponMP5:
-        ENGINE_drawBitmap(aX + 5, aY + 3, IMG_mp5->width, IMG_mp5->height, IMG_mp5->data);
+        ENGINE_drawBitmapByIndex(aX + 5, aY + 3, EII_MP5);
         break;
     case weaponP90:
-        ENGINE_drawBitmap(aX + 3, aY + 1, IMG_P90->width, IMG_P90->height, IMG_P90->data);
+        ENGINE_drawBitmapByIndex(aX + 3, aY + 1, EII_P90);
         break;
     case weaponM4:
-        ENGINE_drawBitmap(aX, aY + 5, IMG_m4->width, IMG_m4->height, IMG_m4->data);
+        ENGINE_drawBitmapByIndex(aX, aY + 5, EII_M4);
         break;
     case weaponAK47:
-        ENGINE_drawBitmap(aX, aY + 4, IMG_ak47_small_2->width, IMG_ak47_small_2->height, IMG_ak47_small_2->data);
+        ENGINE_drawBitmapByIndex(aX, aY + 4, EII_AK47_SMALL_2);
         break;
     case weaponAUG:
-        ENGINE_drawBitmap(aX, aY + 3, IMG_Aug->width, IMG_Aug->height, IMG_Aug->data);
+        ENGINE_drawBitmapByIndex(aX, aY + 3, EII_AUG);
         break;
     case weaponSG552:
-        ENGINE_drawBitmap(aX, aY + 1, IMG_sg552->width, IMG_sg552->height, IMG_sg552->data);
+        ENGINE_drawBitmapByIndex(aX, aY + 1, EII_SG552);
         break;
     case weaponAWP:
-        ENGINE_drawBitmap(aX, aY + 5, IMG_awp->width, IMG_awp->height, IMG_awp->data);
+        ENGINE_drawBitmapByIndex(aX, aY + 5, EII_AWP);
         break;
     case weaponShield:
         if (aOptions == 0) {
-            ENGINE_drawBitmap(aX + 22, aY + 2, IMG_tactical_shield->width, IMG_tactical_shield->height, IMG_tactical_shield->data);
+            ENGINE_drawBitmapByIndex(aX + 22, aY + 2, EII_TACTICAL_SHIELD);
         } else {
-            ENGINE_drawBitmap(aX + 5, aY + 2, IMG_tactical_shield->width, IMG_tactical_shield->height, IMG_tactical_shield->data);
+            ENGINE_drawBitmapByIndex(aX + 5, aY + 2, EII_TACTICAL_SHIELD);
             switch (aOptions & 0x0F) {
             case weaponUSP:
-                ENGINE_drawBitmap(aX + 27, aY + 3, IMG_usp->width, IMG_usp->height, IMG_usp->data);
+                ENGINE_drawBitmapByIndex(aX + 27, aY + 3, EII_USP);
                 break;
             case weaponGlock:
-                ENGINE_drawBitmap(aX + 26, aY + 3, IMG_pistol_small->width, IMG_pistol_small->height, IMG_pistol_small->data);
+                ENGINE_drawBitmapByIndex(aX + 26, aY + 3, EII_PISTOL_SMALL);
                 break;
             case weaponDeagle:
-                ENGINE_drawBitmap(aX + 23, aY + 3, IMG_Deagle->width, IMG_Deagle->height, IMG_Deagle->data);
+                ENGINE_drawBitmapByIndex(aX + 23, aY + 3, EII_DEAGLE);
                 break;
             default:
                 break;
@@ -823,9 +824,9 @@ void DISPLAY_drawWeapon(uint8_t aX, uint8_t aY, uint8_t aWeapon, uint8_t aOption
     }
 
     if (aOptions == 1) {
-        ENGINE_drawBitmap(aX + 41, aY + 20, IMG_silencer->width, IMG_silencer->height, IMG_silencer->data);
+        ENGINE_drawBitmapByIndex(aX + 41, aY + 20, EII_SILENCER);
     } else if (aOptions == 2) {
-        ENGINE_drawBitmap(aX + 43, aY + 16, IMG_burst_mode2->width, IMG_burst_mode2->height, IMG_burst_mode2->data);
+        ENGINE_drawBitmapByIndex(aX + 43, aY + 16, EII_BURST_MODE2);
     }
 }
 
@@ -860,11 +861,11 @@ void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazin
 
     if (lItemIsShield == 0) {
         ENGINE_drawInt(103 - 2, 46, aAmmo, 'R', 1);
-        ENGINE_drawBitmap(103, 43, IMG_ammo->width, IMG_ammo->height, IMG_ammo->data);
+        ENGINE_drawBitmapByIndex(103, 43, EII_AMMO);
         ENGINE_drawInt(103 + 10 + 1, 46, aMagazine, 'L', 1);
     }
 
-    ENGINE_drawBitmap(lX, lY, (*gpItemList[aWeapon])->width, (*gpItemList[aWeapon])->height, (*gpItemList[aWeapon])->data);
+    ENGINE_drawBitmapByIndex(lX, lY, (*gpItemList[aWeapon])->width, (*gpItemList[aWeapon])->height, (*gpItemList[aWeapon])->data);
 }
 
 void DISPLAY_drawBarSegmented(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
@@ -926,7 +927,7 @@ void DISPLAY_info_cs(uint8_t aTeam,
                      uint16_t aDamageInRound) {
     if (aWhoWins < 250) {
         /*show who wins on whole screen*/
-        ENGINE_drawBitmap(5, 2, IMG_trophy->width, IMG_trophy->height, IMG_trophy->data);
+        ENGINE_drawBitmapByIndex(5, 2, EII_TROPHY);
         if (aWhoWins == 0) {
             ENGINE_drawString(80, 15, "CT", 1);
         } else {
@@ -947,8 +948,8 @@ void DISPLAY_info_cs(uint8_t aTeam,
 
         /*kills and deaths && damage*/
         if ((aAnimation & 0xF0) == 0) {
-            ENGINE_drawBitmap(78, 4, IMG_pistol_cs->width, IMG_pistol_cs->height, IMG_pistol_cs->data);
-            ENGINE_drawBitmap(107, 4, IMG_skull_cs->width, IMG_skull_cs->height, IMG_skull_cs->data);
+            ENGINE_drawBitmapByIndex(78, 4, EII_PISTOL_CS);
+            ENGINE_drawBitmapByIndex(107, 4, EII_SKULL_CS);
             ENGINE_drawInt(87, 18, aKills, 'C', 0);
             ENGINE_drawInt(112, 18, aDeaths, 'C', 0);
         } else {
@@ -958,8 +959,8 @@ void DISPLAY_info_cs(uint8_t aTeam,
             } else if (aDamageTotal >= 100) {
                 lX += 5;
             }
-            ENGINE_drawBitmap(86, 6, IMG_lightning_cs->width, IMG_lightning_cs->height, IMG_lightning_cs->data);
-            ENGINE_drawBitmap(85, 17, IMG_sum->width, IMG_sum->height, IMG_sum->data);
+            ENGINE_drawBitmapByIndex(86, 6, EII_LIGHTNING_CS);
+            ENGINE_drawBitmapByIndex(85, 17, EII_SUM);
             ENGINE_drawInt(lX, 7, aDamageInRound, 'R', 0);
             ENGINE_drawInt(lX, 18, aDamageTotal, 'R', 0);
         }
@@ -980,16 +981,16 @@ void DISPLAY_info_cs(uint8_t aTeam,
         if (aPlayersCountCT != 255 && (aPlayersCountCT != 0 || aPlayersCountTerr != 0)) {
             DISPLAY_drawPlayers(80, 42, aTeam, aPlayersCountCT, aPlayersCountTerr);
         } else {
-            ENGINE_drawBitmap(100, 36, IMG_base->width, IMG_base->height, IMG_base->data);
+            ENGINE_drawBitmapByIndex(100, 36, EII_BASE);
             switch (aAnimation & 0x0F) {
             case 0:
                 break;
             case 3:
-                ENGINE_drawBitmap(92, 40, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+                ENGINE_drawBitmapByIndex(92, 40, EII_ARROW2);
             case 2:
-                ENGINE_drawBitmap(85, 40, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+                ENGINE_drawBitmapByIndex(85, 40, EII_ARROW2);
             case 1:
-                ENGINE_drawBitmap(78, 40, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+                ENGINE_drawBitmapByIndex(78, 40, EII_ARROW2);
                 break;
             default:
                 break;
@@ -1001,8 +1002,8 @@ void DISPLAY_info_cs(uint8_t aTeam,
 void DISPLAY_info_gg(uint16_t aKills, uint16_t aDeaths) {
     /*kills and deaths*/
     ENGINE_fillRectangle(3, 35, 59, 27, 0);
-    ENGINE_drawBitmap(14, 36, IMG_pistol_cs->width, IMG_pistol_cs->height, IMG_pistol_cs->data);
-    ENGINE_drawBitmap(43, 36, IMG_skull_cs->width, IMG_skull_cs->height, IMG_skull_cs->data);
+    ENGINE_drawBitmapByIndex(14, 36, EII_PISTOL_CS);
+    ENGINE_drawBitmapByIndex(43, 36, EII_SKULL_CS);
     ENGINE_drawInt(23, 50, aKills, 'C', 0);
     ENGINE_drawInt(48, 50, aDeaths, 'C', 0);
 }
@@ -1011,16 +1012,16 @@ void DISPLAY_spawn_animation(uint8_t aAnimation) {
 
     ENGINE_fillRectangle(67, 35, 59, 27, 0);
 
-    ENGINE_drawBitmap(100, 36, IMG_base->width, IMG_base->height, IMG_base->data);
+    ENGINE_drawBitmapByIndex(100, 36, EII_BASE);
     switch (aAnimation) {
     case 0:
         break;
     case 3:
-        ENGINE_drawBitmap(92, 40, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+        ENGINE_drawBitmapByIndex(92, 40, EII_ARROW2);
     case 2:
-        ENGINE_drawBitmap(85, 40, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+        ENGINE_drawBitmapByIndex(85, 40, EII_ARROW2);
     case 1:
-        ENGINE_drawBitmap(78, 40, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+        ENGINE_drawBitmapByIndex(78, 40, EII_ARROW2);
         break;
     default:
         break;
@@ -1029,16 +1030,16 @@ void DISPLAY_spawn_animation(uint8_t aAnimation) {
 
 void DISPLAY_agent(uint8_t aAgentCount) {
     if (aAgentCount == 0) {
-        ENGINE_drawBitmap(44, 2, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
+        ENGINE_drawBitmapByIndex(44, 2, EII_AGENT);
         ENGINE_drawString(31, 46, "Agent!", 1);
     } else if (aAgentCount == 1) {
-        ENGINE_drawBitmap(20, 2, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
-        ENGINE_drawBitmap(68, 2, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
+        ENGINE_drawBitmapByIndex(20, 2, EII_AGENT);
+        ENGINE_drawBitmapByIndex(68, 2, EII_AGENT);
         ENGINE_drawString(9, 46, "2x IMG_Agent!!", 1);
     } else {
-        ENGINE_drawBitmap(0, 2, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
-        ENGINE_drawBitmap(44, 2, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
-        ENGINE_drawBitmap(88, 2, IMG_Agent->width, IMG_Agent->height, IMG_Agent->data);
+        ENGINE_drawBitmapByIndex(0, 2, EII_AGENT);
+        ENGINE_drawBitmapByIndex(44, 2, EII_AGENT);
+        ENGINE_drawBitmapByIndex(88, 2, EII_AGENT);
         ENGINE_drawString(3, 46, "3x IMG_Agent!!!", 1);
     }
 }
@@ -1047,8 +1048,8 @@ void DISPLAY_orbReceived(uint8_t aOrbType) {
     if (aOrbType < 4) {
         uint8_t lX = 30 - (*gpOrbImage[aOrbType])->width / 2;
         uint8_t lY = 32 - (*gpOrbImage[aOrbType])->height / 2;
-        ENGINE_drawBitmap(lX, lY, (*gpOrbImage[aOrbType])->width, (*gpOrbImage[aOrbType])->height, (*gpOrbImage[aOrbType])->data);
-        
+        ENGINE_drawBitmapByIndex(lX, lY, (*gpOrbImage[aOrbType])->width, (*gpOrbImage[aOrbType])->height, (*gpOrbImage[aOrbType])->data);
+
         lX = 94 - (strlen(gpOrbName[aOrbType]) * 3); // * 6 / 2
         ENGINE_drawString(lX, 28, gpOrbName[aOrbType], 0);
     }
@@ -1058,24 +1059,24 @@ void DISPLAY_drawOrbs(uint8_t aX, uint8_t aY, uint8_t aOrbs) {
     ENGINE_fillRectangle(aX, aY, 120, 27, 0);
 
     if (((aOrbs >> 0) & 0x01) != 0) {
-        ENGINE_drawBitmap(aX + 16 - IMG_machinegun_small->width / 2, aY + 1, IMG_machinegun_small->width, IMG_machinegun_small->height, IMG_machinegun_small->data);
+        ENGINE_drawBitmapByIndex(aX + 16 - ENGINE_getBitmapDimension(NULL, NULL, EII_MACHINEGUN_SMALL)->width / 2, aY + 1, EII_MACHINEGUN_SMALL);
     } else {
-        ENGINE_drawBitmap(aX + 16 - IMG_machinegun_small_empty->width / 2, aY + 1, IMG_machinegun_small_empty->width, IMG_machinegun_small_empty->height, IMG_machinegun_small_empty->data);
+        ENGINE_drawBitmapByIndex(aX + 16 - ENGINE_getBitmapDimension(NULL, NULL, EII_MACHINEGUN_SMALL_EMPTY)->width / 2, aY + 1, EII_MACHINEGUN_SMALL_EMPTY);
     }
     if (((aOrbs >> 1) & 0x01) != 0) {
-        ENGINE_drawBitmap(aX + 46 - IMG_shield->width / 2, aY + 1, IMG_shield->width, IMG_shield->height, IMG_shield->data);
+        ENGINE_drawBitmapByIndex(aX + 46 - ENGINE_getBitmapDimension(NULL, NULL, EII_SHIELD)->width / 2, aY + 1, EII_SHIELD);
     } else {
-        ENGINE_drawBitmap(aX + 46 - IMG_shield_empty->width / 2, aY + 1, IMG_shield_empty->width, IMG_shield_empty->height, IMG_shield_empty->data);
+        ENGINE_drawBitmapByIndex(aX + 46 - IMG_shield_empty->width / 2, aY + 1, EII_SHIELD_EMPTY);
     }
     if (((aOrbs >> 2) & 0x01) != 0) {
-        ENGINE_drawBitmap(aX + 76 - IMG_flash_small->width / 2, aY + 1, IMG_flash_small->width, IMG_flash_small->height, IMG_flash_small->data);
+        ENGINE_drawBitmapByIndex(aX + 76 - IMG_flash_small->width / 2, aY + 1, EII_FLASH_SMALL);
     } else {
-        ENGINE_drawBitmap(aX + 76 - IMG_flash_small_empty->width / 2, aY + 1, IMG_flash_small_empty->width, IMG_flash_small_empty->height, IMG_flash_small_empty->data);
+        ENGINE_drawBitmapByIndex(aX + 76 - IMG_flash_small_empty->width / 2, aY + 1, EII_FLASH_SMALL_EMPTY);
     }
     if (((aOrbs >> 3) & 0x01) != 0) {
-        ENGINE_drawBitmap(aX + 106 - IMG_healing->width / 2, aY + 1, IMG_healing->width, IMG_healing->height, IMG_healing->data);
+        ENGINE_drawBitmapByIndex(aX + 106 - IMG_healing->width / 2, aY + 1, EII_HEALING);
     } else {
-        ENGINE_drawBitmap(aX + 106 - IMG_healing_empty->width / 2, aY + 1, IMG_healing_empty->width, IMG_healing_empty->height, IMG_healing_empty->data);
+        ENGINE_drawBitmapByIndex(aX + 106 - IMG_healing_empty->width / 2, aY + 1, EII_HEALING_EMPTY);
     }
 }
 
@@ -1104,18 +1105,14 @@ void DISPLAY_bans(void) {
     ENGINE_drawLine(2, 28, 126, 28, 1);
 
     /*stickman icons*/
-    ENGINE_drawBitmap(lXCentres[0] - IMG_stickman_run2->width / 2,
-                      49 - IMG_stickman_run2->height, IMG_stickman_run2->width,
-                      IMG_stickman_run2->height, IMG_stickman_run2->data);
-    ENGINE_drawBitmap(lXCentres[1] - IMG_stickman_climb->width / 2,
-                      49 - IMG_stickman_climb->height, IMG_stickman_climb->width,
-                      IMG_stickman_climb->height, IMG_stickman_climb->data);
-    ENGINE_drawBitmap(lXCentres[2] - IMG_stickman_lying->width / 2,
-                      49 - IMG_stickman_lying->height, IMG_stickman_lying->width,
-                      IMG_stickman_lying->height, IMG_stickman_lying->data);
-    ENGINE_drawBitmap(lXCentres[3] - IMG_stickman_fight2->width / 2,
-                      49 - IMG_stickman_fight2->height, IMG_stickman_fight2->width,
-                      IMG_stickman_fight2->height, IMG_stickman_fight2->data);
+    ENGINE_drawBitmapByIndex(lXCentres[0] - IMG_stickman_run2->width / 2,
+                             49 - IMG_stickman_run2->height, EII_STICKMAN_RUN2);
+    ENGINE_drawBitmapByIndex(lXCentres[1] - IMG_stickman_climb->width / 2,
+                             49 - IMG_stickman_climb->height, EII_STICKMAN_CLIMB);
+    ENGINE_drawBitmapByIndex(lXCentres[2] - IMG_stickman_lying->width / 2,
+                             49 - IMG_stickman_lying->height, EII_STICKMAN_LYING);
+    ENGINE_drawBitmapByIndex(lXCentres[3] - IMG_stickman_fight2->width / 2,
+                             49 - IMG_stickman_fight2->height, EII_STICKMAN_FIGHT2);
 
     /*stickman labels*/
     ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Run", 0);
@@ -1141,40 +1138,28 @@ void DISPLAY_animationTwoHandsShooting(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     ENGINE_fillRectangle(aX, aY, 120, 48, 0);
 
 #ifdef SIMULATION_PLUGIN
-    ENGINE_drawBitmap(aX, aY, weapon_white->width, weapon_white->height,
-                      weapon_white->data);
+    ENGINE_drawBitmapByIndex(aX, aY, weapon_whiteIndex);
 #else
-    ENGINE_drawBitmap(aX, aY, IMG_weapon_black->width, IMG_weapon_black->height,
-                      IMG_weapon_black->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_WEAPON_BLACK);
 #endif
 
-    ENGINE_clearBitmap(aX + 20, aY + 22 + lYHand, IMG_hand_black->width,
-                       IMG_hand_black->height, IMG_hand_black->data);
-    ENGINE_drawBitmap(aX + 20, aY + 22 + lYHand, IMG_hand->width, IMG_hand->height,
-                      IMG_hand->data);
+    ENGINE_clearBItmapByIndex(aX + 20, aY + 22 + lYHand, EII_HAND_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 20, aY + 22 + lYHand, EII_HAND);
 
     if (aFrame >= 20) {
-        ENGINE_clearBitmap(aX + 25, aY + 16, IMG_hand_finger_black->width,
-                           IMG_hand_finger_black->height, IMG_hand_finger_black->data);
-        ENGINE_drawBitmap(aX + 25, aY + 16, IMG_hand_finger->width,
-                          IMG_hand_finger->height, IMG_hand_finger->data);
+        ENGINE_clearBItmapByIndex(aX + 25, aY + 16, EII_HAND_FINGER_BLACK);
+        ENGINE_drawBitmapByIndex(aX + 25, aY + 16, EII_HAND_FINGER);
     }
 
-    ENGINE_clearBitmap(aX + 53, aY + 14, IMG_trigger->width, IMG_trigger->height,
-                       IMG_trigger->data);
-    ENGINE_drawBitmap(aX + 53 + lXHand, aY + 14, IMG_trigger->width, IMG_trigger->height,
-                      IMG_trigger->data);
+    ENGINE_clearBItmapByIndex(aX + 53, aY + 14, EII_TRIGGER);
+    ENGINE_drawBitmapByIndex(aX + 53 + lXHand, aY + 14, EII_TRIGGER);
 
-    ENGINE_clearBitmap(aX + 50, aY + 12, IMG_hand_2_black->width,
-                       IMG_hand_2_black->height, IMG_hand_2_black->data);
-    ENGINE_drawBitmap(aX + 50, aY + 12, IMG_hand_2->width, IMG_hand_2->height,
-                      IMG_hand_2->data);
+    ENGINE_clearBItmapByIndex(aX + 50, aY + 12, EII_HAND_2_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 50, aY + 12, EII_HAND_2);
 
     if (aFrame > 21) {
-        ENGINE_clearBitmap(aX + 50, aY + 15, IMG_hand_2_finger->width,
-                           IMG_hand_2_finger->height, IMG_hand_2_finger->data);
-        ENGINE_drawBitmap(aX + 50 + lXHand, aY + 15, IMG_hand_2_finger->width,
-                          IMG_hand_2_finger->height, IMG_hand_2_finger->data);
+        ENGINE_clearBItmapByIndex(aX + 50, aY + 15, EII_HAND_2_FINGER);
+        ENGINE_drawBitmapByIndex(aX + 50 + lXHand, aY + 15, EII_HAND_2_FINGER);
     }
     if (aFrame > 20) {
         uint8_t lXCheck = aX + 10;
@@ -1215,40 +1200,28 @@ void DISPLAY_animationReload(uint8_t aX, uint8_t aY, uint8_t aFrame) {
     ENGINE_fillRectangle(aX, aY, 120, 48, 0);
 
 #ifdef SIMULATION_PLUGIN
-    ENGINE_drawBitmap(aX, aY, weapon_white->width, weapon_white->height,
-                      weapon_white->data);
+    ENGINE_drawBitmapByIndex(aX, aY, weapon_whiteIndex);
 #else
-    ENGINE_drawBitmap(aX, aY, IMG_weapon_black->width, IMG_weapon_black->height,
-                      IMG_weapon_black->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_WEAPON_BLACK);
 #endif
 
-    ENGINE_clearBitmap(aX + 20, aY + 22 + lYHand, IMG_hand_black->width,
-                       IMG_hand_black->height, IMG_hand_black->data);
-    ENGINE_drawBitmap(aX + 20, aY + 22 + lYHand, IMG_hand->width, IMG_hand->height,
-                      IMG_hand->data);
+    ENGINE_clearBItmapByIndex(aX + 20, aY + 22 + lYHand, EII_HAND_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 20, aY + 22 + lYHand, EII_HAND);
 
     if (aFrame <= 1) {
-        ENGINE_clearBitmap(aX + 25, aY + 16, IMG_hand_finger_black->width,
-                           IMG_hand_finger_black->height, IMG_hand_finger_black->data);
-        ENGINE_drawBitmap(aX + 25, aY + 16, IMG_hand_finger->width,
-                          IMG_hand_finger->height, IMG_hand_finger->data);
+        ENGINE_clearBItmapByIndex(aX + 25, aY + 16, EII_HAND_FINGER_BLACK);
+        ENGINE_drawBitmapByIndex(aX + 25, aY + 16, EII_HAND_FINGER);
     }
 
-    ENGINE_clearBitmap(aX + 53, aY + 14, IMG_trigger->width, IMG_trigger->height,
-                       IMG_trigger->data);
-    ENGINE_drawBitmap(aX + 53 + lXHand, aY + 14, IMG_trigger->width, IMG_trigger->height,
-                      IMG_trigger->data);
+    ENGINE_clearBItmapByIndex(aX + 53, aY + 14, EII_TRIGGER);
+    ENGINE_drawBitmapByIndex(aX + 53 + lXHand, aY + 14, EII_TRIGGER);
 
-    ENGINE_clearBitmap(aX + 50, aY + 12, IMG_hand_2_black->width,
-                       IMG_hand_2_black->height, IMG_hand_2_black->data);
-    ENGINE_drawBitmap(aX + 50, aY + 12, IMG_hand_2->width, IMG_hand_2->height,
-                      IMG_hand_2->data);
+    ENGINE_clearBItmapByIndex(aX + 50, aY + 12, EII_HAND_2_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 50, aY + 12, EII_HAND_2);
 
     if (aFrame > 22) {
-        ENGINE_clearBitmap(aX + 50, aY + 15, IMG_hand_2_finger->width,
-                           IMG_hand_2_finger->height, IMG_hand_2_finger->data);
-        ENGINE_drawBitmap(aX + 50 + lXHand, aY + 15, IMG_hand_2_finger->width,
-                          IMG_hand_2_finger->height, IMG_hand_2_finger->data);
+        ENGINE_clearBItmapByIndex(aX + 50, aY + 15, EII_HAND_2_FINGER);
+        ENGINE_drawBitmapByIndex(aX + 50 + lXHand, aY + 15, EII_HAND_2_FINGER);
     }
 
     if (aFrame > 21) {
@@ -1285,11 +1258,9 @@ void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
 
     ENGINE_fillRectangle(aX, aY, 120, 48, 0);
 #ifdef SIMULATION_PLUGIN
-    ENGINE_drawBitmap(aX, aY, weapon_white->width, weapon_white->height,
-                      weapon_white->data);
+    ENGINE_drawBitmapByIndex(aX, aY, weapon_whiteIndex);
 #else
-    ENGINE_drawBitmap(aX, aY, IMG_weapon_black->width, IMG_weapon_black->height,
-                      IMG_weapon_black->data);
+    ENGINE_drawBitmapByIndex(aX, aY, EII_WEAPON_BLACK);
 #endif
 
     if (aFrame > 2 && aFrame < 8) {
@@ -1298,20 +1269,14 @@ void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
                         aY + 19 - lYHand + 2, 1);
     }
 
-    ENGINE_clearBitmap(aX + 20 - lXHand, aY + 22 - lYHand, IMG_hand_black->width,
-                       IMG_hand_black->height, IMG_hand_black->data);
-    ENGINE_drawBitmap(aX + 20 - lXHand, aY + 22 - lYHand, IMG_hand->width,
-                      IMG_hand->height, IMG_hand->data);
+    ENGINE_clearBItmapByIndex(aX + 20 - lXHand, aY + 22 - lYHand, EII_HAND_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 20 - lXHand, aY + 22 - lYHand, EII_HAND);
 
-    ENGINE_clearBitmap(aX + 25, aY + 16, IMG_hand_finger_black->width,
-                       IMG_hand_finger_black->height, IMG_hand_finger_black->data);
-    ENGINE_drawBitmap(aX + 25, aY + 16, IMG_hand_finger->width, IMG_hand_finger->height,
-                      IMG_hand_finger->data);
+    ENGINE_clearBItmapByIndex(aX + 25, aY + 16, EII_HAND_FINGER_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 25, aY + 16, EII_HAND_FINGER);
 
-    ENGINE_clearBitmap(aX + 50, aY + 12, IMG_hand_2_black->width,
-                       IMG_hand_2_black->height, IMG_hand_2_black->data);
-    ENGINE_drawBitmap(aX + 50, aY + 12, IMG_hand_2->width, IMG_hand_2->height,
-                      IMG_hand_2->data);
+    ENGINE_clearBItmapByIndex(aX + 50, aY + 12, EII_HAND_2_BLACK);
+    ENGINE_drawBitmapByIndex(aX + 50, aY + 12, EII_HAND_2);
 }
 
 /*void DISPLAY_drawCirclePart(uint8_t aX, uint8_t aY, uint8_t aPercentage) {
@@ -1340,11 +1305,11 @@ void DISPLAY_animationUserButton(uint8_t aX, uint8_t aY, uint8_t aFrame) {
 
 void DISPLAY_drawBullet(uint8_t aX, uint8_t aY, uint8_t aType) {
     if (aType == 0) {
-        ENGINE_drawBitmap(aX, aY, IMG_ammo_small->width, IMG_ammo_small->height, IMG_ammo_small->data);
+        ENGINE_drawBitmapByIndex(aX, aY, EII_AMMO_SMALL);
     } else if (aType == 1) {
-        ENGINE_drawBitmap(aX, aY, IMG_ammo_small_empty->width, IMG_ammo_small_empty->height, IMG_ammo_small_empty->data);
+        ENGINE_drawBitmapByIndex(aX, aY, EII_AMMO_SMALL_EMPTY);
     } else if (aType == 2) {
-        ENGINE_drawBitmap(aX, aY, IMG_ammo_small_invert->width, IMG_ammo_small_invert->height, IMG_ammo_small_invert->data);
+        ENGINE_drawBitmapByIndex(aX, aY, EII_AMMO_SMALL_INVERT);
     }
 }
 
@@ -1372,14 +1337,12 @@ void DISPLAY_tutorialShoot(uint8_t aCount) {
 
     lpReloadTitle[6] = (lMaxCount - aCount) + '0';
     ENGINE_drawString(63 - 9 * 11 / 2, 10, lpReloadTitle, 1);
-    ENGINE_drawBitmap(10, 33, IMG_Deagle->width, IMG_Deagle->height, IMG_Deagle->data);
+    ENGINE_drawBitmapByIndex(10, 33, EII_DEAGLE);
     for (i = 0; i < aCount; i++) {
-        ENGINE_drawBitmap(53 + i * 13, 28, IMG_ammo_big->width, IMG_ammo_big->height,
-                          IMG_ammo_big->data);
+        ENGINE_drawBitmapByIndex(53 + i * 13, 28, EII_AMMO_BIG);
     }
     for (; i < lMaxCount; i++) {
-        ENGINE_drawBitmap(53 + i * 13, 28, IMG_ammo_big_empty->width,
-                          IMG_ammo_big_empty->height, IMG_ammo_big_empty->data);
+        ENGINE_drawBitmapByIndex(53 + i * 13, 28, EII_AMMO_BIG_EMPTY);
     }
 }
 
@@ -1398,20 +1361,18 @@ void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow, uint8_t aType) {
     lpReloadTitle[7] = (lMaxCount - aCount) + '0';
     if (aShootNow == 0) {
         ENGINE_drawString(63 - 10 * 11 / 2, 10, lpReloadTitle, 1);
-        ENGINE_drawBitmap(25, 33, IMG_reload_arrow->width, IMG_reload_arrow->height, IMG_reload_arrow->data);
+        ENGINE_drawBitmapByIndex(25, 33, EII_RELOAD_ARROW);
     } else {
         ENGINE_drawString(63 - 10 * 6 / 2, 10, "SHOOT!", 1);
-        ENGINE_drawBitmap(25, 33, IMG_Deagle->width, IMG_Deagle->height, IMG_Deagle->data);
+        ENGINE_drawBitmapByIndex(25, 33, EII_DEAGLE);
     }
 
     if (aType == 1) {
         for (i = 0; i < aCount; i++) {
-            ENGINE_drawBitmap(68 + i * 15, 28, IMG_magazine_invert->width, IMG_magazine_invert->height,
-                              IMG_magazine_invert->data);
+            ENGINE_drawBitmapByIndex(68 + i * 15, 28, EII_MAGAZINE_INVERT);
         }
         for (; i < lMaxCount; i++) {
-            ENGINE_drawBitmap(68 + i * 15, 28, IMG_magazine_empty->width,
-                              IMG_magazine_empty->height, IMG_magazine_empty->data);
+            ENGINE_drawBitmapByIndex(68 + i * 15, 28, EII_MAGAZINE_EMPTY);
         }
     } else if (aType == 2) {
         DISPLAY_bullets(60, 32, ENGINE_getAmmo(), aCount);
@@ -1428,12 +1389,10 @@ void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow, uint8_t aType) {
         /*magazines*/
         ENGINE_fillRectangle(68, 38, 55, 20, 0);
         for (i = 0; i < (3 - aCount); i++) {
-            ENGINE_drawBitmap(68 + i * 15, 38, IMG_magazine_small->width, IMG_magazine_small->height,
-                              IMG_magazine_small->data);
+            ENGINE_drawBitmapByIndex(68 + i * 15, 38, EII_MAGAZINE_SMALL);
         }
         for (; i < lMaxCount; i++) {
-            ENGINE_drawBitmap(68 + i * 15, 38, IMG_magazine_small_empty->width,
-                              IMG_magazine_small_empty->height, IMG_magazine_small_empty->data);
+            ENGINE_drawBitmapByIndex(68 + i * 15, 38, EII_MAGAZINE_SMALL_EMPTY);
         }
     }
 }
@@ -1496,7 +1455,7 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
     }
 
     ENGINE_fillRectangle(2, 3, 124, 58, 0);
-    
+
     if (aSwipe == 0) {
         uint8_t lXName = lcMiddleX;
         uint8_t lXNameLength = lItemNameLength * 11; // 11 is char size on display and 10 is space between anme and price
@@ -1504,9 +1463,9 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
         lXName = lXName - lXNameLength / 2;
         ENGINE_drawString(lXName, 6, lpItemNameList[lWeaponListIndex], 1);
 
-        ENGINE_drawBitmap(lX1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
-        ENGINE_drawBitmap(lX2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
-        ENGINE_drawBitmap(lX3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+        ENGINE_drawBitmapByIndex(lX1, lY1, lpItem1Index);
+        ENGINE_drawBitmapByIndex(lX2, lY2, lpItem2Index);
+        ENGINE_drawBitmapByIndex(lX3, lY3, lpItem3Index);
     } else {
         if (aSwipe < lcPixels) {
             lDist1 = aSwipe;
@@ -1526,12 +1485,12 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
         lDist2 = aSwipe;
         lDist3 = aSwipe;*/
 
-        ENGINE_drawBitmap(lX1 - lDist1, lY1, lpItem1->width, lpItem1->height, lpItem1->data);
-        ENGINE_drawBitmap(lX2 - lDist2, lY2, lpItem2->width, lpItem2->height, lpItem2->data);
-        ENGINE_drawBitmap(lX3 - lDist3, lY3, lpItem3->width, lpItem3->height, lpItem3->data);
+        ENGINE_drawBitmapByIndex(lX1 - lDist1, lY1, lpItem1Index);
+        ENGINE_drawBitmapByIndex(lX2 - lDist2, lY2, lpItem2Index);
+        ENGINE_drawBitmapByIndex(lX3 - lDist3, lY3, lpItem3Index);
     }
 
-    lCirclesX = lcMiddleX - (aWeaponListLength) * lcCirclesStep / 2 - lcCircleRadius;
+    lCirclesX = lcMiddleX - (aWeaponListLength)*lcCirclesStep / 2 - lcCircleRadius;
 
     /*aCount incremented at the beginning, to count */
     for (i = 0; i < aCount; i++) {
@@ -1546,11 +1505,11 @@ void DISPLAY_tutorialWeaponsChange(uint8_t aCount,
     case 0:
         break;
     case 3:
-        ENGINE_drawBitmap(lcArrowsX + 14, lcArrowsY, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+        ENGINE_drawBitmapByIndex(lcArrowsX + 14, lcArrowsY, EII_ARROW2);
     case 2:
-        ENGINE_drawBitmap(lcArrowsX + 7, lcArrowsY, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+        ENGINE_drawBitmapByIndex(lcArrowsX + 7, lcArrowsY, EII_ARROW2);
     case 1:
-        ENGINE_drawBitmap(lcArrowsX, lcArrowsY, IMG_arrow2->width, IMG_arrow2->height, IMG_arrow2->data);
+        ENGINE_drawBitmapByIndex(lcArrowsX, lcArrowsY, EII_ARROW2);
         break;
     default:
         break;
@@ -1564,18 +1523,16 @@ void DISPLAY_tutorialWaiting(uint8_t aPercentage) {
         aPercentage = 100;
     }
 
-    ENGINE_drawBitmap(50, 3, IMG_checked->width, IMG_checked->height, IMG_checked->data);
+    ENGINE_drawBitmapByIndex(50, 3, EII_CHECKED);
     ENGINE_drawString(63 - 12 * 3, 29, "YOU ARE READY", 0);
     ENGINE_drawLine(2, 39, 126, 39, 1);
     ENGINE_drawString(63 - 11 * 3, 54, "PLEASE WAIT", 0);
     for (i = 0; i < aPercentage / 10; i++) {
-        ENGINE_drawBitmap(23 + i * 8, 41, IMG_figure->width, IMG_figure->height,
-                          IMG_figure->data);
+        ENGINE_drawBitmapByIndex(23 + i * 8, 41, EII_FIGURE);
     }
 
     for (; i < 10; i++) {
-        ENGINE_clearBitmap(23 + i * 8, 41, IMG_figure->width, IMG_figure->height,
-                           IMG_figure->data);
+        ENGINE_clearBItmapByIndex(23 + i * 8, 41, EII_FIGURE);
     }
 }
 
