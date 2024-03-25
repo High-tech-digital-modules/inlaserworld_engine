@@ -62,6 +62,20 @@ static const uint8_t *gpCongratulationsList[GGT_CONGRAT_NMBR] = {
     "Phenomenal",
     "Splendid"};
 
+static const uint8_t *gpCongratulationsListCzech[GGT_CONGRAT_NMBR] = {
+    "Gratuluji",
+    "Dobra prace",
+    "Dobre Ty",
+    "Pekne",
+    "Jsi dobry",
+    "Huraaa",
+    "Chvala",
+    "Bravo",
+    "Vyborne",
+    "Parada",
+    "Uzasne",
+    "Skvele"};
+
 /*int8_t circle_16_2[92][2] = {
     {-12, -11},
     {-12, -10},
@@ -163,6 +177,7 @@ typedef enum {
 } teamType;
 
 volatile static uint16_t gvpWeaponsAllList[CS_WEAPONS_ALL_NMBR] = {EII_KNIFE, EII_USP, EII_PISTOL_SMALL, EII_DEAGLE, EII_MP5, EII_P90, EII_M4, EII_AK47_SMALL_2, EII_AUG, EII_SG552, EII_AWP, EII_TACTICAL_SHIELD}; // 10 weapons + knife + shield
+volatile uint8_t gvTutorialCzech = 0;
 
 void DISPLAY_drawBitmap(uint8_t aX, uint8_t aY, uint16_t aBitmapIndex) {
     ENGINE_drawBitmapByIndex(aX, aY, aBitmapIndex);
@@ -276,8 +291,8 @@ void DISPLAY_drawRank_gg(uint8_t aX, uint8_t aY, uint8_t aRank, uint8_t aKills) 
 void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     uint8_t lHealth = ENGINE_getHealth();
     uint8_t lNmbr = lHealth / 25;
-    tImage *lHeartFull;
-    tImage *lHeartEmpty;
+    const tImage *lHeartFull;
+    const tImage *lHeartEmpty;
     uint16_t lHeartFullIndex;
     uint16_t lHeartEmptyIndex;
     uint8_t lBitmapPart;
@@ -289,15 +304,17 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
     uint8_t bytes_per_row;
     uint8_t lSpace = 0;
     if (aSize == 2) {
-        lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL);        // IMG_heart_small;
-        lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL_EMPTY); // IMG_heart_small_empty;
+        lHeartFullIndex = EII_HEART_SMALL;
+        lHeartEmptyIndex = EII_HEART_SMALL_EMPTY;
     } else if (aSize == 3) {
-        lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL2);        // IMG_heart_small2;
-        lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_SMALL2_EMPTY); // IMG_heart_small2_empty;
+        lHeartFullIndex = EII_HEART_SMALL2;
+        lHeartEmptyIndex = EII_HEART_SMALL2_EMPTY;
     } else {
-        lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART);        // IMG_heart;
-        lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, EII_HEART_EMPTY); // IMG_heart_empty;
+        lHeartFullIndex = EII_HEART;
+        lHeartEmptyIndex = EII_HEART_EMPTY;
     }
+    lHeartFull = ENGINE_getBitmapDimension(NULL, NULL, lHeartFullIndex);   // IMG_heart;
+    lHeartEmpty = ENGINE_getBitmapDimension(NULL, NULL, lHeartEmptyIndex); // IMG_heart_empty;
     lSpace = lHeartEmpty->width + 1;
     lBitmapPart = (lHealth % 25) * lHeartFull->width / 25;
     bytes_per_row = lHeartFull->width / 8;
@@ -329,7 +346,7 @@ void DISPLAY_health(uint8_t aX, uint8_t aY, uint8_t aSize) {
 }
 
 void DISPLAY_bullets(uint8_t aX, uint8_t aY, uint8_t aBulletCount, uint8_t aMagazineCount) {
-    uint8_t lAmmoWidth;
+    uint8_t lAmmoWidth = 0;
     ENGINE_getBitmapDimension(&lAmmoWidth, NULL, EII_AMMO);
     // ENGINE_drawBitmapByIndex(aX, aY, EII_AMMO);
     // ENGINE_drawBitmapByIndex(aX + lAmmoWidth + 1, aY, EII_AMMO);
@@ -847,7 +864,7 @@ void DISPLAY_drawWeaponReceived(uint8_t aWeapon, uint8_t aAmmo, uint8_t aMagazin
     const uint8_t lcMiddleX = 64;
     const uint8_t lcMiddleY = 28;
     const uint8_t lcShieldIndex = 11;
-    tImage *lpWeaponImage = ENGINE_getBitmapDimension(NULL, NULL, gpItemList[aWeapon]);
+    const tImage *lpWeaponImage = ENGINE_getBitmapDimension(NULL, NULL, gpItemList[aWeapon]);
 
     lX = lcMiddleX - lpWeaponImage->width / 2;
     lY = lcMiddleY - lpWeaponImage->height / 2;
@@ -1051,7 +1068,7 @@ void DISPLAY_agent(uint8_t aAgentCount) {
 
 void DISPLAY_orbReceived(uint8_t aOrbType) {
     if (aOrbType < 4) {
-        tImage *lpOrbImage = ENGINE_getBitmapDimension(NULL, NULL, gpOrbImage[aOrbType]);
+        const tImage *lpOrbImage = ENGINE_getBitmapDimension(NULL, NULL, gpOrbImage[aOrbType]);
         uint8_t lX = 30 - lpOrbImage->width / 2;
         uint8_t lY = 32 - lpOrbImage->height / 2;
         ENGINE_drawBitmapByIndex(lX, lY, gpOrbImage[aOrbType]);
@@ -1105,8 +1122,12 @@ void DISPLAY_bans(void) {
     }
 
     /*label*/
-    ENGINE_drawString(60, 7, "BANS", 1);
-
+    if (gvTutorialCzech == 1) {
+        ENGINE_drawString(55, 7, "ZAKAZY", 1);
+    } else {
+        ENGINE_drawString(60, 7, "BANS", 1);
+    }
+    
     /*line*/
     ENGINE_drawLine(2, 28, 126, 28, 1);
 
@@ -1121,10 +1142,17 @@ void DISPLAY_bans(void) {
                              49 - ENGINE_getBitmapDimension(NULL, NULL, EII_STICKMAN_FIGHT2)->height, EII_STICKMAN_FIGHT2);
 
     /*stickman labels*/
-    ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Run", 0);
-    ENGINE_drawString(lXCentres[1] - 5 * 3, 51, "Climb", 0);
-    ENGINE_drawString(lXCentres[2] - 3 * 3, 51, "Lie", 0);
-    ENGINE_drawString(lXCentres[3] - 5 * 3, 51, "Fight", 0);
+    if (gvTutorialCzech == 1) {
+        ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Beh", 0);
+        ENGINE_drawString(lXCentres[1] - 5 * 3, 51, "Lozit", 0);
+        ENGINE_drawString(lXCentres[2] - 4 * 3, 51, "Spat", 0);
+        ENGINE_drawString(lXCentres[3] - 5 * 3, 51, "Boj", 0);
+    } else {
+        ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Run", 0);
+        ENGINE_drawString(lXCentres[1] - 5 * 3, 51, "Climb", 0);
+        ENGINE_drawString(lXCentres[2] - 3 * 3, 51, "Lie", 0);
+        ENGINE_drawString(lXCentres[3] - 5 * 3, 51, "Fight", 0);
+    }    
 }
 
 void DISPLAY_animationTwoHandsShooting(uint8_t aX, uint8_t aY, uint8_t aFrame) {
@@ -1335,14 +1363,19 @@ void DISPLAY_tutorialCountdown(uint8_t *apLabel, uint8_t aValue, uint8_t aPercen
 void DISPLAY_tutorialShoot(uint8_t aCount) {
     uint8_t i = 0;
     const uint8_t lMaxCount = 5;
-    char *lpReloadTitle = "SHOOT 5x!";
-
-    if (aCount > lMaxCount) {
+    char lpShotTitle[12];
+     if (aCount > lMaxCount) {
         aCount = lMaxCount;
     }
+    if (gvTutorialCzech == 1) {
+        strcpy(lpShotTitle, "STREL 5x!");
+        lpShotTitle[6] = (lMaxCount - aCount) + '0';
+    } else {
+        strcpy(lpShotTitle, "SHOOT 5x!");
+        lpShotTitle[6] = (lMaxCount - aCount) + '0';
+    }
 
-    lpReloadTitle[6] = (lMaxCount - aCount) + '0';
-    ENGINE_drawString(63 - 9 * 11 / 2, 10, lpReloadTitle, 1);
+    ENGINE_drawString(63 - 9 * 11 / 2, 10, lpShotTitle, 1);
     ENGINE_drawBitmapByIndex(10, 33, EII_DEAGLE);
     for (i = 0; i < aCount; i++) {
         ENGINE_drawBitmapByIndex(53 + i * 13, 28, EII_AMMO_BIG);
@@ -1352,54 +1385,55 @@ void DISPLAY_tutorialShoot(uint8_t aCount) {
     }
 }
 
-void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow, uint8_t aType) {
+void DISPLAY_tutorialReload(uint8_t aCount, uint8_t aShootNow) {
     uint8_t i = 0;
     const uint8_t lMaxCount = 3;
-    char *lpReloadTitle = "RELOAD 3x!";
+    char lpShootTitle[9];
+    char lpReloadTitle[11];
+    uint8_t lShootTitleLength;
+    uint8_t lReloadTitleLength;
 
     if (aCount > lMaxCount) {
         aCount = lMaxCount;
     }
+    if (gvTutorialCzech == 1) {
+        strcpy(lpShootTitle, "VYSTREL!");
+        strcpy(lpReloadTitle, "NABIJ 3x!");
+        lpReloadTitle[6] = (lMaxCount - aCount) + '0';
+    } else {
+        strcpy(lpShootTitle, "SHOOT!");
+        strcpy(lpReloadTitle, "RELOAD 3x!");
+        lpReloadTitle[7] = (lMaxCount - aCount) + '0';
+    }
+    lShootTitleLength = strlen(lpShootTitle);
+    lReloadTitleLength = strlen(lpReloadTitle);
 
     ENGINE_fillRectangle(25, 33, 34, 24, 0);
     ENGINE_fillRectangle(7, 10, 114, 16, 0);
-
-    lpReloadTitle[7] = (lMaxCount - aCount) + '0';
+    
     if (aShootNow == 0) {
-        ENGINE_drawString(63 - 10 * 11 / 2, 10, lpReloadTitle, 1);
+        ENGINE_drawString(63 - lReloadTitleLength * 11 / 2, 10, lpReloadTitle, 1);
         ENGINE_drawBitmapByIndex(25, 33, EII_RELOAD_ARROW);
     } else {
-        ENGINE_drawString(63 - 10 * 6 / 2, 10, "SHOOT!", 1);
+        ENGINE_drawString(63 - lShootTitleLength * 11 / 2, 10, lpShootTitle, 1);
         ENGINE_drawBitmapByIndex(25, 33, EII_DEAGLE);
     }
 
-    if (aType == 1) {
-        for (i = 0; i < aCount; i++) {
-            ENGINE_drawBitmapByIndex(68 + i * 15, 28, EII_MAGAZINE_INVERT);
-        }
-        for (; i < lMaxCount; i++) {
-            ENGINE_drawBitmapByIndex(68 + i * 15, 28, EII_MAGAZINE_EMPTY);
-        }
-    } else if (aType == 2) {
-        DISPLAY_bullets(60, 32, ENGINE_getAmmo(), aCount);
-    } else if (aType == 3) {
-        /*bullets*/
-
-        ENGINE_fillRectangle(68, 28, 50, 8, 0);
-        for (i = 0; i < ENGINE_getAmmo(); i++) {
-            DISPLAY_drawBullet(68 + i * 6, 28, 2);
-        }
-        for (; i < 7; i++) {
-            DISPLAY_drawBullet(68 + i * 6, 28, 1);
-        }
-        /*magazines*/
-        ENGINE_fillRectangle(68, 38, 55, 20, 0);
-        for (i = 0; i < (3 - aCount); i++) {
-            ENGINE_drawBitmapByIndex(68 + i * 15, 38, EII_MAGAZINE_SMALL);
-        }
-        for (; i < lMaxCount; i++) {
-            ENGINE_drawBitmapByIndex(68 + i * 15, 38, EII_MAGAZINE_SMALL_EMPTY);
-        }
+    /*bullets*/
+    ENGINE_fillRectangle(68, 28, 50, 8, 0);
+    for (i = 0; i < ENGINE_getAmmo(); i++) {
+        DISPLAY_drawBullet(68 + i * 6, 28, 2);
+    }
+    for (; i < 7; i++) {
+        DISPLAY_drawBullet(68 + i * 6, 28, 1);
+    }
+    /*magazines*/
+    ENGINE_fillRectangle(68, 38, 55, 20, 0);
+    for (i = 0; i < (3 - aCount); i++) {
+        ENGINE_drawBitmapByIndex(68 + i * 15, 38, EII_MAGAZINE_SMALL);
+    }
+    for (; i < lMaxCount; i++) {
+        ENGINE_drawBitmapByIndex(68 + i * 15, 38, EII_MAGAZINE_SMALL_EMPTY);
     }
 }
 
@@ -1530,9 +1564,14 @@ void DISPLAY_tutorialWaiting(uint8_t aPercentage) {
     }
 
     ENGINE_drawBitmapByIndex(50, 3, EII_CHECKED);
-    ENGINE_drawString(63 - 12 * 3, 29, "YOU ARE READY", 0);
-    ENGINE_drawLine(2, 39, 126, 39, 1);
-    ENGINE_drawString(63 - 11 * 3, 54, "PLEASE WAIT", 0);
+    if (gvTutorialCzech == 1) {
+        ENGINE_drawString(63 - 13 * 3, 29, "JSI PRIPRAVEN", 0);        
+        ENGINE_drawString(63 - 13 * 3, 54, "PROSIM POCKEJ", 0);
+    } else {
+        ENGINE_drawString(63 - 12 * 3, 29, "YOU ARE READY", 0);        
+        ENGINE_drawString(63 - 11 * 3, 54, "PLEASE WAIT", 0);
+    }    
+    ENGINE_drawLine(2, 39, 126, 39, 1);    
     for (i = 0; i < aPercentage / 10; i++) {
         ENGINE_drawBitmapByIndex(23 + i * 8, 41, EII_FIGURE);
     }
@@ -1544,10 +1583,37 @@ void DISPLAY_tutorialWaiting(uint8_t aPercentage) {
 
 void DISPLAY_tutorialCongratulation(void) {
     uint8_t aValue = ENGINE_generateRandomNumber(GGT_CONGRAT_NMBR - 1);
-    uint8_t lTextLength = strlen(gpCongratulationsList[aValue]);
-
+    uint8_t lTextLength = 0;
+    
     ENGINE_clearDisplayBuffer();
     DISPLAY_initLayout(1);
+    if (gvTutorialCzech == 1) {
+        lTextLength = strlen(gpCongratulationsListCzech[aValue]);
+        ENGINE_drawString(63 - lTextLength * 11 / 2, 24, gpCongratulationsListCzech[aValue], 1);
+    } else {
+        lTextLength = strlen(gpCongratulationsList[aValue]);
+        ENGINE_drawString(63 - lTextLength * 11 / 2, 24, gpCongratulationsList[aValue], 1);
+    }
+    
+    
+}
 
-    ENGINE_drawString(63 - lTextLength * 11 / 2, 24, gpCongratulationsList[aValue], 1);
+void DISPLAY_tutorialGameOver(uint16_t aKills, uint16_t aDeaths) {
+    if(gvTutorialCzech == 1){
+        ENGINE_drawString(63 - 9 * 11 / 2, 6, "KONEC HRY", 1);
+    } else {
+        ENGINE_drawString(63 - 9 * 11 / 2, 6, "GAME OVER", 1);
+    }    
+    ENGINE_drawBitmapByIndex(30, 24, EII_PISTOL_CS);
+    ENGINE_drawBitmapByIndex(30, 44, EII_SKULL_CS);
+    ENGINE_drawInt(90, 27, aKills, 'R', 0);
+    ENGINE_drawInt(90, 47, aDeaths, 'R', 0);
+}
+
+void DISPLAY_setTutorialCzech(uint8_t aEnabled) {
+    if (aEnabled == 0) {
+        gvTutorialCzech = 0;
+    } else {
+        gvTutorialCzech = 1;
+    }
 }
