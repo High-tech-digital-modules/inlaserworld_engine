@@ -12,6 +12,21 @@
 #define CS_NONWEAPON_ITEMS_NMBR 3
 #define GGT_CONGRAT_NMBR 12
 
+static const uint8_t image_data_star[22] = {
+    0x04, 0x00,
+    0x04, 0x00,
+    0x0a, 0x00,
+    0x0a, 0x00,
+    0xf1, 0xe0,
+    0x60, 0xc0,
+    0x11, 0x00,
+    0x24, 0x80,
+    0x2a, 0x80,
+    0x71, 0xc0,
+    0x40, 0x40};
+static const tImage star = {image_data_star, 11, 11,
+                     8};
+
 // static const uint16_t gpListOfImages[23] = {EII_WEAPON,EII_TROPHY, &IMG_target, &IMG_steps, &IMG_shield_big, &IMG_shield, &IMG_pistol_small, &IMG_medaile, &IMG_aim, &IMG_ak47, &IMG_ak47_small_2, &IMG_ammo, &IMG_arrows, &IMG_bomb, &IMG_bomb_small, &IMG_defuse, &IMG_flash, &IMG_flash_big, &IMG_heart, &IMG_heart_big, &IMG_invisibility_big, &IMG_machinegun_big, &IMG_machinegun_small};
 static const uint16_t gpOrbImage[4] = {EII_MACHINEGUN_BIG, EII_SHIELD_BIG, EII_FLASH_BIG, EII_HEALING_BIG};
 static const uint8_t *gpOrbName[4] = {"MACHINEGUN", "ARMOR", "SNIPER", "HEALING"};
@@ -1144,9 +1159,9 @@ void DISPLAY_bans(void) {
     /*stickman labels*/
     if (gvTutorialCzech == 1) {
         ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Beh", 0);
-        ENGINE_drawString(lXCentres[1] - 5 * 3, 51, "Lozit", 0);
-        ENGINE_drawString(lXCentres[2] - 4 * 3, 51, "Spat", 0);
-        ENGINE_drawString(lXCentres[3] - 5 * 3, 51, "Boj", 0);
+        ENGINE_drawString(lXCentres[1] - 4 * 3, 51, "Lezt", 0);
+        ENGINE_drawString(lXCentres[2] - 3 * 3, 51, "Leh", 0);
+        ENGINE_drawString(lXCentres[3] - 3 * 3, 51, "Boj", 0);
     } else {
         ENGINE_drawString(lXCentres[0] - 3 * 3, 51, "Run", 0);
         ENGINE_drawString(lXCentres[1] - 5 * 3, 51, "Climb", 0);
@@ -1599,15 +1614,20 @@ void DISPLAY_tutorialCongratulation(void) {
 }
 
 void DISPLAY_tutorialGameOver(uint16_t aKills, uint16_t aDeaths) {
+    tImage* lPistol = ENGINE_getBitmapDimension(NULL, NULL, EII_PISTOL_CS);
+    tImage* lSkull = ENGINE_getBitmapDimension(NULL, NULL, EII_SKULL_CS);
+
     if(gvTutorialCzech == 1){
         ENGINE_drawString(63 - 9 * 11 / 2, 6, "KONEC HRY", 1);
     } else {
         ENGINE_drawString(63 - 9 * 11 / 2, 6, "GAME OVER", 1);
-    }    
-    ENGINE_drawBitmapByIndex(30, 24, EII_PISTOL_CS);
-    ENGINE_drawBitmapByIndex(30, 44, EII_SKULL_CS);
-    ENGINE_drawInt(90, 27, aKills, 'R', 0);
-    ENGINE_drawInt(90, 47, aDeaths, 'R', 0);
+    }
+    ENGINE_drawBitmap(35 - star.width / 2, 23, star.width, star.height, star.data);
+    ENGINE_drawBitmapByIndex(35 - lPistol->width / 2, 36, EII_PISTOL_CS);
+    ENGINE_drawBitmapByIndex(35 - lSkull->width / 2, 49, EII_SKULL_CS);
+    ENGINE_drawInt(90, 26, ENGINE_getRank(), 'R', 0);
+    ENGINE_drawInt(90, 39, aKills, 'R', 0);
+    ENGINE_drawInt(90, 52, aDeaths, 'R', 0);
 }
 
 void DISPLAY_setTutorialCzech(uint8_t aEnabled) {
