@@ -20,7 +20,7 @@ FLAGS+=-DSIMULATION_PLUGIN
 endif
 
 ifneq (, $(findstring -rasp, $(ODIR)))
-CPU = armhf
+CPU = arm
 else
 CPU = x86_64
 endif
@@ -38,14 +38,14 @@ $(SDK_ROOT)/raspberry/lib/plugin_base/src/plugin.c
 LIB_INC =                                                                \
 -I../include                                                             \
 -I../src                                                                 \
--I$(SDK_ROOT)/3rdParty/fmodstudioapi11005linux/api/lowlevel/inc          \
+-I$(SDK_ROOT)/3rdParty/fmodstudioapi20210linux/api/core/inc              \
 -I$(SDK_ROOT)/raspberry/apps/lasergame/include/engine                    \
 -I$(SDK_ROOT)/raspberry/lib/fmod_common/include          				 \
 -I$(SDK_ROOT)/3rdParty/rapidjson-1.1.0/include
 
 LIB_LIBS =                                                               \
 -L$(SDK_ROOT)/raspberry/lib/fmod_common/$(ODIR)                          \
--L$(SDK_ROOT)/3rdParty/fmodstudioapi11005linux/api/lowlevel/lib/$(CPU)   \
+-L$(SDK_ROOT)/3rdParty/fmodstudioapi20210linux/api/core/lib/$(CPU)       \
 -lfmod                                                   				 \
 
 -include ../SUBMODULES.mk
