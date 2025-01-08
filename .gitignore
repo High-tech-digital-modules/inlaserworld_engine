@@ -47,6 +47,8 @@ plugins/**/build-linux-d
 plugins/**/build-linux-o
 plugins/**/build-raspbian-o
 plugins/**/build-raspbian-d
+plugins/**/build-rasp64-o
+plugins/**/build-rasp64-d
 plugins/**/build-stm32-d
 plugins/**/build-stm32-o
 plugins/**/custom_variables_map.c

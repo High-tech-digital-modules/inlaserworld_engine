@@ -19,7 +19,11 @@ endif
 endif
 
 ifneq (, $(findstring -rasp, $(ODIR)))
-CPU = armhf
+ifneq (, $(findstring -rasp64, $(ODIR)))
+CPU = arm64
+else
+CPU = arm
+endif
 else
 CPU = x86_64
 endif

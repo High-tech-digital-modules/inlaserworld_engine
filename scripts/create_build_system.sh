@@ -19,6 +19,10 @@ for D in "$ROOT_PATH"/plugins/* "$ROOT_PATH"/plugins/inlaser_plugins/*; do
       "${D}/arena/"
     cp -r "$SYNC_PATH"/build-raspbian-o\
       "${D}/arena/"
+    cp -r "$SYNC_PATH"/build-rasp64-d\
+      "${D}/arena/"
+    cp -r "$SYNC_PATH"/build-rasp64-o\
+      "${D}/arena/"
 
     SYNC_PATH="$ROOT_PATH/base/chest/STM32F427_main_board_plugin_template"
     [ "$isLibrary" == "true" ] && SYNC_PATH="$ROOT_PATH/base/chest/STM32F427_main_board_plugin_library_template"
