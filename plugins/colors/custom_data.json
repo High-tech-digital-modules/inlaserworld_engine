@@ -42,7 +42,7 @@
   {
     "name": "pointElimination",
     "type": "int32_t",
-    "value": "200",
+    "value": 200,
     "label": "Body za eliminaci posledního",
     "id": "cff7b0e9-fe05-4232-bf8c-e831692a0bc2",
     "target": 8

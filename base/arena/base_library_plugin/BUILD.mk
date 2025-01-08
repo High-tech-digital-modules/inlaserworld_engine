@@ -19,7 +19,11 @@ endif
 endif
 
 ifneq (, $(findstring -rasp, $(ODIR)))
-CPU = armhf
+ifneq (, $(findstring -rasp64, $(ODIR)))
+CPU = arm64
+else
+CPU = arm
+endif
 else
 CPU = x86_64
 endif
@@ -35,7 +39,7 @@ $(SDK_ROOT)/raspberry/lib/plugin_library_base/src/plugin_library.c
 LIB_INC =                                                                \
 -I../include                                                             \
 -I../src                                                                 \
--I$(SDK_ROOT)/3rdParty/fmodstudioapi11005linux/api/lowlevel/inc          \
+-I$(SDK_ROOT)/3rdParty/fmodstudioapi20210linux/api/core/inc              \
 -I$(SDK_ROOT)/raspberry/apps/lasergame/include/engine                    \
 -I$(SDK_ROOT)/raspberry/lib/fmod_common/include          				 \
 -I$(SDK_ROOT)/3rdParty/rapidjson-1.1.0/include

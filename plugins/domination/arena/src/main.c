@@ -184,7 +184,9 @@ void PLUGIN_main() {
     }
 
     for (int i = 0; i < gBonusModulesLength; i++) {
-        gTeamsCount[gBonusInfo[i].team]++;
+        if (gBonusInfo[i].team != 255) {
+            gTeamsCount[gBonusInfo[i].team]++;
+        }
     }
 
     for (int i = 0; i < lTeamsLength; i++) {
