@@ -14,7 +14,7 @@ cd "$ROOT_PATH" || exit 1
 for path in $(find $FINAL_PATH -name BUILD.mk); do
         for buildPath in $(find $(dirname $path) -name Makefile); do
               if [[ "$(dirname $buildPath)" == *-o ]]; then
-                  make -C $(dirname $buildPath) || exit 1
+                  make -C $(dirname $buildPath) -j$(($(nproc) - 2)) || exit 1
               fi
         done
 done
