@@ -1,0 +1,41 @@
+{
+  "name": "inlaserworld_engine",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "plugins/**/visualization",
+    "plugins/**/jpackages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/High-tech-digital-modules/inlaserworld_engine.git"
+  },
+  "devDependencies": {
+    "@rollup/plugin-alias": "5.1.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-replace": "6.0.1",
+    "@rollup/plugin-typescript": "^12.1.0",
+    "@rollup/plugin-url": "^8.0.2",
+    "@svgr/rollup": "^8.1.0",
+    "@tailwindcss/vite": "^4.0.15",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-delete": "2.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "tailwindcss": "^4.0.15"
+  },
+  "dependencies": {
+    "@inlaserworld/unit-api": "^0.9.5",
+    "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
+    "react-redux": "^9.2.0",
+    "swr": "^2.3.3"
+  }
+}
