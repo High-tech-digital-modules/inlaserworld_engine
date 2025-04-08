@@ -1104,10 +1104,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.2.tgz#1860473de7dfa1546767448f333db80cb0ff2161"
   integrity sha512-xeO57FpIu4p1Ri3Jq/EXq4ClRm86dVF2z/+kvFnyqVYRavTZmaFaUBbWCOuuTh0o/g7DSsk6kc2vrS4Vl5oPOQ==
 
-"@inlaserworld/unit-api@^0.9.5":
-  version "0.9.5"
-  resolved "https://registry.inlaserworld.cz/@inlaserworld/unit-api/-/unit-api-0.9.5.tgz#5781533b3f469c828baf30894780cd53d3995824"
-  integrity sha512-h6Dt4RjrkcoPQIHhsDedhIuYkYXQYhp+WlMRoyYLRtB0zRmTbjUkWIOGCIaMDUszflLKvS5zZgSpCMttQLLz0g==
+"@inlaserworld/unit-api@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.inlaserworld.cz/@inlaserworld/unit-api/-/unit-api-0.9.8.tgz#1e0e916702cbb2075b16c6c8a69fa161d8b303ad"
+  integrity sha512-dJEe3slNveTV/qzXxztGEIJNJzHC5ai5lvt9Q6gGFswVsxk+UC8hFoQ/6cJtkRLBnORGAu2OD/e8uxp/bh4VDA==
   dependencies:
     lodash "^4.17.20"
     react-redux "^9.1.0"
