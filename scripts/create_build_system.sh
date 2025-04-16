@@ -15,10 +15,12 @@ for D in "$ROOT_PATH"/plugins/* "$ROOT_PATH"/plugins/inlaser_plugins/*; do
       "${D}/arena/"
     cp -r "$SYNC_PATH"/build-linux-o\
       "${D}/arena/"
-    cp -r "$SYNC_PATH"/build-raspbian-d\
-      "${D}/arena/"
-    cp -r "$SYNC_PATH"/build-raspbian-o\
-      "${D}/arena/"
+    if [ ! -f "${D}/exclude32bit" ]; then
+      cp -r "$SYNC_PATH"/build-raspbian-d\
+        "${D}/arena/"
+      cp -r "$SYNC_PATH"/build-raspbian-o\
+        "${D}/arena/"
+    fi
     cp -r "$SYNC_PATH"/build-rasp64-d\
       "${D}/arena/"
     cp -r "$SYNC_PATH"/build-rasp64-o\
