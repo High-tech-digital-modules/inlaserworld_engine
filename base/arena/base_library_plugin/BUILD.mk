@@ -2,7 +2,7 @@
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(MAKECMDGOALS),cleansub)
 ifndef GAME_TEMPLATE_ID
-GAME_TEMPLATE_ID_=$(shell pwd | grep -o -P '(?<=plugins/).*(?=/arena) | sed 's|/|_|g')
+GAME_TEMPLATE_ID_=$(shell pwd | grep -o -P '(?<=plugins/).*(?=/arena)' | sed 's|/|_|g')
 else
 GAME_TEMPLATE_ID_=$(shell pwd | grep -o -P '(?<=gameTemplates/).*(?=/arena)')
 endif
