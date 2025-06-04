@@ -416,8 +416,13 @@ void DISPLAY_killed(uint8_t aPlayerCode) {
     if (aPlayerCode <= 100) {
         lPlayerNameLength = ENGINE_getPlayerName(lPlayerName, aPlayerCode);
         ENGINE_drawBitmapByIndex(16, 15, EII_SKULL_SMALL);
+    } else if (aPlayerCode == 255) {
+        strcpy(lPlayerName, "Arena");
+        lPlayerNameLength = strlen(lPlayerName);
+        ENGINE_drawBitmapByIndex(16, 15, EII_SKULL_SMALL);
     } else {
-        lPlayerNameLength = "Mine";
+        strcpy(lPlayerName, "Mine");
+        lPlayerNameLength = strlen(lPlayerName);
         ENGINE_drawBitmapByIndex(16, 4, EII_BOMB);
     }
 
