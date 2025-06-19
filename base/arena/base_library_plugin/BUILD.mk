@@ -15,6 +15,7 @@ y := $(shell $(SDK_ROOT)/raspberry/lib/plugin_base/src/parse_custom_variables.sh
 y := $(shell mkdir ../include)
 z := $(shell (makeheaders ../src/main.c || touch ../src/main.h) && mv ../src/main.h ../include/library_$(GAME_TEMPLATE_ID_).h)
 z := $(shell rm -f ../include/custom_variables_map.h && (makeheaders ../src/custom_variables_map.c || touch ../src/custom_variables_map.h) && mv ../src/custom_variables_map.h ../include/custom_variables_map_$(GAME_TEMPLATE_ID_).h && ln -s ../include/custom_variables_map_$(GAME_TEMPLATE_ID_).h ../src/custom_variables_map.h)
+z := $(shell cp ../src/sound_set_map.h ../include/sound_set_map_$(GAME_TEMPLATE_ID_).h)
 endif
 endif
 
