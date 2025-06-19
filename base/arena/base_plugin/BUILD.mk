@@ -35,6 +35,7 @@ FLAGS += -fPIC
 
 LIB_SRCS =                                                               \
 ../src/custom_variables_map.c                                            \
+../src/sound_set_map.c                                                   \
 $(wildcard ../src/extra/*.c)                                             \
 $(SDK_ROOT)/raspberry/apps/lasergame/include/engine/engine_functions.cpp \
 $(SDK_ROOT)/raspberry/lib/plugin_base/src/plugin.c                                                                                             
