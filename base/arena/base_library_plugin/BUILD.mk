@@ -35,6 +35,7 @@ FLAGS += -fPIC
 
 LIB_SRCS =                                                               \
 ../src/custom_variables_map.c                                            \
+$(wildcard ../src/extra/*.c)                                             \
 $(SDK_ROOT)/raspberry/lib/plugin_library_base/src/plugin_library.c                                                                                             
 
 LIB_INC =                                                                \
