@@ -149,5 +149,21 @@
     "value": -100,
     "label": "Points per team kill",
     "target": 8
+  },
+  {
+    "id": "ac2d2bc2-6314-47f7-96d1-1a5e27991d08",
+    "name": "pointsTeamHit",
+    "type": "int32_t",
+    "value": -50,
+    "label": "Points per team hit",
+    "target": 8
+  },
+  {
+    "id": "4e3fb3d9-e5aa-48a7-b48b-cf0fbc2b1eb9",
+    "name": "pointsTeamDeath",
+    "type": "int32_t",
+    "value": 0,
+    "label": "Points per team death",
+    "target": 8
   }
 ]

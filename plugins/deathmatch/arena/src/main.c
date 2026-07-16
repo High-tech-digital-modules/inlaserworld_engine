@@ -280,7 +280,10 @@ void PLUGIN_main() {
             pointsHit * (p->hits - p->kills) +
             pointsPerShoot * p->usedAmmo +
             pointsDoubleKill * p->bonusKillCounter[2] +
-            pointsMonsterKill * p->bonusKillCounter[3];
+            pointsMonsterKill * p->bonusKillCounter[3] +
+            pointsTeamKill * p->teamKills +
+            pointsTeamHit * (p->teamHits - p->teamKills) +
+            pointsTeamDeath * p->teamDeaths;
         p->score = score;
     }
 }
