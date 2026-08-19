@@ -61,6 +61,8 @@ plugins/**/custom_variables_map_*.h
 plugins/**/BUILD.mk
 plugins/**/SUBMODULES.mk
 plugins/**/stm32f4_flash.ld
+plugins/**/version_counter
+version_counter
 
 
 
